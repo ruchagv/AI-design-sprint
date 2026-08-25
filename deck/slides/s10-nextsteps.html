@@ -1,0 +1,59 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8">
+<style>
+html{background:#171717;}
+body{width:720pt;height:405pt;margin:0;padding:0;font-family:Arial,Helvetica,sans-serif;display:flex;overflow:hidden;}
+.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;}
+.content{position:relative;z-index:1;width:100%;height:100%;display:flex;flex-direction:column;padding:36pt 52pt 28pt;}
+.eyebrow{font-family:'Courier New',monospace;font-size:10pt;color:#888888;letter-spacing:1.2px;margin-bottom:10pt;}
+h1{font-size:28pt;font-weight:600;color:#ffffff;letter-spacing:-1px;margin:0 0 22pt;}
+.steps{display:flex;gap:14pt;flex:1;}
+.step{flex:1;border:1px solid #333333;border-radius:8pt;padding:16pt 14pt;display:flex;flex-direction:column;gap:8pt;}
+.step.now{border-color:#007cf0;background:#001a33;}
+.step-num{font-family:'Courier New',monospace;font-size:10pt;color:#888888;}
+.step-title{font-size:13pt;font-weight:600;color:#ffffff;line-height:1.2;}
+.step-desc{font-size:10pt;color:#888888;line-height:1.45;}
+.step-tag{margin-top:auto;display:inline-block;font-family:'Courier New',monospace;font-size:9pt;padding:3pt 8pt;border-radius:100px;}
+.done{background:#1a2a1a;color:#50e3c2;}
+.active{background:#007cf0;color:#ffffff;}
+.next{background:#333333;color:#888888;}
+</style>
+</head>
+<body>
+<img class="bg" src="../dark-gradient.png"/>
+<div class="content">
+  <p class="eyebrow">NEXT STEPS</p>
+  <h1>Discovery done. Time to build.</h1>
+  <div class="steps">
+    <div class="step">
+      <p class="step-num">✓ Complete</p>
+      <p class="step-title">Discovery Research</p>
+      <p class="step-desc">5 interviews · 5 surveys · Interview findings · Opportunity backlog</p>
+      <span class="step-tag done">done</span>
+    </div>
+    <div class="step">
+      <p class="step-num">✓ Complete</p>
+      <p class="step-title">Synthesis</p>
+      <p class="step-desc">Problem statement · Persona · User journey · Solution hypotheses</p>
+      <span class="step-tag done">done</span>
+    </div>
+    <div class="step now">
+      <p class="step-num">→ Next</p>
+      <p class="step-title">Prototype Design</p>
+      <p class="step-desc">Figma prototype covering OPP-01 + OPP-02. Morning suggestion card → cook instruction → WhatsApp share.</p>
+      <span class="step-tag active">start now</span>
+    </div>
+    <div class="step">
+      <p class="step-num">04</p>
+      <p class="step-title">Build No-Code Prototype</p>
+      <p class="step-desc">Framer or similar. Testable flow. No engineering needed.</p>
+      <span class="step-tag next">after design</span>
+    </div>
+    <div class="step">
+      <p class="step-num">05</p>
+      <p class="step-title">PMF Validation</p>
+      <p class="step-desc">Test with 5 users. Measure demand, behaviour change, willingness to pay at ₹199–299/month.</p>
+      <span class="step-tag next">after prototype</span>
+    </div>
+  </div>
+</div>
+</body></html>

@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Food Decision Sprint — Discovery Readout</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, Helvetica, sans-serif; background: #1a1a1a; }
+
+  .slide {
+    width: 1280px;
+    height: 720px;
+    margin: 0 auto 32px;
+    position: relative;
+    overflow: hidden;
+    background: #fafafa;
+    page-break-after: always;
+  }
+
+  /* ── Typography helpers ── */
+  .mono { font-family: 'Courier New', monospace; }
+  .eyebrow { font-family: 'Courier New', monospace; font-size: 12px; color: #555; letter-spacing: 2px; text-transform: uppercase; }
+  .accent { color: #007cf0; }
+
+  /* ── SLIDE 1 — Cover ── */
+  #s1 { background: #0a0a0a; display: flex; align-items: center; justify-content: center; flex-direction: column; text-align: center; padding: 80px; }
+  #s1::before { content:''; position:absolute; inset:0; background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,124,240,.25) 0%, rgba(121,40,202,.15) 40%, transparent 75%), radial-gradient(ellipse 50% 50% at 80% 70%, rgba(255,0,128,.12) 0%, transparent 60%); }
+  #s1 .inner { position: relative; z-index: 1; }
+  #s1 .tag { display: inline-block; background: #1e1e1e; border: 1px solid #333; color: #888; font-family: 'Courier New', monospace; font-size: 11px; letter-spacing: 2px; padding: 6px 16px; border-radius: 100px; margin-bottom: 32px; }
+  #s1 h1 { font-size: 72px; font-weight: 700; color: #fff; letter-spacing: -3px; line-height: 1; margin-bottom: 24px; }
+  #s1 h1 span { color: #007cf0; }
+  #s1 .sub { font-size: 20px; color: #777; line-height: 1.5; max-width: 640px; margin: 0 auto 36px; }
+  #s1 .pill { display: inline-block; background: #fff; color: #0a0a0a; font-size: 13px; font-weight: 600; padding: 10px 24px; border-radius: 100px; }
+  #s1 .meta { position: absolute; bottom: 32px; right: 40px; font-family: 'Courier New', monospace; font-size: 11px; color: #444; }
+
+  /* ── SLIDE 2 — Process ── */
+  #s2 { padding: 52px 72px; display: flex; flex-direction: column; }
+  #s2 h1 { font-size: 38px; font-weight: 700; color: #171717; letter-spacing: -1.5px; margin: 10px 0 32px; }
+  #s2 .steps { display: flex; gap: 20px; flex: 1; }
+  #s2 .step { flex: 1; background: #fff; border: 1.5px solid #e5e7eb; border-radius: 12px; padding: 24px 20px; display: flex; flex-direction: column; gap: 8px; }
+  #s2 .step.active { border-color: #007cf0; }
+  #s2 .step-num { font-family: 'Courier New', monospace; font-size: 11px; color: #666; }
+  #s2 .step-title { font-size: 17px; font-weight: 700; color: #0a0a0a; }
+  #s2 .step-desc { font-size: 13px; color: #333; line-height: 1.5; }
+  #s2 .badge { margin-top: auto; display: inline-block; font-family: 'Courier New', monospace; font-size: 11px; padding: 4px 12px; border-radius: 100px; background: #d3e5ff; color: #0047b3; width: fit-content; }
+  #s2 .badge.here { background: #171717; color: #fff; }
+
+  /* ── SLIDE 3 — Participants ── */
+  #s3 { padding: 52px 72px; display: flex; flex-direction: column; }
+  #s3 h1 { font-size: 38px; font-weight: 700; color: #171717; letter-spacing: -1.5px; margin: 10px 0 28px; }
+  #s3 .grid { display: flex; gap: 16px; flex: 1; }
+  #s3 .card { flex: 1; background: #fff; border: 1.5px solid #e5e7eb; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 6px; }
+  #s3 .avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; color: #fff; margin-bottom: 8px; }
+  #s3 .p-name { font-size: 14px; font-weight: 700; color: #0a0a0a; }
+  #s3 .p-tag { font-family: 'Courier New', monospace; font-size: 10px; color: #555; }
+  #s3 .p-detail { font-size: 12px; color: #333; line-height: 1.5; }
+
+  /* ── SLIDE 4 — Problem ── */
+  #s4 { background: #0a0a0a; display: flex; align-items: center; justify-content: center; flex-direction: column; text-align: center; padding: 80px 120px; }
+  #s4::before { content:''; position:absolute; inset:0; background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(0,124,240,.15) 0%, transparent 70%); }
+  #s4 .inner { position: relative; z-index: 1; }
+  #s4 .eyebrow { color: #aaa; margin-bottom: 28px; }
+  #s4 .statement { font-size: 30px; font-weight: 600; color: #fff; letter-spacing: -0.5px; line-height: 1.4; max-width: 760px; }
+  #s4 .statement em { color: #50e3c2; font-style: normal; }
+  #s4 .foot { margin-top: 32px; font-size: 15px; color: #aaa; max-width: 640px; line-height: 1.6; font-style: italic; }
+
+  /* ── SLIDE 5 — Findings ── */
+  #s5 { padding: 48px 72px; display: flex; flex-direction: column; }
+  #s5 h1 { font-size: 36px; font-weight: 700; color: #171717; letter-spacing: -1.5px; margin: 10px 0 24px; }
+  #s5 .grid { display: flex; gap: 16px; flex: 1; }
+  #s5 .col { flex: 1; display: flex; flex-direction: column; gap: 12px; }
+  #s5 .col-lbl { font-family: 'Courier New', monospace; font-size: 10px; color: #555; letter-spacing: 1px; margin-bottom: 4px; }
+  #s5 .item { background: #fff; border: 1.5px solid #d0d4da; border-radius: 10px; padding: 14px; flex: 1; display: flex; flex-direction: column; gap: 4px; }
+  #s5 .item-title { font-size: 13px; font-weight: 700; color: #0a0a0a; }
+  #s5 .item-desc { font-size: 12px; color: #333; line-height: 1.4; }
+  #s5 .item-quote { font-size: 11px; color: #555; font-style: italic; line-height: 1.4; border-left: 3px solid #c0c4ca; padding-left: 8px; margin-top: 6px; }
+  #s5 .dots { display: flex; gap: 3px; margin-top: auto; padding-top: 6px; }
+  #s5 .dot { width: 8px; height: 8px; border-radius: 50%; background: #e5e7eb; }
+  #s5 .dot.on { background: #171717; }
+
+  /* ── SLIDE 6 — Opp Tree ── */
+  #s6 { padding: 48px 72px; display: flex; flex-direction: column; }
+  #s6 h1 { font-size: 36px; font-weight: 700; color: #171717; letter-spacing: -1.5px; margin: 10px 0 20px; }
+  #s6 .obj { background: #171717; color: #fff; border-radius: 10px; padding: 12px 20px; font-size: 13px; font-weight: 600; text-align: center; margin-bottom: 16px; }
+  #s6 .outcomes { display: flex; gap: 16px; flex: 1; }
+  #s6 .outcome { flex: 1; border: 2px solid #171717; border-radius: 10px; padding: 14px; display: flex; flex-direction: column; }
+  #s6 .oc-title { font-size: 12px; font-weight: 700; color: #0a0a0a; margin-bottom: 10px; line-height: 1.3; }
+  #s6 .opps { display: flex; flex-direction: column; gap: 6px; }
+  #s6 .opp { border: 1px solid #d0d4da; border-radius: 6px; padding: 7px 10px; display: flex; align-items: flex-start; gap: 8px; }
+  #s6 .ob { font-family: 'Courier New', monospace; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 100px; flex-shrink: 0; margin-top: 1px; }
+  #s6 .ob.p0 { background: #171717; color: #fff; }
+  #s6 .ob.p1 { background: #bcd6ff; color: #0047b3; }
+  #s6 .ob.p2 { background: #e5e5e5; color: #444; }
+  #s6 .opp-text { font-size: 12px; color: #222; line-height: 1.3; }
+
+  /* ── SLIDE 7 — Persona ── */
+  #s7 { display: flex; }
+  #s7 .left { width: 260px; background: #171717; padding: 48px 32px; display: flex; flex-direction: column; justify-content: space-between; flex-shrink: 0; }
+  #s7 .p-name { font-size: 44px; font-weight: 700; color: #fff; letter-spacing: -2px; line-height: 1; margin-bottom: 8px; }
+  #s7 .p-role { font-size: 13px; color: #aaa; line-height: 1.6; }
+  #s7 .p-quote { font-size: 13px; color: #50e3c2; font-style: italic; line-height: 1.6; border-left: 3px solid #50e3c2; padding-left: 12px; }
+  #s7 .right { flex: 1; padding: 40px 44px 32px; display: flex; flex-direction: column; gap: 16px; }
+  #s7 .eyebrow { margin-bottom: 4px; }
+  #s7 .row { display: flex; gap: 14px; }
+  #s7 .block { flex: 1; background: #fff; border: 1.5px solid #e5e7eb; border-radius: 10px; padding: 14px; }
+  #s7 .bl { font-family: 'Courier New', monospace; font-size: 10px; color: #666; margin-bottom: 6px; letter-spacing: 0.5px; }
+  #s7 .bc { font-size: 12px; color: #111; line-height: 1.5; }
+  #s7 .tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+  #s7 .t { font-size: 11px; color: #333; background: #efefef; padding: 3px 9px; border-radius: 100px; border: 1px solid #d5d5d5; }
+  #s7 .stats { display: flex; gap: 10px; }
+  #s7 .stat { flex: 1; background: #f5f5f5; border: 1px solid #d5d5d5; border-radius: 8px; padding: 10px; text-align: center; }
+  #s7 .stat-n { font-size: 22px; font-weight: 700; color: #0a0a0a; letter-spacing: -1px; }
+  #s7 .stat-d { font-size: 10px; color: #555; margin-top: 3px; line-height: 1.3; }
+
+  /* ── SLIDE 8 — Journey ── */
+  #s8 { padding: 44px 72px 32px; display: flex; flex-direction: column; }
+  #s8 h1 { font-size: 34px; font-weight: 700; color: #171717; letter-spacing: -1.5px; margin: 8px 0 20px; }
+  #s8 .cols { display: flex; gap: 24px; flex: 1; }
+  #s8 .col { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+  #s8 .col-lbl { display: inline-block; font-family: 'Courier New', monospace; font-size: 10px; padding: 3px 10px; border-radius: 100px; margin-bottom: 6px; }
+  #s8 .cur { background: #fde8e8; color: #c50000; }
+  #s8 .fut { background: #d3e5ff; color: #0761d1; }
+  #s8 .moment { background: #fff; border: 1.5px solid #e5e7eb; border-radius: 8px; padding: 10px 12px; display: flex; gap: 10px; }
+  #s8 .moment.pain { border-left: 3px solid #ee0000; }
+  #s8 .moment.good { border-left: 3px solid #007cf0; }
+  #s8 .time { font-family: 'Courier New', monospace; font-size: 10px; color: #666; flex-shrink: 0; width: 44px; padding-top: 2px; }
+  #s8 .mt { font-size: 12px; font-weight: 700; color: #0a0a0a; margin-bottom: 2px; }
+  #s8 .md { font-size: 11px; color: #333; line-height: 1.4; }
+  #s8 .div { width: 1px; background: #e5e7eb; flex-shrink: 0; }
+
+  /* ── SLIDE 9 — Hypotheses ── */
+  #s9 { padding: 44px 72px 28px; display: flex; flex-direction: column; }
+  #s9 h1 { font-size: 34px; font-weight: 700; color: #171717; letter-spacing: -1.5px; margin: 8px 0 20px; }
+  #s9 .tbl { flex: 1; display: flex; flex-direction: column; border: 1.5px solid #e5e7eb; border-radius: 10px; overflow: hidden; }
+  #s9 .hdr { display: flex; background: #f7f8fa; border-bottom: 2px solid #e5e7eb; }
+  #s9 .hc { font-family: 'Courier New', monospace; font-size: 10px; color: #444; padding: 10px 12px; letter-spacing: 0.5px; }
+  #s9 .row { display: flex; border-bottom: 1px solid #e0e0e0; }
+  #s9 .row:last-child { border-bottom: none; }
+  #s9 .cell { font-size: 12px; color: #222; padding: 10px 12px; line-height: 1.4; }
+  #s9 .c-opp { flex: 0 0 80px; display: flex; align-items: center; }
+  #s9 .c-hyp { flex: 2; font-weight: 600; color: #0a0a0a; }
+  #s9 .c-test { flex: 1.5; }
+  #s9 .c-kill { flex: 1.2; color: #aa0000; }
+  #s9 .ob { font-family: 'Courier New', monospace; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 100px; }
+  #s9 .ob.p0 { background: #171717; color: #fff; }
+  #s9 .ob.p1 { background: #bcd6ff; color: #0047b3; }
+
+  /* ── SLIDE 10 — Next Steps ── */
+  #s10 { background: #0a0a0a; padding: 52px 72px; display: flex; flex-direction: column; }
+  #s10::before { content:''; position:absolute; inset:0; background: radial-gradient(ellipse 60% 50% at 30% 60%, rgba(0,124,240,.12) 0%, transparent 70%); }
+  #s10 .inner { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; }
+  #s10 .eyebrow { margin-bottom: 10px; }
+  #s10 h1 { font-size: 40px; font-weight: 700; color: #fff; letter-spacing: -2px; margin-bottom: 28px; }
+  #s10 .steps { display: flex; gap: 14px; flex: 1; }
+  #s10 .step { flex: 1; border: 1px solid #2a2a2a; border-radius: 10px; padding: 20px; display: flex; flex-direction: column; gap: 8px; }
+  #s10 .step.now { border-color: #007cf0; background: rgba(0,124,240,.07); }
+  #s10 .step-num { font-family: 'Courier New', monospace; font-size: 11px; color: #888; }
+  #s10 .step-title { font-size: 15px; font-weight: 700; color: #fff; line-height: 1.2; }
+  #s10 .step-desc { font-size: 12px; color: #aaa; line-height: 1.5; }
+  #s10 .badge { margin-top: auto; display: inline-block; font-family: 'Courier New', monospace; font-size: 11px; padding: 4px 12px; border-radius: 100px; width: fit-content; }
+  #s10 .done { background: #0d2010; color: #50e3c2; }
+  #s10 .active { background: #007cf0; color: #fff; }
+  #s10 .next { background: #1e1e1e; color: #555; }
+
+  /* ── Print ── */
+  @media print {
+    body { background: none; }
+    .slide { margin: 0; page-break-after: always; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SLIDE 1: COVER -->
+<div class="slide" id="s1">
+  <div class="inner">
+    <div class="tag mono">FOOD DECISION SPRINT · DISCOVERY READOUT · 2026</div>
+    <h1>Every day,<br><span>the same</span> blank.</h1>
+    <p class="sub">How urban Indian professionals decide what to eat — and why they can't stop getting it wrong.</p>
+    <span class="pill">Research · Synthesis · Opportunities</span>
+  </div>
+  <div class="meta mono">AI Design Sprint</div>
+</div>
+
+<!-- SLIDE 2: PROCESS -->
+<div class="slide" id="s2">
+  <p class="eyebrow">OUR PROCESS</p>
+  <h1>How we ran this sprint.</h1>
+  <div class="steps">
+    <div class="step">
+      <p class="step-num mono">01</p>
+      <p class="step-title">Recruit &amp; Screener</p>
+      <p class="step-desc">Slack outreach to urban professionals. Pre-interview questionnaire to qualify participants and gather context before interviews.</p>
+      <span class="badge mono">5 participants</span>
+    </div>
+    <div class="step">
+      <p class="step-num mono">02</p>
+      <p class="step-title">Discovery Interviews</p>
+      <p class="step-desc">30-min semi-structured interviews focused on food stress, decision moments, workarounds, and desired outcomes.</p>
+      <span class="badge mono">5 interviews</span>
+    </div>
+    <div class="step active">
+      <p class="step-num mono">03</p>
+      <p class="step-title">Synthesis</p>
+      <p class="step-desc">Findings → opportunity tree → problem statement → persona → user journey → solution hypotheses.</p>
+      <span class="badge here mono">← you are here</span>
+    </div>
+    <div class="step">
+      <p class="step-num mono">04</p>
+      <p class="step-title">Prototype &amp; Test</p>
+      <p class="step-desc">No-code prototype targeting P0 opportunities. PMF signal from 5 target users. Validate 3 key assumptions.</p>
+      <span class="badge mono">up next</span>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 3: PARTICIPANTS -->
+<div class="slide" id="s3">
+  <p class="eyebrow">WHO WE SPOKE TO</p>
+  <h1>5 participants. 5 real kitchens.</h1>
+  <div class="grid">
+    <div class="card">
+      <div class="avatar" style="background:#007cf0;">P1</div>
+      <p class="p-name">P1</p>
+      <p class="p-tag mono">Lives alone · No cook · Jain/Veg</p>
+      <p class="p-detail">Orders delivery 3–4x/week. Tried Healthify Me. Uses AI on demand. Cholesterol &amp; pre-diabetes watch.</p>
+    </div>
+    <div class="card">
+      <div class="avatar" style="background:#7928ca;">P2</div>
+      <p class="p-name">P2</p>
+      <p class="p-tag mono">Flatmates · Has cook · Fitness-focused</p>
+      <p class="p-detail">Flatmates manage cooking decisions. Fitness goals drive health vs. taste tension. Never used a tracking app.</p>
+    </div>
+    <div class="card">
+      <div class="avatar" style="background:#00dfd8;">P3</div>
+      <p class="p-name">P3</p>
+      <p class="p-tag mono">Lives alone · Has cook · Easygoing</p>
+      <p class="p-detail">Low food stress. Flexible diet. Into fitness, mindful of protein. Used Claude to draft a diet plan — didn't follow it.</p>
+    </div>
+    <div class="card">
+      <div class="avatar" style="background:#ff4d4d;">P4</div>
+      <p class="p-name">P4</p>
+      <p class="p-tag mono">Lives alone · Has cook · Repeater</p>
+      <p class="p-detail">Repeats familiar dishes every week out of convenience. Used a diet app for 3 weeks. Rates food effort 4/5.</p>
+    </div>
+    <div class="card">
+      <div class="avatar" style="background:#f9cb28;">P5</div>
+      <p class="p-name">P5</p>
+      <p class="p-tag mono">Flatmate · Has cook · Home-food-first</p>
+      <p class="p-detail">Strongly prefers home food. Goal: gain weight. Consulted nutritionist — gave up after 3 weeks due to clashing diets.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 4: PROBLEM STATEMENT -->
+<div class="slide" id="s4">
+  <div class="inner">
+    <p class="eyebrow">THE PROBLEM</p>
+    <p class="statement">Urban Indian professionals who rely on a cook or food delivery <em>have no reliable way to know what they should eat</em> — so they freeze up every morning, default to the same boring dishes, and order food they'll regret.</p>
+    <p class="foot">The cook arrives with the same groceries, makes the same meals, and the cycle resets every week. It's a daily tax on mental energy — paid by people who already know what they want.</p>
+  </div>
+</div>
+
+<!-- SLIDE 5: FINDINGS -->
+<div class="slide" id="s5">
+  <p class="eyebrow">WHAT WE FOUND</p>
+  <h1>8 pain points. The loudest ones.</h1>
+  <div class="grid">
+    <div class="col">
+      <p class="col-lbl mono">★★★★ HIGHEST FREQUENCY</p>
+      <div class="item">
+        <p class="item-title">Decision fatigue when ordering</p>
+        <p class="item-desc">Scrolling Swiggy while hungry leads to paralysis and regret.</p>
+        <p class="item-quote">"Takes a lot of scrolling... getting hangry because I can't decide."</p>
+        <div class="dots"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+      </div>
+      <div class="item">
+        <p class="item-title">Mental load of the cook instruction</p>
+        <p class="item-desc">Early morning, half-awake, cook waiting — nothing to say.</p>
+        <p class="item-quote">"Mostly in the mornings. To put my mind into it... is a struggle."</p>
+        <div class="dots"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+      </div>
+    </div>
+    <div class="col">
+      <p class="col-lbl mono">★★★ HIGH FREQUENCY</p>
+      <div class="item">
+        <p class="item-title">Taste vs. health conflict</p>
+        <p class="item-desc">Constant internal war between what they want and what they should eat.</p>
+        <p class="item-quote">"I just end up eating healthy, not-so-tasty food or unhealthy food."</p>
+        <div class="dots"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div><div class="dot"></div><div class="dot"></div></div>
+      </div>
+      <div class="item">
+        <p class="item-title">Food repetition and boredom</p>
+        <p class="item-desc">Eating the same 3 dishes weekly — not by choice, but by inertia.</p>
+        <p class="item-quote">"Not because you like it very much. Because it's always convenient."</p>
+        <div class="dots"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div><div class="dot"></div><div class="dot"></div></div>
+      </div>
+    </div>
+    <div class="col">
+      <p class="col-lbl mono">★★★ HIGH FREQUENCY</p>
+      <div class="item">
+        <p class="item-title">Can't follow diet plans</p>
+        <p class="item-desc">Every app and nutritionist plan abandoned within 3 weeks.</p>
+        <p class="item-quote">"I wasn't able to follow through it after like 3 weeks."</p>
+        <div class="dots"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div><div class="dot"></div><div class="dot"></div></div>
+      </div>
+      <div class="item">
+        <p class="item-title">Manual tracking too effortful</p>
+        <p class="item-desc">Daily logging feels like a chore — becomes another thing to fail at.</p>
+        <p class="item-quote">"I would have to put a reminder to track this. Which is like more work."</p>
+        <div class="dots"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div><div class="dot"></div><div class="dot"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 6: OPPORTUNITY TREE -->
+<div class="slide" id="s6">
+  <p class="eyebrow">OPPORTUNITY TREE</p>
+  <h1>From pain to product opportunities.</h1>
+  <div class="obj">Business Objective — Eliminate daily food decision fatigue for urban Indian professionals</div>
+  <div class="outcomes">
+    <div class="outcome">
+      <p class="oc-title">Outcome 1 — Offload the daily "what should I eat?" decision</p>
+      <div class="opps">
+        <div class="opp"><span class="ob p0">P0</span><span class="opp-text">Know what to eat today before it's stressful</span></div>
+        <div class="opp"><span class="ob p0">P0</span><span class="opp-text">Communicate the meal to the cook without effort</span></div>
+        <div class="opp"><span class="ob p1">P1</span><span class="opp-text">Choose what to order without scrolling paralysis</span></div>
+      </div>
+    </div>
+    <div class="outcome">
+      <p class="oc-title">Outcome 2 — Eat meals that are healthy AND enjoyable</p>
+      <div class="opps">
+        <div class="opp"><span class="ob p1">P1</span><span class="opp-text">Discover meals that are satisfying and health-aligned</span></div>
+        <div class="opp"><span class="ob p1">P1</span><span class="opp-text">Order the right groceries so the week's meals are possible</span></div>
+      </div>
+    </div>
+    <div class="outcome">
+      <p class="oc-title">Outcome 3 — Feel quietly in control without obsessing</p>
+      <div class="opps">
+        <div class="opp"><span class="ob p1">P1</span><span class="opp-text">Know how the week is going nutritionally without counting</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 7: PERSONA -->
+<div class="slide" id="s7">
+  <div class="left">
+    <div>
+      <p class="p-name">Arjun<br>28</p>
+      <p class="p-role">Senior Analyst<br>Bangalore · Lives alone<br>Has a cook</p>
+    </div>
+    <p class="p-quote">"I know what I should eat. I just never have the energy to figure it out when I need to."</p>
+  </div>
+  <div class="right">
+    <p class="eyebrow">PRIMARY PERSONA · COMPOSITE FROM 5 INTERVIEWS</p>
+    <div class="row">
+      <div class="block">
+        <p class="bl mono">GOALS</p>
+        <p class="bc">Eat healthy 5 days a week · Not repeat the same dishes · Feel good without obsessing · See gym results</p>
+      </div>
+      <div class="block">
+        <p class="bl mono">FRUSTRATIONS</p>
+        <p class="bc">Blanks every morning when the cook arrives · Scrolls Swiggy 20 min and regrets the order · Apps feel like homework</p>
+      </div>
+    </div>
+    <div class="block">
+      <p class="bl mono">BEHAVIOURS</p>
+      <div class="tags">
+        <span class="t">Swiggy/Zomato 3–4x/week</span>
+        <span class="t">Abandoned Healthify Me</span>
+        <span class="t">Uses ChatGPT for food guilt</span>
+        <span class="t">YouTube for recipe ideas</span>
+        <span class="t">Annual health checkups</span>
+        <span class="t">Same 4 groceries every week</span>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat"><p class="stat-n">4/5</p><p class="stat-d">Rates food decision effort</p></div>
+      <div class="stat"><p class="stat-n">4/5</p><p class="stat-d">Wants planning offloaded</p></div>
+      <div class="stat"><p class="stat-n">4/5</p><p class="stat-d">Tried &amp; abandoned an app</p></div>
+      <div class="stat"><p class="stat-n">5/5</p><p class="stat-d">Uses food delivery apps</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 8: USER JOURNEY -->
+<div class="slide" id="s8">
+  <p class="eyebrow">CORE USER JOURNEY</p>
+  <h1>Arjun's weekday — before and after.</h1>
+  <div class="cols">
+    <div class="col">
+      <span class="col-lbl cur mono">CURRENT STATE — pain points</span>
+      <div class="moment pain">
+        <p class="time mono">7:15am</p>
+        <div><p class="mt">Cook arrives — Arjun blanks</p><p class="md">Repeats yesterday or says "make whatever's there." Same dish again.</p></div>
+      </div>
+      <div class="moment">
+        <p class="time mono">1:00pm</p>
+        <div><p class="mt">Lunch — repetitive, uninspiring</p><p class="md">Eats what's packed. Same dal roti. Neutral.</p></div>
+      </div>
+      <div class="moment">
+        <p class="time mono">4:00pm</p>
+        <div><p class="mt">Snack — reflex chai</p><p class="md">No decision made. Fine.</p></div>
+      </div>
+      <div class="moment pain">
+        <p class="time mono">8:30pm</p>
+        <div><p class="mt">Opens Swiggy — 20 min scroll</p><p class="md">Exhausted. Orders something. Mild guilt. Worst moment of the day.</p></div>
+      </div>
+    </div>
+    <div class="div"></div>
+    <div class="col">
+      <span class="col-lbl fut mono">FUTURE STATE — with product</span>
+      <div class="moment good">
+        <p class="time mono">7:15am</p>
+        <div><p class="mt">Suggestion already waiting</p><p class="md">"Palak dal + 2 rotis." Forwarded to cook in 10 seconds.</p></div>
+      </div>
+      <div class="moment good">
+        <p class="time mono">1:00pm</p>
+        <div><p class="mt">Intentional home-cooked meal</p><p class="md">Different from yesterday. Quietly satisfied. No guilt.</p></div>
+      </div>
+      <div class="moment good">
+        <p class="time mono">4:00pm</p>
+        <div><p class="mt">Optional snack nudge</p><p class="md">Passive trust — earns presence without demanding attention.</p></div>
+      </div>
+      <div class="moment good">
+        <p class="time mono">8:30pm</p>
+        <div><p class="mt">Cook's dinner waiting</p><p class="md">Or: one specific delivery suggestion. No scrolling. Decision already made.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 9: HYPOTHESES -->
+<div class="slide" id="s9">
+  <p class="eyebrow">SOLUTION HYPOTHESES</p>
+  <h1>5 bets. Each with a kill condition.</h1>
+  <div class="tbl">
+    <div class="hdr">
+      <div class="hc c-opp">OPP</div>
+      <div class="hc c-hyp">We believe that...</div>
+      <div class="hc c-test">Testing method</div>
+      <div class="hc c-kill">Kill condition</div>
+    </div>
+    <div class="row">
+      <div class="cell c-opp"><span class="ob p0">OPP-01</span></div>
+      <div class="cell c-hyp">A proactive morning suggestion will cause users to act without deliberating</div>
+      <div class="cell c-test">Measure override rate on morning card — target under 50%</div>
+      <div class="cell c-kill">Users override &gt;50% of suggestions</div>
+    </div>
+    <div class="row">
+      <div class="cell c-opp"><span class="ob p0">OPP-01</span></div>
+      <div class="cell c-hyp">Zero daily input will drive engagement beyond 3 weeks</div>
+      <div class="cell c-test">Week-1 relevance check without any logging</div>
+      <div class="cell c-kill">Suggestions feel generic without daily input</div>
+    </div>
+    <div class="row">
+      <div class="cell c-opp"><span class="ob p0">OPP-02</span></div>
+      <div class="cell c-hyp">Cook-ready format (dish name + ingredients) will be forwarded as-is</div>
+      <div class="cell c-test">"Would you send this to your cook?" — target 70%+ yes</div>
+      <div class="cell c-kill">Users need to edit before sending</div>
+    </div>
+    <div class="row">
+      <div class="cell c-opp"><span class="ob p0">OPP-02</span></div>
+      <div class="cell c-hyp">One-tap WhatsApp share delivers the cook instruction in seconds</div>
+      <div class="cell c-test">Walk-through in prototype test — check channel used</div>
+      <div class="cell c-kill">Fewer than 3/5 users would use WhatsApp</div>
+    </div>
+    <div class="row">
+      <div class="cell c-opp"><span class="ob p1">OPP-06</span></div>
+      <div class="cell c-hyp">A weekly grocery list tied to meal suggestions will change what gets ordered</div>
+      <div class="cell c-test">Acceptance rate on grocery suggestion screen</div>
+      <div class="cell c-kill">Users ignore it and order their usual list</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 10: NEXT STEPS -->
+<div class="slide" id="s10">
+  <div class="inner">
+    <p class="eyebrow">NEXT STEPS</p>
+    <h1>Discovery done. Time to build.</h1>
+    <div class="steps">
+      <div class="step">
+        <p class="step-num mono">✓ Complete</p>
+        <p class="step-title">Discovery Research</p>
+        <p class="step-desc">5 interviews · 5 surveys · Interview findings · Opportunity backlog</p>
+        <span class="badge done mono">done</span>
+      </div>
+      <div class="step">
+        <p class="step-num mono">✓ Complete</p>
+        <p class="step-title">Synthesis</p>
+        <p class="step-desc">Problem statement · Persona · User journey · Solution hypotheses</p>
+        <span class="badge done mono">done</span>
+      </div>
+      <div class="step now">
+        <p class="step-num mono">→ Next</p>
+        <p class="step-title">Prototype Design</p>
+        <p class="step-desc">Figma covering OPP-01 + OPP-02. Morning suggestion card → cook instruction → WhatsApp share.</p>
+        <span class="badge active mono">start now</span>
+      </div>
+      <div class="step">
+        <p class="step-num mono">04</p>
+        <p class="step-title">Build No-Code Prototype</p>
+        <p class="step-desc">Framer or similar. Testable flow. No engineering needed.</p>
+        <span class="badge next mono">after design</span>
+      </div>
+      <div class="step">
+        <p class="step-num mono">05</p>
+        <p class="step-title">PMF Validation</p>
+        <p class="step-desc">Test with 5 users. Measure demand, behaviour change, willingness to pay at ₹199–299/month.</p>
+        <span class="badge next mono">after prototype</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

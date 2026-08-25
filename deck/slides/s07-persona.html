@@ -1,0 +1,68 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8">
+<style>
+html{background:#fafafa;}
+body{width:720pt;height:405pt;margin:0;padding:0;font-family:Arial,Helvetica,sans-serif;display:flex;overflow:hidden;}
+.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;}
+.content{position:relative;z-index:1;width:100%;height:100%;display:flex;gap:0;}
+.left{width:200pt;background:#171717;padding:36pt 28pt;display:flex;flex-direction:column;justify-content:space-between;flex-shrink:0;}
+.persona-name{font-size:32pt;font-weight:600;color:#ffffff;letter-spacing:-1.2px;line-height:1.1;}
+.persona-role{font-size:11pt;color:#888888;margin-top:6pt;line-height:1.5;}
+.persona-quote{font-size:10pt;color:#50e3c2;font-style:italic;line-height:1.5;border-left:2pt solid #50e3c2;padding-left:10pt;}
+.right{flex:1;padding:32pt 36pt 24pt;display:flex;flex-direction:column;gap:14pt;overflow:hidden;}
+.eyebrow{font-family:'Courier New',monospace;font-size:10pt;color:#888888;letter-spacing:1.2px;}
+.row{display:flex;gap:12pt;}
+.block{flex:1;background:#ffffff;border:1px solid #ebebeb;border-radius:8pt;padding:12pt 12pt 10pt;}
+.block-label{font-family:'Courier New',monospace;font-size:9pt;color:#888888;letter-spacing:0.5px;margin-bottom:5pt;}
+.block-content{font-size:10.5pt;color:#171717;line-height:1.45;}
+.tag-row{display:flex;flex-wrap:wrap;gap:5pt;margin-top:4pt;}
+.tag{font-size:9pt;color:#4d4d4d;background:#f5f5f5;padding:2pt 8pt;border-radius:100px;border:1px solid #ebebeb;}
+.stat-row{display:flex;gap:8pt;}
+.stat{text-align:center;background:#fafafa;border:1px solid #ebebeb;border-radius:8pt;padding:8pt 10pt;flex:1;}
+.stat-num{font-size:18pt;font-weight:600;color:#171717;letter-spacing:-0.5px;}
+.stat-desc{font-size:8.5pt;color:#888888;margin-top:2pt;line-height:1.3;}
+</style>
+</head>
+<body>
+<img class="bg" src="../accent-gradient.png"/>
+<div class="content">
+  <div class="left">
+    <div>
+      <p class="persona-name">Arjun<br>28</p>
+      <p class="persona-role">Senior Analyst<br>Bangalore · Lives alone<br>Has a cook</p>
+    </div>
+    <p class="persona-quote">"I know what I should eat. I just never have the energy to figure it out when I need to."</p>
+  </div>
+  <div class="right">
+    <p class="eyebrow">PRIMARY PERSONA · COMPOSITE FROM 5 INTERVIEWS</p>
+    <div class="row">
+      <div class="block">
+        <p class="block-label">GOALS</p>
+        <p class="block-content">Eat healthy 5 days a week · Not repeat the same dishes · Feel good without obsessing · See gym results</p>
+      </div>
+      <div class="block">
+        <p class="block-label">FRUSTRATIONS</p>
+        <p class="block-content">Blanks every morning when the cook arrives · Scrolls Swiggy 20 min and regrets the order · Apps feel like homework</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="block">
+        <p class="block-label">BEHAVIOURS</p>
+        <div class="tag-row">
+          <span class="tag">Swiggy/Zomato 3–4x/week</span>
+          <span class="tag">Abandoned Healthify Me</span>
+          <span class="tag">Uses ChatGPT for food guilt</span>
+          <span class="tag">YouTube for recipe ideas</span>
+          <span class="tag">Annual health checkups</span>
+          <span class="tag">Same 4 groceries every week</span>
+        </div>
+      </div>
+    </div>
+    <div class="stat-row">
+      <div class="stat"><p class="stat-num">4/5</p><p class="stat-desc">Rates food decision effort</p></div>
+      <div class="stat"><p class="stat-num">4/5</p><p class="stat-desc">Wants planning offloaded</p></div>
+      <div class="stat"><p class="stat-num">4/5</p><p class="stat-desc">Tried &amp; abandoned an app</p></div>
+      <div class="stat"><p class="stat-num">5/5</p><p class="stat-desc">Uses food delivery apps</p></div>
+    </div>
+  </div>
+</div>
+</body></html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8">
+<style>
+html{background:#fafafa;}
+body{width:720pt;height:405pt;margin:0;padding:0;font-family:Arial,Helvetica,sans-serif;display:flex;overflow:hidden;}
+.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;}
+.content{position:relative;z-index:1;width:100%;height:100%;display:flex;flex-direction:column;padding:32pt 52pt 24pt;}
+.eyebrow{font-family:'Courier New',monospace;font-size:10pt;color:#888888;letter-spacing:1.2px;margin-bottom:8pt;}
+h1{font-size:26pt;font-weight:600;color:#171717;letter-spacing:-1px;margin:0 0 18pt;}
+.tree{display:flex;flex-direction:column;gap:10pt;flex:1;}
+.obj{background:#171717;color:#ffffff;border-radius:8pt;padding:10pt 16pt;font-size:11pt;font-weight:600;text-align:center;}
+.outcomes{display:flex;gap:10pt;}
+.outcome{flex:1;background:#ffffff;border:1.5px solid #171717;border-radius:8pt;padding:10pt 12pt;}
+.outcome-title{font-size:10.5pt;font-weight:600;color:#171717;margin-bottom:8pt;line-height:1.2;}
+.opps{display:flex;flex-direction:column;gap:5pt;}
+.opp{border:1px solid #ebebeb;border-radius:6pt;padding:6pt 10pt;display:flex;align-items:center;gap:8pt;}
+.opp-badge{font-family:'Courier New',monospace;font-size:8.5pt;padding:2pt 6pt;border-radius:100px;flex-shrink:0;font-weight:600;}
+.p0{background:#171717;color:#fff;}
+.p1{background:#d3e5ff;color:#0761d1;}
+.p2{background:#f5f5f5;color:#888888;}
+.opp-text{font-size:9.5pt;color:#4d4d4d;line-height:1.3;}
+</style>
+</head>
+<body>
+<img class="bg" src="../accent-gradient.png"/>
+<div class="content">
+  <p class="eyebrow">OPPORTUNITY TREE</p>
+  <h1>From pain to product opportunities.</h1>
+  <div class="tree">
+    <div class="obj">Business Objective — Eliminate daily food decision fatigue for urban Indian professionals</div>
+    <div class="outcomes">
+      <div class="outcome">
+        <p class="outcome-title">Outcome 1 — Offload the daily "what should I eat?" decision</p>
+        <div class="opps">
+          <div class="opp"><span class="opp-badge p0">P0</span><p class="opp-text">Know what to eat today before it's stressful</p></div>
+          <div class="opp"><span class="opp-badge p0">P0</span><p class="opp-text">Communicate the meal to the cook without effort</p></div>
+          <div class="opp"><span class="opp-badge p1">P1</span><p class="opp-text">Choose what to order without scrolling paralysis</p></div>
+        </div>
+      </div>
+      <div class="outcome">
+        <p class="outcome-title">Outcome 2 — Eat meals that are healthy AND enjoyable</p>
+        <div class="opps">
+          <div class="opp"><span class="opp-badge p1">P1</span><p class="opp-text">Discover meals that are satisfying and health-aligned</p></div>
+          <div class="opp"><span class="opp-badge p2">P2</span><p class="opp-text">Order the right groceries so the week's meals are possible</p></div>
+        </div>
+      </div>
+      <div class="outcome">
+        <p class="outcome-title">Outcome 3 — Feel quietly in control without obsessing</p>
+        <div class="opps">
+          <div class="opp"><span class="opp-badge p2">P2</span><p class="opp-text">Know how the week is going nutritionally without counting</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body></html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8">
+<style>
+html{background:#fafafa;}
+body{width:720pt;height:405pt;margin:0;padding:0;font-family:Arial,Helvetica,sans-serif;display:flex;overflow:hidden;}
+.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;}
+.content{position:relative;z-index:1;width:100%;height:100%;display:flex;flex-direction:column;padding:30pt 52pt 22pt;}
+.eyebrow{font-family:'Courier New',monospace;font-size:10pt;color:#888888;letter-spacing:1.2px;margin-bottom:8pt;}
+h1{font-size:24pt;font-weight:600;color:#171717;letter-spacing:-0.8px;margin:0 0 14pt;}
+.table-wrap{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.row{display:flex;gap:0;border-bottom:1px solid #ebebeb;}
+.row.header{border-bottom:2px solid #ebebeb;}
+.cell{padding:8pt 10pt;font-size:10pt;color:#4d4d4d;line-height:1.4;border-right:1px solid #ebebeb;}
+.cell:last-child{border-right:none;}
+.cell.h{font-family:'Courier New',monospace;font-size:8.5pt;color:#888888;letter-spacing:0.5px;background:#fafafa;}
+.cell.hyp{font-weight:600;color:#171717;font-size:10pt;flex:2;}
+.cell.kill{color:#c50000;flex:1.5;}
+.cell.opp{flex:0.8;text-align:center;}
+.badge{display:inline-block;font-size:8.5pt;font-weight:600;padding:2pt 7pt;border-radius:100px;}
+.p0{background:#171717;color:#fff;}
+.p1{background:#d3e5ff;color:#0761d1;}
+.p2{background:#f5f5f5;color:#888888;}
+</style>
+</head>
+<body>
+<img class="bg" src="../accent-gradient.png"/>
+<div class="content">
+  <p class="eyebrow">SOLUTION HYPOTHESES</p>
+  <h1>5 bets. Each with a kill condition.</h1>
+  <div class="table-wrap">
+    <div class="row header">
+      <div class="cell h opp">OPP</div>
+      <div class="cell h hyp">We believe that...</div>
+      <div class="cell h cell" style="flex:1.2;">Testing method</div>
+      <div class="cell h kill">Kill condition</div>
+    </div>
+    <div class="row">
+      <div class="cell opp"><span class="badge p0">OPP-01</span></div>
+      <div class="cell hyp">Surfacing a proactive morning suggestion will cause users to act without deliberating</div>
+      <div class="cell" style="flex:1.2;">Measure override rate on morning card — target under 50%</div>
+      <div class="cell kill">Users override &gt;50% of suggestions</div>
+    </div>
+    <div class="row">
+      <div class="cell opp"><span class="badge p0">OPP-01</span></div>
+      <div class="cell hyp">Zero daily input will cause engagement beyond 3 weeks</div>
+      <div class="cell" style="flex:1.2;">Week-1 relevance check without any logging</div>
+      <div class="cell kill">Suggestions feel generic without daily input</div>
+    </div>
+    <div class="row">
+      <div class="cell opp"><span class="badge p0">OPP-02</span></div>
+      <div class="cell hyp">Cook-ready format (dish name + ingredients) will be forwarded as-is</div>
+      <div class="cell" style="flex:1.2;">"Would you send this to your cook?" — target 70%+ yes</div>
+      <div class="cell kill">Users need to edit before sending</div>
+    </div>
+    <div class="row">
+      <div class="cell opp"><span class="badge p0">OPP-02</span></div>
+      <div class="cell hyp">One-tap WhatsApp share will deliver the cook instruction in seconds</div>
+      <div class="cell" style="flex:1.2;">Walk-through in prototype test — check channel used</div>
+      <div class="cell kill">Fewer than 3/5 users would use WhatsApp</div>
+    </div>
+    <div class="row">
+      <div class="cell opp"><span class="badge p1">OPP-06</span></div>
+      <div class="cell hyp">A weekly grocery list tied to meal suggestions will change what gets ordered</div>
+      <div class="cell" style="flex:1.2;">Acceptance rate on grocery suggestion screen</div>
+      <div class="cell kill">Users ignore it and order their usual list</div>
+    </div>
+  </div>
+</div>
+</body></html>
