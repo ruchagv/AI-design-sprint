@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Food Decision AI — Prototype</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+
+    :root {
+      --primary:    #0159a3;
+      --surface:    #111827;
+      --surface-2:  #1f2937;
+      --border:     #374151;
+      --text:       #f9fafb;
+      --muted:      #9ca3af;
+      --accent:     #60a5fa;
+      --green:      #34d399;
+      --wa:         #25d366;
+      --r: 8px;
+      --fast: 200ms; --base: 400ms;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Noto Sans', Roboto, 'Open Sans', system-ui, sans-serif;
+      background: #0a0f1e;
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 28px;
+      padding: 32px 24px;
+    }
+
+    /* ── Phone ── */
+    .phone {
+      width: 390px;
+      height: 844px;
+      background: var(--surface);
+      border-radius: 44px;
+      border: 6px solid #2d3748;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      box-shadow: 0 40px 100px rgba(0,0,0,0.7);
+      position: sticky;
+      top: 32px;
+    }
+    .status-bar {
+      background: var(--primary);
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .home-bar {
+      background: var(--surface);
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .home-bar-pill { width: 120px; height: 4px; background: #374151; border-radius: 2px; }
+    .viewport {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      position: relative;
+    }
+    .viewport::-webkit-scrollbar { display: none; }
+
+    /* ── Screens ── */
+    .screen {
+      display: none;
+      flex-direction: column;
+      min-height: 100%;
+      animation: fadeSlide var(--base) ease-out both;
+    }
+    .screen.active { display: flex; }
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateX(18px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Buttons ── */
+    .btn { border: none; border-radius: var(--r); cursor: pointer; font-family: inherit; font-size: 16px; font-weight: 700; min-height: 52px; padding: 14px 16px; transition: opacity var(--fast) ease-out; width: 100%; }
+    .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .btn:active { opacity: 0.75; }
+    .btn-p  { background: var(--primary); color: #fff; }
+    .btn-p:hover { opacity: 0.88; }
+    .btn-o  { background: transparent; color: var(--text); border: 2px solid var(--border); }
+    .btn-o:hover { border-color: var(--accent); color: var(--accent); }
+    .btn-wa { background: var(--wa); color: #fff; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .btn-wa:hover { opacity: 0.88; }
+    .btn-ghost { background: none; border: none; color: var(--muted); font-size: 14px; font-weight: 600; cursor: pointer; padding: 10px; text-align: center; width: 100%; transition: color var(--fast); }
+    .btn-ghost:hover { color: var(--text); }
+    .btn-ghost:focus-visible { outline: 2px solid var(--accent); border-radius: 4px; }
+
+    /* ── Cards ── */
+    .card {
+      background: var(--surface-2);
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      padding: 20px;
+      animation: slideUp var(--base) ease-out both;
+    }
+
+    /* ── Option tiles ── */
+    .option {
+      display: flex; align-items: center; gap: 12px;
+      background: var(--surface-2); border: 2px solid var(--border);
+      border-radius: var(--r); padding: 14px 16px; cursor: pointer;
+      width: 100%; text-align: left; color: var(--text); font-family: inherit;
+      min-height: 56px; transition: border-color var(--fast);
+    }
+    .option:hover { border-color: var(--primary); }
+    .option:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .option.sel { border-color: var(--primary); background: rgba(1,89,163,0.18); }
+    .radio { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--border); flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all var(--fast); }
+    .option.sel .radio { background: var(--primary); border-color: var(--primary); }
+
+    /* ── Chips & tags ── */
+    .chip { display: inline-block; padding: 4px 10px; background: rgba(96,165,250,0.15); color: var(--accent); border-radius: 20px; font-size: 13px; font-weight: 600; }
+    .tag  { display: inline-flex; align-items: center; gap: 5px; padding: 5px 10px; background: rgba(52,211,153,0.12); color: var(--green); border-radius: 20px; font-size: 12px; font-weight: 600; }
+
+    /* ── Progress dots ── */
+    .dots { display: flex; gap: 6px; justify-content: center; }
+    .dot  { width: 6px; height: 6px; border-radius: 3px; background: var(--border); transition: all var(--fast); }
+    .dot.on { background: var(--primary); width: 20px; }
+
+    /* ── Grocery items ── */
+    .gitem { display: flex; align-items: center; gap: 12px; padding: 13px 0; border-bottom: 1px solid var(--border); cursor: pointer; transition: opacity var(--fast); }
+    .gitem:last-child { border-bottom: none; }
+    .gitem.done { opacity: 0.45; }
+    .cb { width: 22px; height: 22px; border: 2px solid var(--border); border-radius: 4px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all var(--fast); }
+    .cb.on { background: var(--primary); border-color: var(--primary); }
+
+    /* ── Meal scroll ── */
+    .mscroll { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 6px; }
+    .mscroll::-webkit-scrollbar { display: none; }
+    .mcard { flex-shrink: 0; width: 130px; background: var(--surface-2); border-radius: 12px; padding: 14px 12px; border: 1px solid var(--border); }
+
+    /* ── Section label ── */
+    .slabel { font-size: 11px; color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin: 14px 0 8px; }
+
+    /* ── Toast ── */
+    #toast {
+      position: fixed; bottom: 72px; left: 50%; transform: translateX(-50%) translateY(10px);
+      background: #1e293b; color: #fff; padding: 11px 18px; border-radius: 24px;
+      font-size: 14px; font-weight: 600; opacity: 0; pointer-events: none;
+      border: 1px solid var(--border); z-index: 99; white-space: nowrap;
+      transition: all var(--base) ease-out;
+    }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* ── Nav panel ── */
+    .nav {
+      width: 230px;
+      background: #141b2d;
+      border-radius: 14px;
+      padding: 18px;
+      border: 1px solid #1e2d45;
+      position: sticky;
+      top: 32px;
+      align-self: flex-start;
+    }
+    .nav h3 { color: #4b6a8a; font-size: 10px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; margin-bottom: 12px; }
+    .nlabel { color: #2d4a66; font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin: 14px 0 6px 8px; }
+    .nitem {
+      display: flex; align-items: center; gap: 8px;
+      padding: 9px 10px; border-radius: 7px; cursor: pointer;
+      color: #4b6a8a; font-size: 13px; transition: all var(--fast);
+      border: 1px solid transparent; width: 100%; background: none;
+      font-family: inherit; text-align: left;
+    }
+    .nitem:hover  { background: #1e2d45; color: #94a3b8; }
+    .nitem.on { background: rgba(1,89,163,0.2); color: var(--accent); border-color: rgba(1,89,163,0.35); }
+    .ndot { width: 6px; height: 6px; border-radius: 50%; background: #1e2d45; flex-shrink: 0; transition: background var(--fast); }
+    .nitem.on .ndot { background: var(--accent); }
+
+    /* ── Type helpers ── */
+    .t-display { font-size: 30px; font-weight: 700; color: var(--text); letter-spacing: -0.96px; line-height: 1.2; }
+    .t-head    { font-size: 22px; font-weight: 700; color: var(--text); letter-spacing: -0.54px; line-height: 1.2; }
+    .t-sub     { font-size: 24px; font-weight: 700; color: var(--text); letter-spacing: -0.54px; line-height: 1.3; }
+    .t-body    { font-size: 15px; color: var(--muted); line-height: 1.5; }
+    .t-label   { font-size: 13px; color: var(--muted); }
+    .gap-s     { display: flex; flex-direction: column; gap: 10px; }
+    .gap-m     { display: flex; flex-direction: column; gap: 16px; }
+    .gap-l     { display: flex; flex-direction: column; gap: 20px; }
+    .p24       { padding: 20px 24px 28px; }
+    .spacer    { flex: 1; }
+
+    @media (max-width: 700px) {
+      body { flex-direction: column; align-items: center; padding: 16px; }
+      .phone { position: static; }
+      .nav { width: 100%; max-width: 390px; position: static; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      :root { --fast: 0ms; --base: 0ms; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════ PHONE ═══ -->
+<div class="phone" role="main" aria-label="Food Decision AI prototype">
+
+  <div class="status-bar" aria-hidden="true">
+    <span>9:41</span>
+    <span style="display:flex;gap:5px;align-items:center;font-size:11px;">▲▲▲ 🔋</span>
+  </div>
+
+  <div class="viewport" id="vp">
+    <div id="toast" role="status" aria-live="polite"></div>
+
+    <!-- ══ S1 SPLASH ══════════════════════════════════════ -->
+    <div class="screen active" id="s-splash">
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px 28px;background:var(--primary);text-align:center;">
+        <div style="font-size:64px;margin-bottom:24px;">🥗</div>
+        <h1 style="font-size:34px;font-weight:700;color:#fff;letter-spacing:-0.96px;line-height:1.15;margin-bottom:12px;">Eat well.<br/>Without thinking.</h1>
+        <p style="color:rgba(255,255,255,0.8);font-size:16px;line-height:1.6;margin-bottom:48px;max-width:260px;">Your daily meal sorted before you're even awake.</p>
+        <div style="width:100%;max-width:300px;display:flex;flex-direction:column;gap:10px;">
+          <button class="btn btn-p" style="background:#fff;color:var(--primary);" onclick="go('s-ob1')">Get started</button>
+          <button class="btn-ghost" onclick="go('s-ob1')">I already have an account</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ S2 ONBOARD 1: DIET ══════════════════════════════ -->
+    <div class="screen" id="s-ob1">
+      <div class="p24 gap-l" style="flex:1;">
+        <div class="gap-s" style="align-items:center;">
+          <div class="dots" role="progressbar" aria-label="Step 1 of 4" aria-valuenow="1" aria-valuemax="4">
+            <div class="dot on"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          </div>
+          <span class="t-label">1 of 4</span>
+        </div>
+        <div>
+          <h2 class="t-head" style="margin-bottom:6px;">What do you eat?</h2>
+          <p class="t-body">We use this to filter every suggestion.</p>
+        </div>
+        <div class="gap-s" role="radiogroup" aria-label="Dietary preference">
+          <button class="option" onclick="sel(this,'diet')" role="radio" aria-checked="false"><span class="radio"></span><div><div style="font-weight:600;color:var(--text);">Vegetarian</div><div class="t-label" style="font-size:12px;">No meat or fish</div></div></button>
+          <button class="option" onclick="sel(this,'diet')" role="radio" aria-checked="false"><span class="radio"></span><div><div style="font-weight:600;color:var(--text);">Eggetarian</div><div class="t-label" style="font-size:12px;">Vegetarian + eggs</div></div></button>
+          <button class="option sel" onclick="sel(this,'diet')" role="radio" aria-checked="true"><span class="radio"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg></span><div><div style="font-weight:600;color:var(--text);">Non-vegetarian</div><div class="t-label" style="font-size:12px;">Everything goes</div></div></button>
+          <button class="option" onclick="sel(this,'diet')" role="radio" aria-checked="false"><span class="radio"></span><div><div style="font-weight:600;color:var(--text);">No preference</div><div class="t-label" style="font-size:12px;">Surprise me</div></div></button>
+        </div>
+        <div class="spacer"></div>
+        <button class="btn btn-p" onclick="go('s-ob2')">Next →</button>
+      </div>
+    </div>
+
+    <!-- ══ S3 ONBOARD 2: GOAL ══════════════════════════════ -->
+    <div class="screen" id="s-ob2">
+      <div class="p24 gap-l" style="flex:1;">
+        <div class="gap-s" style="align-items:center;">
+          <div class="dots" role="progressbar" aria-label="Step 2 of 4" aria-valuenow="2" aria-valuemax="4">
+            <div class="dot"></div><div class="dot on"></div><div class="dot"></div><div class="dot"></div>
+          </div>
+          <span class="t-label">2 of 4</span>
+        </div>
+        <div>
+          <h2 class="t-head" style="margin-bottom:6px;">What's your health goal?</h2>
+          <p class="t-body">We lean your suggestions this way — not a diet plan.</p>
+        </div>
+        <div class="gap-s" role="radiogroup" aria-label="Health goal">
+          <button class="option sel" onclick="sel(this,'goal')" role="radio" aria-checked="true"><span class="radio"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg></span><div><div style="font-weight:600;color:var(--text);">Eat more protein</div><div class="t-label" style="font-size:12px;">Build and recover</div></div></button>
+          <button class="option" onclick="sel(this,'goal')" role="radio" aria-checked="false"><span class="radio"></span><div><div style="font-weight:600;color:var(--text);">Reduce oil and sugar</div><div class="t-label" style="font-size:12px;">Lighter, cleaner eating</div></div></button>
+          <button class="option" onclick="sel(this,'goal')" role="radio" aria-checked="false"><span class="radio"></span><div><div style="font-weight:600;color:var(--text);">Balanced and varied</div><div class="t-label" style="font-size:12px;">Good all-round nutrition</div></div></button>
+          <button class="option" onclick="sel(this,'goal')" role="radio" aria-checked="false"><span class="radio"></span><div><div style="font-weight:600;color:var(--text);">No specific goal</div><div class="t-label" style="font-size:12px;">Just help me decide</div></div></button>
+        </div>
+        <div class="spacer"></div>
+        <div class="gap-s">
+          <button class="btn btn-p" onclick="go('s-ob3')">Next →</button>
+          <button class="btn-ghost" onclick="go('s-ob1')">← Back</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ S4 ONBOARD 3: COOK ══════════════════════════════ -->
+    <div class="screen" id="s-ob3">
+      <div class="p24 gap-l" style="flex:1;">
+        <div class="gap-s" style="align-items:center;">
+          <div class="dots" role="progressbar" aria-label="Step 3 of 4" aria-valuenow="3" aria-valuemax="4">
+            <div class="dot"></div><div class="dot"></div><div class="dot on"></div><div class="dot"></div>
+          </div>
+          <span class="t-label">3 of 4</span>
+        </div>
+        <div>
+          <h2 class="t-head" style="margin-bottom:6px;">Who cooks your food?</h2>
+          <p class="t-body">This changes the format of your suggestions.</p>
+        </div>
+        <div class="gap-s" role="radiogroup" aria-label="Who cooks">
+          <button class="option sel" onclick="sel(this,'cook')" role="radio" aria-checked="true"><span class="radio"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg></span><div><div style="font-weight:600;color:var(--text);">I have a daily cook</div><div class="t-label" style="font-size:12px;">She comes every morning</div></div></button>
+          <button class="option" onclick="sel(this,'cook')" role="radio" aria-checked="false"><span class="radio"></span><div><div style="font-weight:600;color:var(--text);">I cook myself</div><div class="t-label" style="font-size:12px;">I'm in the kitchen</div></div></button>
+          <button class="option" onclick="sel(this,'cook')" role="radio" aria-checked="false"><span class="radio"></span><div><div style="font-weight:600;color:var(--text);">Mix of both</div><div class="t-label" style="font-size:12px;">Depends on the day</div></div></button>
+        </div>
+        <div class="spacer"></div>
+        <div class="gap-s">
+          <button class="btn btn-p" onclick="go('s-ob4')">Next →</button>
+          <button class="btn-ghost" onclick="go('s-ob2')">← Back</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ S5 ONBOARD 4: GROCERY ══════════════════════════ -->
+    <div class="screen" id="s-ob4">
+      <div class="p24 gap-l" style="flex:1;">
+        <div class="gap-s" style="align-items:center;">
+          <div class="dots" role="progressbar" aria-label="Step 4 of 4" aria-valuenow="4" aria-valuemax="4">
+            <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot on"></div>
+          </div>
+          <span class="t-label">4 of 4</span>
+        </div>
+        <div>
+          <h2 class="t-head" style="margin-bottom:6px;">Connect your grocery app</h2>
+          <p class="t-body">We read your recent orders to know what's in your fridge. We never modify your orders.</p>
+        </div>
+        <div class="gap-s">
+          <button class="option" onclick="connectApp('Blinkit')" style="justify-content:space-between;">
+            <div style="display:flex;align-items:center;gap:12px;"><span style="font-size:24px;">🛒</span><span style="font-weight:600;color:var(--text);">Blinkit</span></div>
+            <span class="t-label">10-min delivery</span>
+          </button>
+          <button class="option" onclick="connectApp('BigBasket')" style="justify-content:space-between;">
+            <div style="display:flex;align-items:center;gap:12px;"><span style="font-size:24px;">🧺</span><span style="font-weight:600;color:var(--text);">BigBasket</span></div>
+            <span class="t-label">Scheduled</span>
+          </button>
+          <button class="option" onclick="connectApp('Zepto')" style="justify-content:space-between;">
+            <div style="display:flex;align-items:center;gap:12px;"><span style="font-size:24px;">⚡</span><span style="font-weight:600;color:var(--text);">Zepto</span></div>
+            <span class="t-label">10-min delivery</span>
+          </button>
+        </div>
+        <div class="spacer"></div>
+        <div class="gap-s">
+          <button class="btn-ghost" onclick="go('s-ob-done')">Skip — use common staples</button>
+          <button class="btn-ghost" onclick="go('s-ob3')">← Back</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ S6 ONBOARD DONE ════════════════════════════════ -->
+    <div class="screen" id="s-ob-done">
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px 28px;background:var(--primary);text-align:center;">
+        <div style="width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:34px;margin-bottom:24px;">✓</div>
+        <h2 style="font-size:28px;font-weight:700;color:#fff;letter-spacing:-0.54px;margin-bottom:12px;">That's everything.</h2>
+        <p style="color:rgba(255,255,255,0.85);font-size:16px;line-height:1.6;margin-bottom:48px;max-width:270px;">Tomorrow morning, we'll have a suggestion waiting before your cook arrives.</p>
+        <button class="btn btn-p" style="background:#fff;color:var(--primary);max-width:280px;" onclick="go('s-home')">See your home screen →</button>
+      </div>
+    </div>
+
+    <!-- ══ S7 HOME — MORNING ══════════════════════════════ -->
+    <div class="screen" id="s-home">
+      <div class="p24 gap-l" style="flex:1;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+          <div>
+            <p class="t-label">Good morning, Arjun 👋</p>
+            <h1 class="t-head" style="margin-top:4px;">Today's meal</h1>
+          </div>
+          <div style="width:40px;height:40px;border-radius:50%;background:var(--surface-2);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:var(--accent);" aria-label="Profile">A</div>
+        </div>
+
+        <!-- Suggestion card -->
+        <div class="card" id="scard">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;">
+            <div style="flex:1;">
+              <div class="t-display" id="sname">Palak Dal</div>
+              <div class="t-label" id="sinstr" style="margin-top:6px;font-size:14px;">Steam dal with spinach, season with jeera and garlic</div>
+            </div>
+            <div style="font-size:38px;margin-left:12px;" id="semoji">🍲</div>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px;" id="schips">
+            <span class="chip">Spinach</span><span class="chip">Toor dal</span><span class="chip">Garlic</span>
+          </div>
+          <div class="tag" id="stag">✦ High protein · Uses Sunday's spinach</div>
+          <div style="margin:18px 0;height:1px;background:var(--border);"></div>
+          <div class="gap-s">
+            <button class="btn btn-wa" onclick="go('s-handoff')" aria-label="Share to WhatsApp">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/></svg>
+              Share to WhatsApp
+            </button>
+            <button class="btn btn-o" onclick="doCopy()" aria-label="Copy cook instruction">Copy text</button>
+            <button class="btn-ghost" onclick="go('s-handoff')">I'll tell them directly</button>
+          </div>
+          <div style="margin-top:10px;text-align:center;">
+            <button class="btn-ghost" id="swapBtn" onclick="doSwap()">Not feeling this? →</button>
+          </div>
+        </div>
+
+        <!-- Week bar -->
+        <div class="card" style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;">
+          <div>
+            <div class="t-label" style="font-size:12px;margin-bottom:3px;">This week</div>
+            <div style="font-weight:700;color:var(--text);font-size:15px;">3 good days so far 💪</div>
+          </div>
+          <button style="background:none;border:none;color:var(--accent);font-size:13px;font-weight:700;cursor:pointer;" onclick="go('s-grocery')" aria-label="View weekly plan">Weekly →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ S8 HANDOFF CONFIRMATION ════════════════════════ -->
+    <div class="screen" id="s-handoff">
+      <div class="p24 gap-l" style="flex:1;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+          <div>
+            <p class="t-label">Good morning, Arjun 👋</p>
+            <h1 class="t-head" style="margin-top:4px;">Today's meal</h1>
+          </div>
+          <div style="width:40px;height:40px;border-radius:50%;background:var(--surface-2);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:var(--accent);" aria-hidden="true">A</div>
+        </div>
+
+        <!-- Confirmation banner -->
+        <div role="status" aria-live="polite" style="background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.3);border-radius:12px;padding:15px 18px;display:flex;align-items:center;gap:12px;">
+          <div style="width:36px;height:36px;border-radius:50%;background:rgba(52,211,153,0.2);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">✓</div>
+          <div>
+            <div style="font-weight:700;color:var(--green);font-size:15px;">Done. Lunch sorted.</div>
+            <div class="t-label" style="font-size:12px;margin-top:2px;" id="sentLabel">Palak Dal sent to cook</div>
+          </div>
+        </div>
+
+        <!-- Collapsed sent card -->
+        <div style="background:var(--surface-2);border-radius:10px;padding:14px 16px;border:1px solid var(--border);opacity:0.5;display:flex;align-items:center;gap:12px;">
+          <span style="font-size:24px;" id="sentEmoji">🍲</span>
+          <div>
+            <div style="font-weight:700;color:var(--text);font-size:15px;" id="sentName">Palak Dal</div>
+            <div class="t-label" style="font-size:12px;">Sent to cook · Lunch</div>
+          </div>
+        </div>
+
+        <!-- Dinner plan -->
+        <div>
+          <div class="slabel">Tonight's dinner plan</div>
+          <div class="card">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+              <span style="font-size:32px;">🍛</span>
+              <div>
+                <div class="t-sub">Rajma Chawal</div>
+                <div class="t-label" style="font-size:12px;margin-top:3px;">Cook's dinner · Ready by 8pm</div>
+              </div>
+            </div>
+            <div class="tag">✓ High protein · Rajma already in pantry</div>
+          </div>
+        </div>
+
+        <!-- Week bar -->
+        <div class="card" style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;">
+          <div>
+            <div class="t-label" style="font-size:12px;margin-bottom:3px;">This week</div>
+            <div style="font-weight:700;color:var(--text);font-size:15px;">4 good days so far 💪</div>
+          </div>
+          <button style="background:none;border:none;color:var(--accent);font-size:13px;font-weight:700;cursor:pointer;" onclick="go('s-grocery')">Weekly →</button>
+        </div>
+
+        <div class="spacer"></div>
+        <button class="btn-ghost" onclick="go('s-dinner')">Fast-forward to evening →</button>
+      </div>
+    </div>
+
+    <!-- ══ S9 DINNER FALLBACK ══════════════════════════════ -->
+    <div class="screen" id="s-dinner">
+      <div class="p24 gap-l" style="flex:1;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+          <div>
+            <p class="t-label">Good evening, Arjun 🌙</p>
+            <h1 class="t-head" style="margin-top:4px;">Tonight's dinner</h1>
+          </div>
+          <div style="width:40px;height:40px;border-radius:50%;background:var(--surface-2);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:var(--accent);" aria-hidden="true">A</div>
+        </div>
+
+        <!-- Nudge banner -->
+        <div style="background:rgba(1,89,163,0.14);border:1px solid rgba(1,89,163,0.4);border-radius:10px;padding:12px 15px;display:flex;align-items:center;gap:10px;">
+          <span>🔔</span>
+          <span style="font-size:14px;color:var(--text);">No dinner sorted yet — here's one option.</span>
+        </div>
+
+        <!-- Dinner card -->
+        <div class="card" id="dcard">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;">
+            <div style="flex:1;">
+              <div class="t-label" id="drest" style="font-size:12px;margin-bottom:6px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;">Truffles, Koramangala</div>
+              <div class="t-sub" id="ddish">Grilled Chicken Bowl</div>
+            </div>
+            <span style="font-size:36px;margin-left:12px;" id="demoji">🍗</span>
+          </div>
+          <div class="tag" style="margin-bottom:18px;" id="dreason">💪 Good protein hit — you've been light on it today</div>
+          <div class="gap-s">
+            <button class="btn btn-p" onclick="toast('Opening Swiggy...')">Open in Swiggy →</button>
+            <button class="btn btn-o" onclick="swapDinner()">Not this — suggest another</button>
+            <button class="btn-ghost" onclick="dismissDinner()">I have food ✓</button>
+          </div>
+        </div>
+
+        <!-- Lunch done -->
+        <div style="background:rgba(52,211,153,0.07);border:1px solid rgba(52,211,153,0.18);border-radius:10px;padding:12px 15px;display:flex;align-items:center;gap:10px;">
+          <span>✓</span>
+          <span style="font-size:14px;color:var(--muted);">Lunch: Palak Dal · Home-cooked today</span>
+        </div>
+
+        <div class="spacer"></div>
+        <button class="btn-ghost" onclick="go('s-grocery')">See weekly grocery nudge →</button>
+      </div>
+    </div>
+
+    <!-- ══ S10 WEEKLY GROCERY ══════════════════════════════ -->
+    <div class="screen" id="s-grocery">
+      <div class="p24 gap-l" style="flex:1;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+          <div>
+            <p class="t-label">Sunday evening 🛒</p>
+            <h1 class="t-head" style="margin-top:4px;">Next week's meals</h1>
+          </div>
+          <div style="width:40px;height:40px;border-radius:50%;background:var(--surface-2);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:var(--accent);" aria-hidden="true">A</div>
+        </div>
+
+        <!-- Meal cards scroll -->
+        <div>
+          <div class="slabel">Coming up this week</div>
+          <div class="mscroll" role="list" aria-label="Next week's meal suggestions">
+            <div class="mcard" role="listitem"><div style="font-size:22px;margin-bottom:8px;">🥬</div><div style="font-size:11px;color:var(--muted);font-weight:700;">MON</div><div style="font-weight:700;font-size:14px;color:var(--text);margin-top:2px;line-height:1.3;">Palak Paneer</div><div style="font-size:11px;color:var(--muted);margin-top:4px;">Spinach · Paneer</div></div>
+            <div class="mcard" role="listitem"><div style="font-size:22px;margin-bottom:8px;">🍗</div><div style="font-size:11px;color:var(--muted);font-weight:700;">TUE</div><div style="font-weight:700;font-size:14px;color:var(--text);margin-top:2px;line-height:1.3;">Chicken Curry</div><div style="font-size:11px;color:var(--muted);margin-top:4px;">Chicken · Tomato</div></div>
+            <div class="mcard" role="listitem"><div style="font-size:22px;margin-bottom:8px;">🫘</div><div style="font-size:11px;color:var(--muted);font-weight:700;">WED</div><div style="font-weight:700;font-size:14px;color:var(--text);margin-top:2px;line-height:1.3;">Rajma Chawal</div><div style="font-size:11px;color:var(--muted);margin-top:4px;">Rajma · Rice</div></div>
+            <div class="mcard" role="listitem"><div style="font-size:22px;margin-bottom:8px;">🥕</div><div style="font-size:11px;color:var(--muted);font-weight:700;">THU</div><div style="font-weight:700;font-size:14px;color:var(--text);margin-top:2px;line-height:1.3;">Gajar Matar</div><div style="font-size:11px;color:var(--muted);margin-top:4px;">Carrot · Peas</div></div>
+            <div class="mcard" role="listitem"><div style="font-size:22px;margin-bottom:8px;">🐟</div><div style="font-size:11px;color:var(--muted);font-weight:700;">FRI</div><div style="font-weight:700;font-size:14px;color:var(--text);margin-top:2px;line-height:1.3;">Fish Curry</div><div style="font-size:11px;color:var(--muted);margin-top:4px;">Fish · Coconut</div></div>
+          </div>
+        </div>
+
+        <!-- Grocery list -->
+        <div class="card">
+          <div class="slabel" style="margin-top:0;">Grocery list</div>
+          <div class="slabel" style="color:var(--accent);margin-top:0;">Vegetables</div>
+          <div role="list" aria-label="Vegetables">
+            <div class="gitem done" onclick="toggleG(this)" role="listitem" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')toggleG(this)" aria-label="Spinach — already in pantry"><div class="cb on" aria-hidden="true"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg></div><div style="flex:1;"><div style="font-size:15px;color:var(--text);font-weight:500;">Spinach</div><div class="t-label" style="font-size:12px;">Already in pantry</div></div><span class="t-label" style="font-size:12px;">250g</span></div>
+            <div class="gitem" onclick="toggleG(this)" role="listitem" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')toggleG(this)" aria-label="Carrot 500g — for Thursday"><div class="cb" aria-hidden="true"></div><div style="flex:1;"><div style="font-size:15px;color:var(--text);font-weight:500;">Carrot</div><div class="t-label" style="font-size:12px;">For Thursday</div></div><span class="t-label" style="font-size:12px;">500g</span></div>
+            <div class="gitem" onclick="toggleG(this)" role="listitem" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')toggleG(this)" aria-label="Green peas 200g — for Thursday"><div class="cb" aria-hidden="true"></div><div style="flex:1;"><div style="font-size:15px;color:var(--text);font-weight:500;">Green peas</div><div class="t-label" style="font-size:12px;">For Thursday</div></div><span class="t-label" style="font-size:12px;">200g</span></div>
+          </div>
+          <div class="slabel">Protein</div>
+          <div role="list" aria-label="Protein">
+            <div class="gitem" onclick="toggleG(this)" role="listitem" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')toggleG(this)" aria-label="Chicken breast 500g — for Tuesday"><div class="cb" aria-hidden="true"></div><div style="flex:1;"><div style="font-size:15px;color:var(--text);font-weight:500;">Chicken breast</div><div class="t-label" style="font-size:12px;">For Tuesday</div></div><span class="t-label" style="font-size:12px;">500g</span></div>
+            <div class="gitem" onclick="toggleG(this)" role="listitem" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')toggleG(this)" aria-label="Paneer 200g — for Monday"><div class="cb" aria-hidden="true"></div><div style="flex:1;"><div style="font-size:15px;color:var(--text);font-weight:500;">Paneer</div><div class="t-label" style="font-size:12px;">For Monday</div></div><span class="t-label" style="font-size:12px;">200g</span></div>
+            <div class="gitem" onclick="toggleG(this)" role="listitem" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')toggleG(this)" aria-label="Fish fillet 400g — for Friday"><div class="cb" aria-hidden="true"></div><div style="flex:1;"><div style="font-size:15px;color:var(--text);font-weight:500;">Fish fillet</div><div class="t-label" style="font-size:12px;">For Friday</div></div><span class="t-label" style="font-size:12px;">400g</span></div>
+          </div>
+          <div class="slabel">Staples</div>
+          <div role="list" aria-label="Staples">
+            <div class="gitem done" onclick="toggleG(this)" role="listitem" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')toggleG(this)" aria-label="Rajma — already in pantry"><div class="cb on" aria-hidden="true"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg></div><div style="flex:1;"><div style="font-size:15px;color:var(--text);font-weight:500;">Rajma</div><div class="t-label" style="font-size:12px;">Already in pantry</div></div><span class="t-label" style="font-size:12px;">250g</span></div>
+            <div class="gitem" onclick="toggleG(this)" role="listitem" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')toggleG(this)" aria-label="Coconut milk 400ml — for Friday fish curry"><div class="cb" aria-hidden="true"></div><div style="flex:1;"><div style="font-size:15px;color:var(--text);font-weight:500;">Coconut milk</div><div class="t-label" style="font-size:12px;">For Friday's fish curry</div></div><span class="t-label" style="font-size:12px;">400ml</span></div>
+          </div>
+        </div>
+
+        <!-- CTAs -->
+        <div class="gap-s">
+          <button class="btn btn-p" onclick="toast('Opening Blinkit...')" aria-label="Add to Blinkit cart">🛒 Add to Blinkit</button>
+          <button class="btn btn-o" onclick="copyList()" aria-label="Copy grocery list">Copy list</button>
+          <button class="btn-ghost" onclick="dismissGrocery()">I'll order later</button>
+        </div>
+
+        <div class="spacer"></div>
+        <button class="btn-ghost" onclick="go('s-home')">← Back to home</button>
+      </div>
+    </div>
+
+  </div><!-- /viewport -->
+  <div class="home-bar" aria-hidden="true"><div class="home-bar-pill"></div></div>
+</div><!-- /phone -->
+
+
+<!-- ═══════════════════════════════════════ NAV ═══ -->
+<nav class="nav" aria-label="Prototype navigator">
+  <h3>Flow navigator</h3>
+
+  <div class="nlabel">Onboarding</div>
+  <button class="nitem on" id="n-s-splash"   onclick="go('s-splash')"><span class="ndot"></span>Welcome</button>
+  <button class="nitem"    id="n-s-ob1"      onclick="go('s-ob1')"><span class="ndot"></span>1 · Diet</button>
+  <button class="nitem"    id="n-s-ob2"      onclick="go('s-ob2')"><span class="ndot"></span>2 · Goal</button>
+  <button class="nitem"    id="n-s-ob3"      onclick="go('s-ob3')"><span class="ndot"></span>3 · Who cooks?</button>
+  <button class="nitem"    id="n-s-ob4"      onclick="go('s-ob4')"><span class="ndot"></span>4 · Grocery app</button>
+  <button class="nitem"    id="n-s-ob-done"  onclick="go('s-ob-done')"><span class="ndot"></span>Setup complete</button>
+
+  <div class="nlabel">Daily flow</div>
+  <button class="nitem"    id="n-s-home"     onclick="go('s-home')"><span class="ndot"></span>Home · Morning</button>
+  <button class="nitem"    id="n-s-handoff"  onclick="go('s-handoff')"><span class="ndot"></span>Cook handoff ✓</button>
+  <button class="nitem"    id="n-s-dinner"   onclick="go('s-dinner')"><span class="ndot"></span>Dinner fallback</button>
+
+  <div class="nlabel">Weekly</div>
+  <button class="nitem"    id="n-s-grocery"  onclick="go('s-grocery')"><span class="ndot"></span>Grocery nudge</button>
+
+  <div style="margin-top:18px;padding:10px 12px;background:#0a0f1e;border-radius:7px;font-size:11px;color:#2d4a66;line-height:1.6;">
+    Click any label to jump to that screen. Use the phone to follow the intended flow.
+  </div>
+</nav>
+
+
+<script>
+  // ── State ──────────────────────────────────
+  let cur = 's-splash', swaps = 0, dswaps = 0;
+
+  const SUGGESTIONS = [
+    { name:'Palak Dal',      instr:'Steam dal with spinach, season with jeera and garlic', chips:['Spinach','Toor dal','Garlic'],  tag:'✦ High protein · Uses Sunday\'s spinach',   emoji:'🍲' },
+    { name:'Moong Dal Tadka',instr:'Cook moong dal with turmeric, finish with ghee tadka', chips:['Moong dal','Onion','Tomato'], tag:'✦ Light and easy · Common pantry staples', emoji:'🫕' },
+    { name:'Aloo Gobhi',     instr:'Sauté potato and cauliflower with cumin and coriander',chips:['Potato','Cauliflower','Cumin'],tag:'✦ Balanced · Veg from Sunday\'s order',      emoji:'🥦' },
+  ];
+
+  const DINNERS = [
+    { rest:'Truffles, Koramangala', dish:'Grilled Chicken Bowl',      reason:'💪 Good protein hit — you\'ve been light on it today', emoji:'🍗' },
+    { rest:'The Bowl Company',      dish:'Brown Rice & Dal Bowl',      reason:'🌾 Clean carbs and protein — fits your goal',           emoji:'🍱' },
+  ];
+
+  // ── Navigation ─────────────────────────────
+  function go(id) {
+    document.getElementById(cur).classList.remove('active');
+    document.getElementById('n-' + cur)?.classList.remove('on');
+    cur = id;
+    const s = document.getElementById(id);
+    s.classList.add('active');
+    document.getElementById('n-' + id)?.classList.add('on');
+    document.getElementById('vp').scrollTo(0, 0);
+    if (id === 's-home') { swaps = 0; renderSuggestion(0); }
+    if (id === 's-dinner') dswaps = 0;
+  }
+
+  // ── Option selection ────────────────────────
+  function sel(el, group) {
+    el.closest('[role="radiogroup"]').querySelectorAll('.option').forEach(o => {
+      o.classList.remove('sel'); o.setAttribute('aria-checked','false');
+      o.querySelector('.radio').innerHTML = '';
+    });
+    el.classList.add('sel'); el.setAttribute('aria-checked','true');
+    el.querySelector('.radio').innerHTML = '<svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg>';
+  }
+
+  // ── Grocery connect ─────────────────────────
+  function connectApp(app) {
+    toast('✓ Connected to ' + app);
+    setTimeout(() => go('s-ob-done'), 700);
+  }
+
+  // ── Suggestion render ───────────────────────
+  function renderSuggestion(i) {
+    const s = SUGGESTIONS[i];
+    document.getElementById('sname').textContent  = s.name;
+    document.getElementById('sinstr').textContent = s.instr;
+    document.getElementById('semoji').textContent = s.emoji;
+    document.getElementById('stag').textContent   = s.tag;
+    document.getElementById('schips').innerHTML   = s.chips.map(c => `<span class="chip">${c}</span>`).join('');
+    // sync handoff screen
+    document.getElementById('sentLabel').textContent = s.name + ' sent to cook';
+    document.getElementById('sentName').textContent  = s.name;
+    document.getElementById('sentEmoji').textContent = s.emoji;
+  }
+
+  function doSwap() {
+    swaps++;
+    if (swaps >= SUGGESTIONS.length) { toast('Those are all our ideas for today'); swaps = SUGGESTIONS.length - 1; return; }
+    const c = document.getElementById('scard');
+    c.style.cssText = 'opacity:0;transform:translateX(-10px);transition:all 180ms ease-out;';
+    setTimeout(() => { renderSuggestion(swaps); c.style.cssText = 'opacity:1;transform:translateX(0);transition:all 180ms ease-out;'; }, 180);
+  }
+
+  function doCopy() {
+    const s = SUGGESTIONS[swaps];
+    const txt = `Please make ${s.name} today — ${s.chips.join(', ')} are in the fridge. ${s.instr}.`;
+    navigator.clipboard?.writeText(txt);
+    toast('Copied — paste it anywhere');
+    setTimeout(() => go('s-handoff'), 600);
+  }
+
+  // ── Dinner swap / dismiss ───────────────────
+  function renderDinner(i) {
+    const d = DINNERS[i];
+    document.getElementById('drest').textContent   = d.rest;
+    document.getElementById('ddish').textContent   = d.dish;
+    document.getElementById('dreason').textContent = d.reason;
+    document.getElementById('demoji').textContent  = d.emoji;
+  }
+
+  function swapDinner() {
+    dswaps++;
+    if (dswaps >= DINNERS.length) { toast('No more options — try searching Swiggy'); dswaps = DINNERS.length - 1; return; }
+    const c = document.getElementById('dcard');
+    c.style.cssText = 'opacity:0;transition:opacity 180ms ease-out;';
+    setTimeout(() => { renderDinner(dswaps); c.style.cssText = 'opacity:1;transition:opacity 180ms ease-out;'; }, 180);
+  }
+
+  function dismissDinner() {
+    const c = document.getElementById('dcard');
+    c.style.cssText = 'overflow:hidden;transition:all 380ms ease-out;';
+    const h = c.offsetHeight;
+    c.style.maxHeight = h + 'px';
+    requestAnimationFrame(() => { c.style.opacity = '0'; c.style.maxHeight = '0'; c.style.padding = '0'; c.style.marginTop = '0'; c.style.border = 'none'; });
+    toast('Got it — enjoy your food 🙌');
+  }
+
+  // ── Grocery ─────────────────────────────────
+  function toggleG(el) {
+    const cb = el.querySelector('.cb');
+    const on = cb.classList.contains('on');
+    cb.classList.toggle('on', !on);
+    cb.innerHTML = on ? '' : '<svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg>';
+    el.classList.toggle('done', !on);
+  }
+
+  function copyList() {
+    const txt = "Next week's groceries:\n\nVegetables:\n• Carrot 500g\n• Green peas 200g\n\nProtein:\n• Chicken breast 500g\n• Paneer 200g\n• Fish fillet 400g\n\nStaples:\n• Coconut milk 400ml";
+    navigator.clipboard?.writeText(txt);
+    toast('List copied — share it anywhere');
+  }
+
+  function dismissGrocery() {
+    toast("We've adjusted suggestions to what you likely have");
+    setTimeout(() => go('s-home'), 900);
+  }
+
+  // ── Toast ────────────────────────────────────
+  let _tt;
+  function toast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    clearTimeout(_tt); _tt = setTimeout(() => t.classList.remove('show'), 2200);
+  }
+</script>
+
+</body>
+</html>
