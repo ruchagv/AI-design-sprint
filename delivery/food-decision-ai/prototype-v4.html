@@ -140,23 +140,13 @@
     .divider{height:1px;background:var(--border);}
     /* Spinner for generating screen */
     .spinner{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto;}
-    /* Nav panel */
-    .nav{width:236px;background:var(--surface);border-radius:var(--r);padding:16px 14px;border:1px solid var(--border);position:sticky;top:32px;align-self:flex-start;box-shadow:var(--shadow-card);}
-    .nav-header{margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--border);}
-    .nav-brand{font-size:12px;font-weight:700;color:var(--primary);letter-spacing:0.3px;}
-    .nav-ver{font-size:10px;color:var(--muted);margin-top:2px;}
-    .nlabel{color:var(--muted);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin:12px 0 4px 8px;}
-    .nitem{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:var(--r-sm);cursor:pointer;color:var(--muted);font-size:13px;transition:all var(--fast) var(--ease);border:1px solid transparent;width:100%;background:none;font-family:inherit;text-align:left;}
-    .nitem:hover{background:rgba(0,0,238,0.05);color:var(--text);}
-    .nitem.on{background:rgba(0,0,238,0.08);color:var(--primary);border-color:rgba(0,0,238,0.18);font-weight:600;}
-    .ndot{width:6px;height:6px;border-radius:50%;background:var(--border);flex-shrink:0;transition:background var(--fast);}
-    .nitem.on .ndot{background:var(--primary);}
-    .ndot-grey{background:rgba(75,76,77,0.25);}
-    .nav-legend{margin-top:14px;padding:10px 12px;background:var(--surface-2);border-radius:var(--r-sm);font-size:11px;color:var(--muted);line-height:1.8;}
-    .nav-legend-row{display:flex;align-items:center;gap:6px;}
-    .legend-dot-blue{width:6px;height:6px;border-radius:50%;background:var(--primary);flex-shrink:0;}
-    .legend-dot-grey{width:6px;height:6px;border-radius:50%;background:rgba(75,76,77,0.3);flex-shrink:0;}
-    @media(max-width:700px){body{flex-direction:column;align-items:center;padding:16px;}.phone{position:static;}.nav{width:100%;max-width:390px;position:static;}}
+    /* Mobile: full-screen native app experience */
+    @media(max-width:768px){
+      body{background:var(--surface);padding:0;display:block;}
+      .phone{width:100vw;height:100dvh;border-radius:0;border:none;box-shadow:none;position:fixed;top:0;left:0;}
+      .status-bar{display:none;}
+      .home-bar{display:none;}
+    }
     @media(prefers-reduced-motion:reduce){:root{--fast:0ms;--base:0ms;}.btn:active{transform:none;}.notif-action:active{transform:none;}}
   </style>
 </head>
@@ -624,37 +614,6 @@
   <div class="home-bar" aria-hidden="true"><div class="home-bar-pill"></div></div>
 </div><!-- /phone -->
 
-<!-- ══ NAV PANEL ════════════════════════════════════════════ -->
-<nav class="nav" aria-label="Prototype navigator">
-  <div class="nav-header">
-    <div class="nav-brand">MealCraft</div>
-    <div class="nav-ver">MVP Prototype · v4.0 · Data-driven</div>
-  </div>
-  <div class="nlabel">First launch</div>
-  <button class="nitem on" id="n-s-splash"    onclick="go('s-splash')"><span class="ndot"></span>Welcome</button>
-  <button class="nitem"    id="n-s-signup"    onclick="go('s-signup')"><span class="ndot"></span>Sign up</button>
-  <button class="nitem"    id="n-s-signin"    onclick="go('s-signin')"><span class="ndot"></span>Sign in</button>
-  <div class="nlabel">Onboarding</div>
-  <button class="nitem"    id="n-s-ob1"       onclick="go('s-ob1')"><span class="ndot"></span>1 · Diet &amp; Allergies</button>
-  <button class="nitem"    id="n-s-ob2"       onclick="go('s-ob2')"><span class="ndot"></span>2 · Cuisines &amp; Dislikes</button>
-  <button class="nitem"    id="n-s-ob3"       onclick="go('s-ob3')"><span class="ndot"></span>3 · Goal &amp; Household</button>
-  <button class="nitem"    id="n-s-ob4"       onclick="go('s-ob4')"><span class="ndot"></span>4 · Cook Schedule</button>
-  <button class="nitem"    id="n-s-ob-confirm" onclick="go('s-ob-confirm')"><span class="ndot"></span>Setup complete</button>
-  <button class="nitem"    id="n-s-generating" onclick="go('s-generating')"><span class="ndot ndot-grey"></span>Generating plan</button>
-  <div class="nlabel">Daily use</div>
-  <button class="nitem"    id="n-s-day-view"  onclick="go('s-day-view')"><span class="ndot"></span>Day View</button>
-  <button class="nitem"    id="n-s-week-view" onclick="go('s-week-view')"><span class="ndot"></span>Week View</button>
-  <div class="nlabel">Cook handoff</div>
-  <button class="nitem"    id="n-s-handoff-first" onclick="go('s-handoff-first')"><span class="ndot"></span>Contact select</button>
-  <button class="nitem"    id="n-s-handoff"   onclick="go('s-handoff')"><span class="ndot"></span>Transcript</button>
-  <button class="nitem"    id="n-s-sent"      onclick="go('s-sent')"><span class="ndot"></span>Sent ✓</button>
-  <div class="nlabel">Settings</div>
-  <button class="nitem"    id="n-s-settings"  onclick="go('s-settings')"><span class="ndot"></span>Preferences</button>
-  <div class="nav-legend">
-    <div style="font-size:10px;font-weight:700;color:var(--text);margin-bottom:6px;">Active profile</div>
-    <div id="nav-profile-badge" style="font-size:11px;color:var(--primary);font-weight:600;padding:6px 8px;background:rgba(0,0,238,0.06);border-radius:8px;border:1px solid rgba(0,0,238,0.15);">No profile matched yet</div>
-  </div>
-</nav>
 
 <script>
 // ── Load meal-data.json ─────────────────────────────────────────
@@ -733,9 +692,6 @@ function applyProfile(profile) {
   activeProfile = profile;
   selectedDayIndex = 0;
   swapIdx = { breakfast:0, lunch:0, snack:0, dinner:0 };
-  // Update nav badge
-  const badge = document.getElementById('nav-profile-badge');
-  if (badge) badge.textContent = profile.id + ' · ' + profile.settings.dietLabel + ' · ' + (profile.cook.hasCook ? 'Cook' : 'No cook') + ' · ' + profile.settings.goal;
 }
 
 // ── Confirm screen population ────────────────────────────────────
