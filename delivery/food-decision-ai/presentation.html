@@ -379,39 +379,76 @@
     </div>
   </div>
 
-  <!-- ══ SLIDE 6 — Learnings ══ -->
+  <!-- ══ SLIDE 6 — Next Steps ══ -->
   <div class="slide bg-dark" id="slide-6">
+    <div class="section-label">What Comes Next</div>
+    <h2 class="slide-heading">Next steps</h2>
+    <div class="slide-subheading">Two things needed to make MealCraft real</div>
+    <div style="display:flex;gap:24px;max-width:820px;width:100%;margin-top:8px;">
+      <div style="flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:32px 28px;display:flex;flex-direction:column;gap:16px;">
+        <div style="font-size:40px;">🗄️</div>
+        <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#60a5fa;">Step 1</div>
+        <div style="font-size:22px;font-weight:800;letter-spacing:-0.5px;line-height:1.2;">Build a menu database</div>
+        <div style="font-size:14px;color:rgba(255,255,255,0.5);line-height:1.7;">A structured library of Indian dishes — tagged by cuisine, meal type, cook time, and dietary fit. This is the foundation the AI draws from. Without it, recommendations are generic.</div>
+        <div style="margin-top:auto;display:flex;flex-wrap:wrap;gap:6px;">
+          <span style="font-size:12px;background:rgba(96,165,250,0.1);border:1px solid rgba(96,165,250,0.2);border-radius:20px;padding:3px 10px;color:#93c5fd;">Dish taxonomy</span>
+          <span style="font-size:12px;background:rgba(96,165,250,0.1);border:1px solid rgba(96,165,250,0.2);border-radius:20px;padding:3px 10px;color:#93c5fd;">Nutrition tags</span>
+          <span style="font-size:12px;background:rgba(96,165,250,0.1);border:1px solid rgba(96,165,250,0.2);border-radius:20px;padding:3px 10px;color:#93c5fd;">Cook-time estimates</span>
+          <span style="font-size:12px;background:rgba(96,165,250,0.1);border:1px solid rgba(96,165,250,0.2);border-radius:20px;padding:3px 10px;color:#93c5fd;">Regional variety</span>
+        </div>
+      </div>
+      <div style="flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:32px 28px;display:flex;flex-direction:column;gap:16px;">
+        <div style="font-size:40px;">🧠</div>
+        <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#a78bfa;">Step 2</div>
+        <div style="font-size:22px;font-weight:800;letter-spacing:-0.5px;line-height:1.2;">Connect an LLM for smart recommendations</div>
+        <div style="font-size:14px;color:rgba(255,255,255,0.5);line-height:1.7;">An LLM layer analyses user preferences, seasonal context, and meal history to generate personalised daily suggestions — and writes the Hindi voice note automatically.</div>
+        <div style="margin-top:auto;display:flex;flex-wrap:wrap;gap:6px;">
+          <span style="font-size:12px;background:rgba(167,139,250,0.1);border:1px solid rgba(167,139,250,0.2);border-radius:20px;padding:3px 10px;color:#c4b5fd;">Personalised planning</span>
+          <span style="font-size:12px;background:rgba(167,139,250,0.1);border:1px solid rgba(167,139,250,0.2);border-radius:20px;padding:3px 10px;color:#c4b5fd;">Hindi voice note gen</span>
+          <span style="font-size:12px;background:rgba(167,139,250,0.1);border:1px solid rgba(167,139,250,0.2);border-radius:20px;padding:3px 10px;color:#c4b5fd;">Variety enforcement</span>
+          <span style="font-size:12px;background:rgba(167,139,250,0.1);border:1px solid rgba(167,139,250,0.2);border-radius:20px;padding:3px 10px;color:#c4b5fd;">Swap suggestions</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SLIDE 7 — Learnings ══ -->
+  <div class="slide bg-dark" id="slide-7">
     <div class="section-label">Sprint Learnings</div>
-    <h2 class="slide-heading">What we learned building this</h2>
+    <h2 class="slide-heading">What we learned using Bob</h2>
     <div class="slide-subheading">AI design sprint · key takeaways</div>
-    <div class="diff-list">
-      <div class="diff-item">
-        <div class="diff-icon">🎯</div>
-        <div>
-          <div class="diff-title">The cook relationship is the product's superpower</div>
-          <div class="diff-body">Every other meal app ignores the domestic cook dynamic. That's the insight that makes MealCraft different — and it only surfaced through deep persona work.</div>
-        </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:840px;width:100%;margin-top:8px;">
+      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:16px 18px;display:flex;gap:12px;align-items:flex-start;">
+        <div style="font-size:20px;flex-shrink:0;">📋</div>
+        <div><div style="font-size:14px;font-weight:700;margin-bottom:2px;">Prioritise epics early</div><div style="font-size:12px;color:rgba(255,255,255,0.45);line-height:1.6;">Deciding which epics to tackle first shaped every other decision — scope, prototype depth, and what to defer.</div></div>
       </div>
-      <div class="diff-item">
-        <div class="diff-icon">🌅</div>
-        <div>
-          <div class="diff-title">Design for 7am, not 7pm</div>
-          <div class="diff-body">The use context — barely awake, one hand, under 10 seconds — forced every interaction decision. Warm light theme, large targets, zero cognitive load. Context is the brief.</div>
-        </div>
+      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:16px 18px;display:flex;gap:12px;align-items:flex-start;">
+        <div style="font-size:20px;flex-shrink:0;">⚙️</div>
+        <div><div style="font-size:14px;font-weight:700;margin-bottom:2px;">Understand the product backend</div><div style="font-size:12px;color:rgba(255,255,255,0.45);line-height:1.6;">Mapping the backend early — CRM, data model, integrations — prevents design decisions that are impossible to build.</div></div>
       </div>
-      <div class="diff-item">
-        <div class="diff-icon">✂️</div>
-        <div>
-          <div class="diff-title">Removing features is harder than adding them</div>
-          <div class="diff-body">The instinct was to add ratings, logging, and check-ins. Every one was cut. The zero-input promise only holds if you defend it aggressively from the start.</div>
-        </div>
+      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:16px 18px;display:flex;gap:12px;align-items:flex-start;">
+        <div style="font-size:20px;flex-shrink:0;">🐙</div>
+        <div><div style="font-size:14px;font-weight:700;margin-bottom:2px;">GitHub enables real collaboration</div><div style="font-size:12px;color:rgba(255,255,255,0.45);line-height:1.6;">A shared repo meant both of us could contribute and iterate without overwriting each other's work.</div></div>
       </div>
-      <div class="diff-item">
-        <div class="diff-icon">⚡</div>
-        <div>
-          <div class="diff-title">AI accelerated the sprint — but didn't replace the thinking</div>
-          <div class="diff-body">From UX direction to working prototype in one sprint. AI handled execution; the design judgment, persona work, and constraint-setting remained human.</div>
-        </div>
+      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:16px 18px;display:flex;gap:12px;align-items:flex-start;">
+        <div style="font-size:20px;flex-shrink:0;">💬</div>
+        <div><div style="font-size:14px;font-weight:700;margin-bottom:2px;">Strong at synthesising conversations</div><div style="font-size:12px;color:rgba(255,255,255,0.45);line-height:1.6;">Long threads, interviews, and research notes were distilled into structured outputs quickly and accurately.</div></div>
+      </div>
+      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:16px 18px;display:flex;gap:12px;align-items:flex-start;">
+        <div style="font-size:20px;flex-shrink:0;">💡</div>
+        <div><div style="font-size:14px;font-weight:700;margin-bottom:2px;">Strong ideation partner</div><div style="font-size:12px;color:rgba(255,255,255,0.45);line-height:1.6;">Generating name options, concept directions, and solution candidates was fast. Bob gave breadth; we provided judgment.</div></div>
+      </div>
+      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:16px 18px;display:flex;gap:12px;align-items:flex-start;">
+        <div style="font-size:20px;flex-shrink:0;">🧠</div>
+        <div><div style="font-size:14px;font-weight:700;margin-bottom:2px;">Bob memory is genuinely useful</div><div style="font-size:12px;color:rgba(255,255,255,0.45);line-height:1.6;">Persistent context across sessions meant we didn't repeat ourselves — the sprint built on itself each time.</div></div>
+      </div>
+      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:16px 18px;display:flex;gap:12px;align-items:flex-start;">
+        <div style="font-size:20px;flex-shrink:0;">🎨</div>
+        <div><div style="font-size:14px;font-weight:700;margin-bottom:2px;">Great at visual design, weaker on fine detail</div><div style="font-size:12px;color:rgba(255,255,255,0.45);line-height:1.6;">Strong at layout, colour, and structure. Exact spacing and edge cases needed human review.</div></div>
+      </div>
+      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:16px 18px;display:flex;gap:12px;align-items:flex-start;">
+        <div style="font-size:20px;flex-shrink:0;">📝</div>
+        <div><div style="font-size:14px;font-weight:700;margin-bottom:2px;">Best used for the first draft</div><div style="font-size:12px;color:rgba(255,255,255,0.45);line-height:1.6;">Bob gets you to 70% fast. The final 30% — nuance, tone, strategic framing — still needs the human in the loop.</div></div>
       </div>
     </div>
   </div>
@@ -422,7 +459,7 @@
 <div class="nav-bar">
   <button class="nav-btn" id="btn-prev">←</button>
   <div class="nav-dots" id="nav-dots"></div>
-  <span class="nav-counter" id="nav-counter">1 / 6</span>
+  <span class="nav-counter" id="nav-counter">1 / 7</span>
   <button class="nav-btn" id="btn-next">→</button>
 </div>
 
