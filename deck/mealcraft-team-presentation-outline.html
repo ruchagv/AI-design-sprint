@@ -1,0 +1,286 @@
+
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MealCraft — Presentation Outline</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', Georgia, sans-serif;
+    background: #f0ede8;
+    color: #1f2328;
+    padding: 40px 24px 60px;
+    max-width: 860px;
+    margin: 0 auto;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  .deck-header {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    margin-bottom: 32px; gap: 16px; flex-wrap: wrap;
+  }
+  .deck-title { font-size: 32px; font-weight: 800; letter-spacing: -1px; color: #1f2328; }
+  .deck-sub { font-size: 14px; color: #44423f; margin-top: 4px; }
+  .deck-meta {
+    background: #fff; border: 1px solid #e2ddd6; border-radius: 12px;
+    padding: 12px 16px; font-size: 12px; color: #44423f; line-height: 1.9; flex-shrink: 0;
+  }
+  .deck-meta strong { color: #1f2328; }
+  .timeline {
+    display: flex; margin-bottom: 32px; border-radius: 12px; overflow: hidden;
+    border: 1px solid #e2ddd6;
+  }
+  .tl-seg {
+    flex: 1; padding: 10px 8px; font-size: 11px; font-weight: 700; text-align: center;
+    color: #fff; line-height: 1.4;
+  }
+  .tl-seg span { display: block; font-weight: 400; font-size: 10px; opacity: 0.8; }
+  .section-divider {
+    font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+    color: #44423f; padding: 8px 0 12px; margin-top: 8px;
+    border-top: 2px solid #e2ddd6;
+  }
+  .slide {
+    background: #fff; border: 1px solid #e2ddd6; border-radius: 16px;
+    padding: 24px 28px; margin-bottom: 16px;
+  }
+  .slide-num { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #0000ee; margin-bottom: 6px; }
+  .slide-title { font-size: 20px; font-weight: 800; letter-spacing: -0.5px; color: #1f2328; margin-bottom: 4px; }
+  .slide-duration {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    background: #f0ede8; color: #44423f; border-radius: 20px;
+    padding: 2px 10px; margin-bottom: 14px;
+  }
+  .slide-purpose {
+    font-size: 13px; color: #44423f; font-style: italic;
+    border-left: 3px solid #0000ee; padding-left: 10px; margin-bottom: 16px;
+  }
+  .section-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase;
+    color: #44423f; margin-bottom: 8px; margin-top: 16px;
+  }
+  ul.talk { list-style: none; padding: 0; }
+  ul.talk li {
+    font-size: 14px; color: #1f2328; padding: 6px 0 6px 20px;
+    position: relative; border-bottom: 1px solid #f0ede8;
+  }
+  ul.talk li:last-child { border-bottom: none; }
+  ul.talk li::before {
+    content: "→"; position: absolute; left: 0; color: #0000ee; font-weight: 700; font-size: 12px; top: 7px;
+  }
+  .demo-cue {
+    background: rgba(0,0,238,0.06); border: 1px solid rgba(0,0,238,0.18);
+    border-radius: 10px; padding: 10px 14px; margin-top: 14px;
+    font-size: 13px; color: #1f2328;
+  }
+  .demo-cue strong { color: #0000ee; }
+  .visual-pill {
+    display: inline-block; background: #f0ede8; border: 1px solid #e2ddd6;
+    border-radius: 20px; padding: 3px 10px; font-size: 12px; color: #44423f;
+    margin: 4px 4px 0 0;
+  }
+  .sj {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    border-radius: 20px; padding: 2px 9px; margin-right: 6px;
+    background: rgba(0,0,238,0.10); color: #0000ee;
+  }
+  .sr {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    border-radius: 20px; padding: 2px 9px; margin-right: 6px;
+    background: rgba(52,211,153,0.15); color: #047857;
+  }
+  .closing-slide {
+    background: #1f2328; border-color: #1f2328; border-radius: 16px;
+    padding: 40px 28px; margin-bottom: 16px; text-align: center;
+  }
+  .footer { margin-top: 40px; font-size: 12px; color: #9ca3af; text-align: center; }
+  code { background: #f0ede8; border: 1px solid #e2ddd6; border-radius: 4px; padding: 1px 5px; font-size: 12px; }
+</style>
+</head>
+<body>
+
+<div class="deck-header">
+  <div>
+    <div class="deck-title">🍽 MealCraft</div>
+    <div class="deck-sub">AI Design Sprint · Team Presentation Outline</div>
+  </div>
+  <div class="deck-meta">
+    <strong>Presenters</strong><br />
+    Jyotish Sonowal<br />
+    Rucha Vakhariya<br /><br />
+    <strong>Total time</strong> ~30 min<br />
+    <strong>Slides</strong> 8<br />
+    <strong>Prototype</strong> prototype-v2.html
+  </div>
+</div>
+
+<div class="timeline">
+  <div class="tl-seg" style="background:#1f2328">Intro<span>2 min</span></div>
+  <div class="tl-seg" style="background:#2d2c2b">Problem<span>5 min</span></div>
+  <div class="tl-seg" style="background:#0000ee">Solution<span>5 min</span></div>
+  <div class="tl-seg" style="background:#0061ef">Demo<span>10 min</span></div>
+  <div class="tl-seg" style="background:#047857">Decisions<span>5 min</span></div>
+  <div class="tl-seg" style="background:#44423f">Next steps<span>3 min</span></div>
+</div>
+
+
+<div class="section-divider">Section 1 · Opening</div>
+
+<div class="slide">
+  <div class="slide-num">Slide 01</div>
+  <div class="slide-title">Title — MealCraft</div>
+  <div class="slide-duration">⏱ 2 min</div>
+  <div class="slide-purpose">Set the tone. One sentence on what this is and why the team is looking at it today.</div>
+  <div class="section-label">Talk track</div>
+  <ul class="talk">
+    <li><span class="sj">Jyotish</span> "This is MealCraft — a meal prep planning app we designed and prototyped in this AI design sprint. Today we walk you through the problem, the solution, and the prototype so we can align on what to build next."</li>
+    <li>Introduce Rucha as co-designer and co-presenter</li>
+    <li>30-second agenda: Problem → Solution → Live demo → Key design decisions → What we need from the team</li>
+  </ul>
+  <div class="demo-cue"><strong>Visual:</strong> Splash screen of prototype — 🥘 icon, "MealCraft", tagline "We plan your meals. You just eat."</div>
+</div>
+
+
+<div class="section-divider">Section 2 · Problem</div>
+
+<div class="slide">
+  <div class="slide-num">Slide 02</div>
+  <div class="slide-title">Meet Karan</div>
+  <div class="slide-duration">⏱ 2 min</div>
+  <div class="slide-purpose">Make the problem human before making it a product. The team should feel the pain before seeing the solution.</div>
+  <div class="section-label">Talk track</div>
+  <ul class="talk">
+    <li><span class="sr">Rucha</span> "Karan is 28, lives alone in Bengaluru, has a cook who arrives at 8am every weekday."</li>
+    <li>"Every morning — barely awake — he has to answer: <em>what should I tell her to make?</em>"</li>
+    <li>"He has no answer. He repeats yesterday's meal, or just says 'make whatever's there.'"</li>
+    <li>"By evening he's on Swiggy for 20 minutes ordering something he'll regret."</li>
+    <li>"He's tried HealthifyMe. He quit after 3 weeks — logging felt like homework."</li>
+  </ul>
+  <div class="section-label">Visuals</div>
+  <span class="visual-pill">📱 Persona card</span>
+  <span class="visual-pill">🗓 Typical morning timeline</span>
+  <span class="visual-pill">💬 Quote: "Make whatever's there"</span>
+</div>
+
+<div class="slide">
+  <div class="slide-num">Slide 03</div>
+  <div class="slide-title">The Real Problem</div>
+  <div class="slide-duration">⏱ 3 min</div>
+  <div class="slide-purpose">Elevate from a surface frustration to the underlying systems problem.</div>
+  <div class="section-label">Talk track</div>
+  <ul class="talk">
+    <li><span class="sj">Jyotish</span> "The problem is not lack of knowledge — Karan knows what he wants to eat."</li>
+    <li>"The problem is <strong>no system converts what he already knows about himself into an answer waiting for him at the right moment.</strong>"</li>
+    <li>"Existing apps solve the wrong problem — they ask him to log, track, and decide every day. That is the behaviour that is failing him."</li>
+    <li>"Our design principle: <strong>the decision must already be made before Karan has to make it.</strong>"</li>
+  </ul>
+  <div class="section-label">Visuals</div>
+  <span class="visual-pill">⚡ Problem statement</span>
+  <span class="visual-pill">❌ Competitor failure modes</span>
+</div>
+
+
+<div class="section-divider">Section 3 · Solution</div>
+
+<div class="slide">
+  <div class="slide-num">Slide 04</div>
+  <div class="slide-title">How MealCraft Works</div>
+  <div class="slide-duration">⏱ 3 min</div>
+  <div class="slide-purpose">Explain the core mechanic in plain language before showing any UI.</div>
+  <div class="section-label">Talk track</div>
+  <ul class="talk">
+    <li><span class="sr">Rucha</span> "Karan sets up his preferences once — diet, cuisine, health goal, cook schedule. 5 minutes. Never again."</li>
+    <li>"Every night MealCraft plans the next day's meals silently in the background."</li>
+    <li>"At 7:15am — before his cook arrives — he gets a notification: <em>Breakfast: Poha · Lunch: Dal chawal.</em>"</li>
+    <li>"He taps. The app has already generated a <strong>Hindi voice note</strong> for his cook."</li>
+    <li>"He sends it to Savitri on WhatsApp. <strong>Done in under 10 seconds.</strong>"</li>
+    <li>"He doesn't log anything. He doesn't rate anything. The app is silent for the rest of the day."</li>
+  </ul>
+  <div class="demo-cue"><strong>Visual:</strong> 3-step flow — Set up once → Morning notification → Tap to send</div>
+</div>
+
+<div class="slide">
+  <div class="slide-num">Slide 05</div>
+  <div class="slide-title">What Makes It Different</div>
+  <div class="slide-duration">⏱ 2 min</div>
+  <div class="slide-purpose">Three sharp differentiators. Quick. Don't over-explain.</div>
+  <div class="section-label">Talk track</div>
+  <ul class="talk">
+    <li><span class="sj">Jyotish</span> "<strong>No logging</strong> — ever. Not even on Day 1. The product works passively."</li>
+    <li>"<strong>No daily decisions</strong> — the meal is planned before you wake up. You react, you don't decide."</li>
+    <li>"<strong>Cook-first output</strong> — not a meal plan PDF. A Hindi voice note ready to send to your cook on WhatsApp."</li>
+  </ul>
+  <div class="demo-cue"><strong>Visual:</strong> Value Prop screen from prototype — the three 🚫 🧠 📲 cards</div>
+</div>
+
+
+<div class="section-divider">Section 4 · Prototype Demo</div>
+
+<div class="slide">
+  <div class="slide-num">Slide 06</div>
+  <div class="slide-title">Live Demo — Walkthrough</div>
+  <div class="slide-duration">⏱ 10 min</div>
+  <div class="slide-purpose">Walk the team through all 7 flows in the prototype. Use the nav panel to jump between screens cleanly.</div>
+  <div class="section-label">Demo script — in order</div>
+  <ul class="talk">
+    <li><span class="sr">Rucha</span> <strong>Splash + Value Prop</strong> — "This is the first thing Karan sees. No login wall — we defer that entirely."</li>
+    <li><span class="sj">Jyotish</span> <strong>Onboarding (4 screens)</strong> — "Four screens, each a logical cluster. Watch the progress bar. The cook schedule screen is the emotional peak of onboarding."</li>
+    <li><span class="sr">Rucha</span> <strong>Confirmation + Holding screen</strong> — "E1 ends here. We deliberately don't show the week view — nothing is generated yet. The app just says: we're on it."</li>
+    <li><span class="sj">Jyotish</span> <strong>Push Notification</strong> — "7:14am. Two action buttons — Send to cook, or View. The dishes are named in the notification itself."</li>
+    <li><span class="sr">Rucha</span> <strong>Day View</strong> — "All 4 meals with food photos. Cook meals are active, delivery meals are muted. One CTA: Send to cook."</li>
+    <li><span class="sj">Jyotish</span> <strong>Cook Handoff + Sent screen</strong> — "Contact selection on first use. Hindi transcript. WhatsApp send. Confirmation: Sent. Done."</li>
+    <li><span class="sr">Rucha</span> <strong>Week View + Settings</strong> — "Secondary surfaces. Week at a glance. Preferences always editable."</li>
+  </ul>
+  <div class="demo-cue"><strong>Tip:</strong> Open <code>prototype-v2.html</code> in Chrome. Use the ☰ side nav panel to jump between flows without losing your place mid-presentation.</div>
+</div>
+
+
+<div class="section-divider">Section 5 · Key Design Decisions</div>
+
+<div class="slide">
+  <div class="slide-num">Slide 07</div>
+  <div class="slide-title">5 Decisions to Align On</div>
+  <div class="slide-duration">⏱ 5 min</div>
+  <div class="slide-purpose">Surface the decisions that need the team's input — not things already resolved.</div>
+  <div class="section-label">Open questions</div>
+  <ul class="talk">
+    <li><strong>Hindi voice note vs text message</strong> — Confident in TTS quality for Private Preview, or ship text-only first?</li>
+    <li><strong>No evening engagement</strong> — No end-of-day prompts or ratings. Right call even though it limits feedback signals?</li>
+    <li><strong>Android share sheet model</strong> — No WhatsApp Business API. Karan manually completes the send in WhatsApp. Acceptable for V1?</li>
+    <li><strong>One-time onboarding, never repeated</strong> — Preferences editable in Settings but never re-prompted. Does this hold if meal quality degrades over time?</li>
+    <li><strong>Week view as secondary surface</strong> — Day View is always home. Is there a case for making Week View the default for power users?</li>
+  </ul>
+</div>
+
+
+<div class="section-divider">Section 6 · Next Steps</div>
+
+<div class="slide">
+  <div class="slide-num">Slide 08</div>
+  <div class="slide-title">What We're Asking For</div>
+  <div class="slide-duration">⏱ 3 min</div>
+  <div class="slide-purpose">Close with a clear ask — not just "any questions?"</div>
+  <div class="section-label">Asks from the team</div>
+  <ul class="talk">
+    <li><span class="sj">Jyotish</span> <strong>Sign off on the 7 flows</strong> — Do these cover the MVP core loop (E1 + E2 + E3)?</li>
+    <li><strong>Align on the 5 open decisions</strong> — Walk through slide 07 and resolve each one together</li>
+    <li><strong>Engineering scoping</strong> — Which flows are straightforward vs need spikes? (TTS + Hindi voice note, WhatsApp share, push notification scheduling)</li>
+    <li><span class="sr">Rucha</span> <strong>Prototype fidelity feedback</strong> — Are there missing screens before we hand to engineering?</li>
+    <li><strong>Green light on naming</strong> — MealCraft as the working name for the sprint and internal prototype?</li>
+  </ul>
+  <div class="demo-cue"><strong>Prototype:</strong> github.com/ruchagv/AI-design-sprint → <code>delivery/food-decision-ai/prototype-v2.html</code></div>
+</div>
+
+
+<div class="closing-slide">
+  <div style="font-size:40px;margin-bottom:12px">🍽</div>
+  <div style="font-size:24px;font-weight:800;color:#fff;letter-spacing:-0.5px;margin-bottom:8px">MealCraft</div>
+  <div style="font-size:14px;color:rgba(255,255,255,0.5);margin-bottom:20px">We plan your meals. You just eat.</div>
+  <div style="font-size:12px;color:rgba(255,255,255,0.3)">Jyotish Sonowal · Rucha Vakhariya · AI Design Sprint · 2026</div>
+</div>
+
+<div class="footer">MealCraft · AI Design Sprint · Presentation Outline · Confidential</div>
+
+</body>
+</html>
