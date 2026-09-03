@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MealCraft — MVP Prototype v4</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap');
+    :root {
+      --primary:#0000ee; --on-primary:#ffffff; --surface:#ffffff;
+      --surface-2:#f5f4f2; --surface-dark:#2d2c2b; --border:rgba(75,76,77,0.18);
+      --text:#4b4c4d; --muted:#44423f; --accent:#0061ef;
+      --green:#1a6b3c; --green-bg:rgba(26,107,60,0.08); --green-bdr:rgba(26,107,60,0.22);
+      --wa:#25d366; --warn:#b45309;
+      --r:24px; --r-sm:16px; --r-xl:50px;
+      --fast:100ms; --base:300ms; --ease:cubic-bezier(0.32,0.94,0.6,1);
+      --tab-h:60px; --shadow-card:rgba(20,19,19,0.15) 0px 1px 8px 0px;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    input::placeholder{color:#b0aead;font-weight:400;}
+    body{font-family:'DM Sans','Helvetica Neue',system-ui,sans-serif;background:#f0ede8;min-height:100vh;display:flex;align-items:flex-start;justify-content:center;gap:28px;padding:32px 24px;}
+    .phone{width:390px;height:844px;background:var(--surface);border-radius:44px;border:6px solid #c8c5c0;overflow:hidden;display:flex;flex-direction:column;flex-shrink:0;box-shadow:0 32px 80px rgba(20,19,19,0.22);position:sticky;top:32px;}
+    .status-bar{background:var(--surface);height:44px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 24px;font-size:12px;font-weight:700;color:var(--muted);border-bottom:1px solid var(--border);}
+    .app-bar{height:52px;flex-shrink:0;display:flex;align-items:center;gap:4px;padding:0 8px 0 4px;border-bottom:1px solid var(--border);background:var(--surface);}
+    .app-bar-back{width:44px;height:44px;border-radius:var(--r-xl);background:none;border:none;color:var(--primary);font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background var(--fast);}
+    .app-bar-back:hover{background:rgba(0,0,238,0.06);}
+    .app-bar-title{font-size:16px;font-weight:700;color:var(--text);}
+    .app-bar-sub{font-size:11px;color:var(--muted);margin-top:1px;}
+    .tab-bar{height:var(--tab-h);flex-shrink:0;display:none;align-items:center;justify-content:space-around;background:var(--surface);border-top:1px solid var(--border);}
+    .tab-bar.visible{display:flex;}
+    .tab-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;height:100%;cursor:pointer;border:none;background:none;color:var(--muted);font-family:inherit;font-size:10px;font-weight:600;letter-spacing:0.3px;transition:color var(--fast);}
+    .tab-item:hover{color:var(--text);} .tab-item.active{color:var(--primary);}
+    .tab-icon{width:24px;height:24px;}
+    .home-bar{background:var(--surface);height:20px;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+    .home-bar-pill{width:120px;height:4px;background:#c8c5c0;border-radius:2px;}
+    .viewport{flex:1;overflow-y:auto;overflow-x:hidden;position:relative;width:100%;}
+    .viewport::-webkit-scrollbar{display:none;}
+    .screen{display:none;flex-direction:column;min-height:100%;width:100%;overflow-x:hidden;animation:fadeSlide var(--base) ease-out both;}
+    .screen.active{display:flex;}
+    @keyframes fadeSlide{from{opacity:0;transform:translateX(14px);}to{opacity:1;transform:translateX(0);}}
+    @keyframes slideUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+    @keyframes shakeX{0%,100%{transform:translateX(0);}25%{transform:translateX(-5px);}75%{transform:translateX(5px);}}
+    @keyframes spin{to{transform:rotate(360deg);}}
+    @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
+    @keyframes wavebar{from{opacity:.4;transform:scaleY(0.6);}to{opacity:1;transform:scaleY(1);}}
+    .shake{animation:shakeX 260ms ease-in-out;}
+    .btn{border:none;border-radius:var(--r-xl);cursor:pointer;font-family:inherit;font-size:15px;font-weight:700;min-height:52px;padding:14px 20px;transition:all var(--fast) var(--ease);width:100%;letter-spacing:-0.2px;}
+    .btn:focus-visible{outline:2px solid var(--primary);outline-offset:2px;}
+    .btn:active{transform:scale(0.97);}
+    .btn-p{background:var(--primary);color:var(--on-primary);} .btn-p:hover{background:#0000cc;}
+    .btn-o{background:transparent;color:var(--text);border:1.5px solid var(--border);} .btn-o:hover{border-color:var(--primary);color:var(--primary);}
+    .btn-wa{background:var(--wa);color:#fff;display:flex;align-items:center;justify-content:center;gap:8px;} .btn-wa:hover{opacity:0.9;}
+    .btn-ghost{background:none;border:none;color:var(--muted);font-size:14px;font-weight:600;cursor:pointer;padding:10px;text-align:center;width:100%;transition:color var(--fast);font-family:inherit;}
+    .btn-ghost:hover{color:var(--primary);} .btn-ghost:focus-visible{outline:2px solid var(--primary);border-radius:4px;}
+    .prog-wrap{height:4px;background:var(--border);border-radius:var(--r-xl);overflow:hidden;}
+    .prog-fill{height:100%;background:var(--primary);border-radius:var(--r-xl);transition:width 300ms var(--ease);}
+    .card{background:var(--surface-2);border-radius:var(--r);border:1px solid var(--border);padding:20px;width:100%;animation:slideUp var(--base) var(--ease) both;box-shadow:var(--shadow-card);}
+    .chip-group{display:flex;flex-wrap:wrap;gap:8px;}
+    .chip-sel{display:inline-flex;align-items:center;gap:5px;padding:9px 16px;border-radius:var(--r-xl);border:1.5px solid var(--border);background:var(--surface);color:var(--muted);font-size:14px;font-weight:500;cursor:pointer;transition:all var(--fast) var(--ease);font-family:inherit;}
+    .chip-sel:hover{border-color:var(--primary);color:var(--primary);}
+    .chip-sel.on{background:var(--primary);border-color:var(--primary);color:#fff;font-weight:700;}
+    .chip-sel.on::before{content:'✓ ';font-size:11px;}
+    .rank-list{display:flex;flex-direction:column;gap:6px;}
+    .rank-item{display:flex;align-items:center;gap:12px;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r-sm);padding:12px 16px;cursor:grab;user-select:none;transition:border-color var(--fast);box-shadow:var(--shadow-card);}
+    .rank-item.drag-over{border-color:var(--primary);background:rgba(0,0,238,0.05);}
+    .rank-num{font-size:13px;font-weight:700;color:var(--primary);width:20px;flex-shrink:0;}
+    .rank-handle{color:var(--muted);font-size:16px;margin-left:auto;}
+    .meal-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);}
+    .meal-row:last-child{border-bottom:none;}
+    .meal-thumb{width:52px;height:52px;border-radius:12px;object-fit:cover;flex-shrink:0;background:var(--surface-2);border:1px solid var(--border);}
+    .meal-thumb-wrap{position:relative;width:52px;height:52px;flex-shrink:0;}
+    .meal-thumb-badge{position:absolute;bottom:-4px;right:-4px;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;border:2px solid var(--surface);}
+    .meal-muted .meal-thumb{opacity:0.55;} .meal-muted .meal-name{color:var(--muted);}
+    .meal-info{flex:1;}
+    .meal-type{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.7px;color:var(--muted);margin-bottom:2px;}
+    .meal-name{font-size:15px;font-weight:700;color:var(--text);letter-spacing:-0.3px;}
+    .meal-tag{font-size:11px;color:var(--muted);margin-top:2px;}
+    .swap-btn{background:none;border:1.5px solid var(--border);color:var(--muted);border-radius:var(--r-xl);padding:6px 12px;font-size:12px;font-weight:700;cursor:pointer;transition:all var(--fast) var(--ease);flex-shrink:0;font-family:inherit;}
+    .swap-btn:hover{border-color:var(--primary);color:var(--primary);}
+    .swap-btn.swapped{background:var(--green);border-color:var(--green);color:#fff;}
+    .sheet-backdrop{display:none;position:absolute;inset:0;background:rgba(20,19,19,0.4);z-index:50;}
+    .sheet-backdrop.open{display:block;}
+    .sheet{position:absolute;bottom:0;left:0;right:0;background:var(--surface);border-radius:24px 24px 0 0;border-top:1px solid var(--border);padding:20px 20px 32px;z-index:51;box-shadow:rgba(20,19,19,0.15) 0px -4px 24px;transform:translateY(100%);transition:transform var(--base) var(--ease);}
+    .sheet.open{transform:translateY(0);}
+    .sheet-pill{width:40px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 18px;}
+    .week-strip{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;}
+    .week-strip::-webkit-scrollbar{display:none;}
+    .week-day{flex-shrink:0;width:46px;display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 4px;border-radius:var(--r-sm);border:1.5px solid var(--border);background:var(--surface-2);cursor:pointer;transition:all var(--fast) var(--ease);}
+    .week-day.today{background:var(--primary);border-color:var(--primary);}
+    .week-day-label{font-size:10px;font-weight:700;text-transform:uppercase;color:var(--muted);letter-spacing:0.5px;}
+    .week-day.today .week-day-label{color:rgba(255,255,255,0.8);}
+    .week-day-num{font-size:15px;font-weight:700;color:var(--text);}
+    .week-day.today .week-day-num{color:#fff;}
+    .week-day-dot{width:5px;height:5px;border-radius:50%;background:var(--border);}
+    .week-day.today .week-day-dot{background:rgba(255,255,255,0.6);}
+    .transcript-bubble{background:#e8f5e9;border:1px solid rgba(26,107,60,0.2);border-radius:var(--r) var(--r) 4px var(--r);padding:16px 18px;color:#1a3a1a;font-size:15px;line-height:1.6;}
+    .summary-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);}
+    .summary-row:last-child{border-bottom:none;}
+    .summary-icon{font-size:18px;width:28px;text-align:center;flex-shrink:0;}
+    .summary-label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;font-weight:700;}
+    .summary-value{font-size:15px;font-weight:700;color:var(--text);margin-top:2px;letter-spacing:-0.3px;}
+    .setting-row{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:all var(--fast) var(--ease);}
+    .setting-row:last-child{border-bottom:none;} .setting-row:hover{background:rgba(0,0,238,0.03);}
+    .setting-icon{font-size:18px;width:28px;text-align:center;flex-shrink:0;}
+    .setting-label{font-size:14px;font-weight:600;color:var(--text);flex:1;}
+    .setting-value{font-size:13px;color:var(--muted);margin-top:1px;}
+    .setting-chevron{color:var(--muted);font-size:16px;}
+    .contact-row{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:all var(--fast) var(--ease);}
+    .contact-row:last-child{border-bottom:none;} .contact-row:hover .contact-name{color:var(--primary);}
+    .contact-avatar{width:40px;height:40px;border-radius:50%;background:rgba(0,0,238,0.08);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:var(--primary);flex-shrink:0;}
+    .contact-name{font-size:15px;font-weight:700;color:var(--text);}
+    .contact-num{font-size:12px;color:var(--muted);margin-top:2px;}
+    .notif-card{background:rgba(255,255,255,0.92);border:1px solid rgba(75,76,77,0.12);border-radius:var(--r);padding:16px;box-shadow:rgba(20,19,19,0.18) 0px 4px 24px;backdrop-filter:blur(12px);}
+    .notif-header{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+    .notif-app-icon{width:18px;height:18px;border-radius:5px;background:var(--primary);font-size:10px;display:flex;align-items:center;justify-content:center;}
+    .notif-app-name{font-size:12px;color:var(--muted);font-weight:600;flex:1;}
+    .notif-time{font-size:11px;color:var(--muted);}
+    .notif-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px;}
+    .notif-body{font-size:13px;color:var(--muted);line-height:1.4;margin-bottom:14px;}
+    .notif-actions{display:flex;gap:8px;}
+    .notif-action{flex:1;padding:10px 12px;border-radius:var(--r-sm);border:none;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;transition:all var(--fast) var(--ease);}
+    .notif-action:active{transform:scale(0.96);}
+    .notif-action-primary{background:var(--wa);color:#fff;}
+    .notif-action-secondary{background:var(--surface-2);color:var(--text);border:1px solid var(--border);}
+    .tag{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;background:var(--green-bg);color:var(--green);border-radius:var(--r-xl);font-size:12px;font-weight:700;}
+    .tag-blue{background:rgba(0,0,238,0.07);color:var(--primary);}
+    .tag-warn{background:rgba(180,83,9,0.08);color:var(--warn);}
+    #toast{position:absolute;bottom:72px;left:50%;transform:translateX(-50%) translateY(8px);background:var(--surface-dark);color:#fff;padding:11px 20px;border-radius:var(--r-xl);font-size:13px;font-weight:600;opacity:0;pointer-events:none;border:1px solid rgba(255,255,255,0.08);z-index:99;white-space:nowrap;transition:all var(--base) var(--ease);}
+    #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+    .p20{padding:18px 20px 26px;width:100%;}
+    .gap-s{display:flex;flex-direction:column;gap:10px;}
+    .gap-m{display:flex;flex-direction:column;gap:16px;}
+    .gap-l{display:flex;flex-direction:column;gap:22px;}
+    .spacer{flex:1;}
+    .t-head{font-size:24px;font-weight:700;color:var(--text);letter-spacing:-0.72px;line-height:1.2;}
+    .t-sub{font-size:20px;font-weight:700;color:var(--text);letter-spacing:-0.5px;line-height:1.2;}
+    .t-body{font-size:14px;color:var(--muted);line-height:1.5;}
+    .t-label{font-size:12px;color:var(--muted);}
+    .t-caps{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--primary);}
+    .divider{height:1px;background:var(--border);}
+    /* Spinner for generating screen */
+    .spinner{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto;}
+    /* Nav panel */
+    .nav{width:236px;background:var(--surface);border-radius:var(--r);padding:16px 14px;border:1px solid var(--border);position:sticky;top:32px;align-self:flex-start;box-shadow:var(--shadow-card);}
+    .nav-header{margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--border);}
+    .nav-brand{font-size:12px;font-weight:700;color:var(--primary);letter-spacing:0.3px;}
+    .nav-ver{font-size:10px;color:var(--muted);margin-top:2px;}
+    .nlabel{color:var(--muted);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin:12px 0 4px 8px;}
+    .nitem{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:var(--r-sm);cursor:pointer;color:var(--muted);font-size:13px;transition:all var(--fast) var(--ease);border:1px solid transparent;width:100%;background:none;font-family:inherit;text-align:left;}
+    .nitem:hover{background:rgba(0,0,238,0.05);color:var(--text);}
+    .nitem.on{background:rgba(0,0,238,0.08);color:var(--primary);border-color:rgba(0,0,238,0.18);font-weight:600;}
+    .ndot{width:6px;height:6px;border-radius:50%;background:var(--border);flex-shrink:0;transition:background var(--fast);}
+    .nitem.on .ndot{background:var(--primary);}
+    .ndot-grey{background:rgba(75,76,77,0.25);}
+    .nav-legend{margin-top:14px;padding:10px 12px;background:var(--surface-2);border-radius:var(--r-sm);font-size:11px;color:var(--muted);line-height:1.8;}
+    .nav-legend-row{display:flex;align-items:center;gap:6px;}
+    .legend-dot-blue{width:6px;height:6px;border-radius:50%;background:var(--primary);flex-shrink:0;}
+    .legend-dot-grey{width:6px;height:6px;border-radius:50%;background:rgba(75,76,77,0.3);flex-shrink:0;}
+    @media(max-width:700px){body{flex-direction:column;align-items:center;padding:16px;}.phone{position:static;}.nav{width:100%;max-width:390px;position:static;}}
+    @media(prefers-reduced-motion:reduce){:root{--fast:0ms;--base:0ms;}.btn:active{transform:none;}.notif-action:active{transform:none;}}
+  </style>
+</head>
+<body>
+
+<!-- ══ PHONE ══════════════════════════════════════════════════ -->
+<div class="phone" role="main" aria-label="MealCraft prototype v4">
+  <div class="status-bar" aria-hidden="true">
+    <span>9:41</span>
+    <span style="display:flex;gap:5px;align-items:center;">
+      <svg width="14" height="10" viewBox="0 0 14 10" fill="currentColor"><rect x="0" y="3" width="3" height="7" rx="1" opacity=".4"/><rect x="4" y="2" width="3" height="8" rx="1" opacity=".6"/><rect x="8" y="1" width="3" height="9" rx="1" opacity=".8"/><rect x="12" y="0" width="2" height="10" rx="1"/></svg>
+      <svg width="16" height="10" viewBox="0 0 16 10" fill="currentColor"><rect x="0" y="2" width="13" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.2"/><rect x="1.5" y="3.5" width="8" height="4" rx=".5"/><rect x="13.5" y="4" width="2" height="3" rx=".5"/></svg>
+    </span>
+  </div>
+
+  <div class="viewport" id="vp">
+    <div id="toast" role="status" aria-live="polite"></div>
+    <div class="sheet-backdrop" id="backdrop" onclick="closeSheet()"></div>
+    <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Options">
+      <div class="sheet-pill"></div>
+      <div id="sheet-content"></div>
+    </div>
+
+    <!-- ══ SPLASH ══════════════════════════════════════════════ -->
+    <div class="screen active" id="s-splash">
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;background:url('premium_photo-1712678280695-7525b7bf50d0.avif') center center/cover no-repeat;">
+        <div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;background:linear-gradient(to bottom,rgba(0,0,0,0.15) 0%,rgba(0,0,0,0.55) 60%,rgba(0,0,0,0.78) 100%);">
+          <div style="padding:48px 28px 32px;text-align:center;">
+            <div style="font-size:60px;margin-bottom:16px;line-height:1;">🥘</div>
+            <div style="font-size:28px;font-weight:800;color:#fff;letter-spacing:-1px;line-height:1;margin-bottom:12px;">MealCraft</div>
+            <p style="font-size:15px;color:rgba(255,255,255,0.75);line-height:1.6;">We plan your meals.<br/>You just eat.</p>
+          </div>
+          <div style="background:var(--surface);border-radius:28px 28px 0 0;padding:24px 24px 32px;">
+            <div class="gap-s">
+              <button class="btn btn-p" onclick="openSignIn()">Sign in</button>
+              <button class="btn btn-o" onclick="go('s-signup')">Sign up &amp; get started</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ SIGN UP ══════════════════════════════════════════════ -->
+    <div class="screen" id="s-signup">
+      <div class="p20 gap-l" style="flex:1;">
+        <div><button class="btn-ghost" onclick="go('s-splash')" style="width:auto;padding:0;font-size:13px;text-align:left;">← Back</button></div>
+        <div>
+          <h2 class="t-head" style="margin-bottom:6px;">Create your account.</h2>
+          <p class="t-body" style="font-size:14px;">Just a quick step before we get started.</p>
+        </div>
+        <div class="gap-m">
+          <div>
+            <label class="t-label" style="font-size:12px;margin-bottom:6px;display:block;font-weight:600;color:var(--text);">Email</label>
+            <input type="email" id="signup-email" placeholder="Enter email" style="width:100%;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);padding:12px 14px;color:var(--text);font-family:inherit;font-size:14px;outline:none;"/>
+          </div>
+          <div>
+            <label class="t-label" style="font-size:12px;margin-bottom:6px;display:block;font-weight:600;color:var(--text);">Password</label>
+            <input type="password" id="signup-password" placeholder="Enter password" style="width:100%;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);padding:12px 14px;color:var(--text);font-family:inherit;font-size:14px;outline:none;"/>
+          </div>
+          <div id="signup-error" style="display:none;background:rgba(180,83,9,0.08);border:1px solid rgba(180,83,9,0.25);border-radius:12px;padding:10px 14px;font-size:13px;color:var(--warn);font-weight:600;">Use karan@example.com and abcd1234 to continue.</div>
+        </div>
+        <div class="spacer"></div>
+        <button class="btn btn-p" onclick="doSignUp()">Create account</button>
+      </div>
+    </div>
+
+    <!-- ══ SIGN IN ══════════════════════════════════════════════ -->
+    <div class="screen" id="s-signin">
+      <div class="p20 gap-l" style="flex:1;">
+        <div><button class="btn-ghost" onclick="go('s-splash')" style="width:auto;padding:0;font-size:13px;text-align:left;">← Back</button></div>
+        <div>
+          <h2 class="t-head" style="margin-bottom:6px;">Welcome back.</h2>
+          <p class="t-body" style="font-size:14px;">Sign in to your MealCraft account.</p>
+        </div>
+        <div class="gap-m">
+          <div>
+            <label class="t-label" style="font-size:12px;margin-bottom:6px;display:block;font-weight:600;color:var(--text);">Email</label>
+            <input type="email" id="signin-email" placeholder="Enter email" style="width:100%;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);padding:12px 14px;color:var(--text);font-family:inherit;font-size:14px;outline:none;"/>
+          </div>
+          <div>
+            <label class="t-label" style="font-size:12px;margin-bottom:6px;display:block;font-weight:600;color:var(--text);">Password</label>
+            <input type="password" id="signin-password" placeholder="Enter password" style="width:100%;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);padding:12px 14px;color:var(--text);font-family:inherit;font-size:14px;outline:none;"/>
+          </div>
+          <div id="signin-error" style="display:none;background:rgba(180,83,9,0.08);border:1px solid rgba(180,83,9,0.25);border-radius:12px;padding:10px 14px;font-size:13px;color:var(--warn);font-weight:600;">Incorrect email or password. Try again.</div>
+        </div>
+        <div class="spacer"></div>
+        <button class="btn btn-p" onclick="doSignIn()">Sign in</button>
+      </div>
+    </div>
+
+    <!-- ══ OB1 — Diet & Allergies ══════════════════════════════ -->
+    <div class="screen" id="s-ob1">
+      <div class="p20 gap-l" style="flex:1;">
+        <div class="gap-s">
+          <div class="prog-wrap"><div class="prog-fill" style="width:25%"></div></div>
+          <div style="display:flex;justify-content:space-between;"><span class="t-caps">Step 1 of 4</span><span class="t-label" style="font-size:11px;">Diet &amp; Allergies</span></div>
+        </div>
+        <div>
+          <p class="t-caps" style="margin-bottom:6px;">Welcome, Karan 👋</p>
+          <h2 class="t-head" style="margin-bottom:6px;">Let's start with what you can eat.</h2>
+          <p class="t-body" style="font-size:14px;">We'll never suggest anything that doesn't fit.</p>
+        </div>
+        <div class="gap-m">
+          <div>
+            <p class="t-label" style="margin-bottom:10px;font-weight:600;color:var(--text);font-size:13px;">Dietary type</p>
+            <div class="chip-group" role="radiogroup" aria-label="Dietary type" id="g-diet">
+              <button class="chip-sel" onclick="pickChip(this,'g-diet','single')" data-val="vegetarian">Vegetarian</button>
+              <button class="chip-sel" onclick="pickChip(this,'g-diet','single')" data-val="eggetarian">Eggetarian</button>
+              <button class="chip-sel" onclick="pickChip(this,'g-diet','single')" data-val="nonveg">Non-vegetarian</button>
+            </div>
+          </div>
+          <div>
+            <p class="t-label" style="margin-bottom:10px;font-weight:600;color:var(--text);font-size:13px;">Food allergies / intolerances</p>
+            <div class="chip-group" id="g-allergy">
+              <button class="chip-sel" onclick="pickChip(this,'g-allergy','multi')" data-val="dairy">Dairy</button>
+              <button class="chip-sel" onclick="pickChip(this,'g-allergy','multi')" data-val="gluten">Gluten</button>
+              <button class="chip-sel" onclick="pickChip(this,'g-allergy','multi')" data-val="nuts">Nuts</button>
+              <button class="chip-sel" onclick="pickChip(this,'g-allergy','multi')" data-val="shellfish">Shellfish</button>
+              <button class="chip-sel" onclick="pickChip(this,'g-allergy','multi')" data-val="none">None</button>
+            </div>
+          </div>
+          <div>
+            <p class="t-label" style="margin-bottom:10px;font-weight:600;color:var(--text);font-size:13px;">Spice tolerance</p>
+            <div class="chip-group" id="g-spice">
+              <button class="chip-sel" onclick="pickChip(this,'g-spice','single')" data-val="mild">Mild</button>
+              <button class="chip-sel" onclick="pickChip(this,'g-spice','single')" data-val="medium">Medium</button>
+              <button class="chip-sel" onclick="pickChip(this,'g-spice','single')" data-val="spicy">Spicy</button>
+            </div>
+          </div>
+        </div>
+        <div class="spacer"></div>
+        <button class="btn btn-p" onclick="ob1Next()">Next →</button>
+      </div>
+    </div>
+
+    <!-- ══ OB2 — Cuisines & Dislikes ══════════════════════════ -->
+    <div class="screen" id="s-ob2">
+      <div class="p20 gap-l" style="flex:1;">
+        <div><button class="btn-ghost" onclick="go('s-ob1')" style="width:auto;padding:0;font-size:13px;text-align:left;">← Back</button></div>
+        <div class="gap-s">
+          <div class="prog-wrap"><div class="prog-fill" style="width:50%"></div></div>
+          <div style="display:flex;justify-content:space-between;"><span class="t-caps">Step 2 of 4</span><span class="t-label" style="font-size:11px;">Cuisines &amp; Dislikes</span></div>
+        </div>
+        <div>
+          <h2 class="t-head" style="margin-bottom:6px;">What do you love to eat?</h2>
+          <p class="t-body" style="font-size:14px;">Drag to rank — your top pick goes first.</p>
+        </div>
+        <div class="gap-m">
+          <div>
+            <p class="t-label" style="margin-bottom:10px;font-weight:600;color:var(--text);font-size:13px;">Cuisine preference</p>
+            <div class="rank-list" id="rank-cuisines">
+              <div class="rank-item" draggable="true" data-cuisine="northIndian"><span class="rank-num">1</span><span style="font-size:15px;color:var(--text);font-weight:500;flex:1;">North Indian</span><span class="rank-handle">⠿</span></div>
+              <div class="rank-item" draggable="true" data-cuisine="southIndian"><span class="rank-num">2</span><span style="font-size:15px;color:var(--text);font-weight:500;flex:1;">South Indian</span><span class="rank-handle">⠿</span></div>
+              <div class="rank-item" draggable="true" data-cuisine="continental"><span class="rank-num">3</span><span style="font-size:15px;color:var(--text);font-weight:500;flex:1;">Continental</span><span class="rank-handle">⠿</span></div>
+              <div class="rank-item" draggable="true" data-cuisine="chinese"><span class="rank-num">4</span><span style="font-size:15px;color:var(--text);font-weight:500;flex:1;">Chinese</span><span class="rank-handle">⠿</span></div>
+              <div class="rank-item" draggable="true" data-cuisine="mediterranean"><span class="rank-num">5</span><span style="font-size:15px;color:var(--text);font-weight:500;flex:1;">Mediterranean</span><span class="rank-handle">⠿</span></div>
+            </div>
+          </div>
+          <div>
+            <p class="t-label" style="margin-bottom:10px;font-weight:600;color:var(--text);font-size:13px;">Disliked ingredients</p>
+            <div class="chip-group" id="g-dislikes">
+              <button class="chip-sel" onclick="pickChip(this,'g-dislikes','multi')" data-val="bittergourd">Bitter gourd</button>
+              <button class="chip-sel" onclick="pickChip(this,'g-dislikes','multi')" data-val="brinjal">Brinjal</button>
+              <button class="chip-sel" onclick="pickChip(this,'g-dislikes','multi')" data-val="mushroom">Mushroom</button>
+              <button class="chip-sel" onclick="pickChip(this,'g-dislikes','multi')" data-val="okra">Okra</button>
+              <button class="chip-sel" onclick="pickChip(this,'g-dislikes','multi')" data-val="capsicum">Capsicum</button>
+              <button class="chip-sel" onclick="pickChip(this,'g-dislikes','multi')" data-val="rawonion">Raw onion</button>
+            </div>
+          </div>
+        </div>
+        <div class="spacer"></div>
+        <button class="btn btn-p" onclick="go('s-ob3')">Next →</button>
+      </div>
+    </div>
+
+    <!-- ══ OB3 — Goal & Household ══════════════════════════════ -->
+    <div class="screen" id="s-ob3">
+      <div class="p20 gap-l" style="flex:1;">
+        <div><button class="btn-ghost" onclick="go('s-ob2')" style="width:auto;padding:0;font-size:13px;text-align:left;">← Back</button></div>
+        <div class="gap-s">
+          <div class="prog-wrap"><div class="prog-fill" style="width:75%"></div></div>
+          <div style="display:flex;justify-content:space-between;"><span class="t-caps">Step 3 of 4</span><span class="t-label" style="font-size:11px;">Goal &amp; Household</span></div>
+        </div>
+        <div><h2 class="t-head" style="margin-bottom:6px;">Tell us a bit about your setup.</h2></div>
+        <div class="gap-m">
+          <div>
+            <p class="t-label" style="margin-bottom:10px;font-weight:600;color:var(--text);font-size:13px;">Health / fitness goal</p>
+            <div class="chip-group" id="g-goal">
+              <button class="chip-sel" onclick="pickChip(this,'g-goal','single')" data-val="weightloss">Weight loss</button>
+              <button class="chip-sel" onclick="pickChip(this,'g-goal','single')" data-val="musclegain">Muscle gain</button>
+              <button class="chip-sel" onclick="pickChip(this,'g-goal','single')" data-val="wellness">General wellness</button>
+              <button class="chip-sel" onclick="pickChip(this,'g-goal','single')" data-val="none">No specific goal</button>
+            </div>
+          </div>
+          <div>
+            <p class="t-label" style="margin-bottom:10px;font-weight:600;color:var(--text);font-size:13px;">Household size</p>
+            <div class="chip-group" id="g-household">
+              <button class="chip-sel" onclick="pickChip(this,'g-household','single')" data-val="1">Just me</button>
+              <button class="chip-sel" onclick="pickChip(this,'g-household','single')" data-val="2">2 people</button>
+              <button class="chip-sel" onclick="pickChip(this,'g-household','single')" data-val="3">3+ people</button>
+            </div>
+          </div>
+        </div>
+        <div class="spacer"></div>
+        <button class="btn btn-p" onclick="ob3Next()">Next →</button>
+      </div>
+    </div>
+
+    <!-- ══ OB4 — Cook Schedule ══════════════════════════════════ -->
+    <div class="screen" id="s-ob4">
+      <div class="p20 gap-l" style="flex:1;">
+        <div><button class="btn-ghost" onclick="go('s-ob3')" style="width:auto;padding:0;font-size:13px;text-align:left;">← Back</button></div>
+        <div class="gap-s">
+          <div class="prog-wrap"><div class="prog-fill" style="width:100%"></div></div>
+          <div style="display:flex;justify-content:space-between;"><span class="t-caps">Step 4 of 4</span><span class="t-label" style="font-size:11px;">Cook Schedule</span></div>
+        </div>
+        <div>
+          <h2 class="t-head" style="margin-bottom:6px;">One last thing — your cook.</h2>
+          <p class="t-body" style="font-size:14px;">This is where things get interesting.</p>
+        </div>
+        <div class="gap-m">
+          <div>
+            <p class="t-label" style="margin-bottom:10px;font-weight:600;color:var(--text);font-size:13px;">Do you have a cook?</p>
+            <div class="chip-group" id="g-hascook">
+              <button class="chip-sel" onclick="pickChip(this,'g-hascook','single');showCookFields(true)" data-val="yes">Yes, I have a cook</button>
+              <button class="chip-sel" onclick="pickChip(this,'g-hascook','single');showCookFields(false)" data-val="no">No cook</button>
+            </div>
+          </div>
+          <div id="cook-fields" style="display:none;flex-direction:column;gap:16px;">
+            <div>
+              <p class="t-label" style="margin-bottom:10px;font-weight:600;color:var(--text);font-size:13px;">Cook days</p>
+              <div class="chip-group" id="g-cookdays">
+                <button class="chip-sel" onclick="pickChip(this,'g-cookdays','single')" data-val="weekdays">Weekdays only</button>
+                <button class="chip-sel" onclick="pickChip(this,'g-cookdays','single')" data-val="all7">All 7 days</button>
+              </div>
+            </div>
+            <div>
+              <p class="t-label" style="margin-bottom:10px;font-weight:600;color:var(--text);font-size:13px;">Cook arrives</p>
+              <div class="chip-group" id="g-cooktime">
+                <button class="chip-sel" onclick="pickChip(this,'g-cooktime','single')" data-val="before8">Before 8am</button>
+                <button class="chip-sel" onclick="pickChip(this,'g-cooktime','single')" data-val="8to9">8–9am</button>
+                <button class="chip-sel" onclick="pickChip(this,'g-cooktime','single')" data-val="after9">After 9am</button>
+                <button class="chip-sel" onclick="pickChip(this,'g-cooktime','single')" data-val="notsure">Not sure</button>
+              </div>
+            </div>
+            <div>
+              <p class="t-label" style="margin-bottom:10px;font-weight:600;color:var(--text);font-size:13px;">Meals the cook handles</p>
+              <div class="chip-group" id="g-cookmeals">
+                <button class="chip-sel" onclick="toggleCookMeal(this)" data-val="breakfast">Breakfast</button>
+                <button class="chip-sel" onclick="toggleCookMeal(this)" data-val="lunch">Lunch</button>
+                <button class="chip-sel" onclick="toggleCookMeal(this)" data-val="eveningsnack">Evening snack</button>
+                <button class="chip-sel" onclick="toggleCookMeal(this)" data-val="dinner">Dinner</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="spacer"></div>
+        <button class="btn btn-p" onclick="ob4Done()">Done →</button>
+      </div>
+    </div>
+
+    <!-- ══ VEG LOCK SHEET (shown via bottom sheet, not a screen) ══ -->
+
+    <!-- ══ OB CONFIRM ══════════════════════════════════════════ -->
+    <div class="screen" id="s-ob-confirm">
+      <div class="p20 gap-l" style="flex:1;">
+        <div><button class="btn-ghost" onclick="go('s-ob4')" style="width:auto;padding:0;font-size:13px;text-align:left;">← Back</button></div>
+        <div style="text-align:center;">
+          <div style="width:64px;height:64px;border-radius:50%;background:var(--green-bg);border:1px solid var(--green-bdr);display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 18px;">✓</div>
+          <h2 class="t-head" style="margin-bottom:8px;">You're all set, Karan.</h2>
+          <p class="t-body" style="font-size:14px;">Your profile is ready. We'll do the thinking.</p>
+        </div>
+        <div class="card" style="gap:0;" id="confirm-summary-card">
+          <!-- populated dynamically -->
+        </div>
+        <div class="spacer"></div>
+        <div class="gap-s">
+          <button class="btn btn-p" onclick="startGenerating()">See your first meal plan →</button>
+          <button class="btn btn-o" onclick="go('s-ob1')">← Edit my preferences</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ GENERATING SCREEN ════════════════════════════════════ -->
+    <div class="screen" id="s-generating">
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 28px;text-align:center;gap:24px;">
+        <div class="spinner"></div>
+        <div>
+          <h2 class="t-head" style="margin-bottom:10px;" id="gen-headline">Building your meal plan…</h2>
+          <p class="t-body" style="max-width:280px;margin:0 auto;" id="gen-subtext">Matching your preferences to this week's suggestions.</p>
+        </div>
+        <div style="display:flex;gap:8px;flex-direction:column;width:100%;max-width:280px;" id="gen-steps">
+          <div class="gen-step" style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);animation:pulse 1.4s ease-in-out infinite;">
+            <div style="width:8px;height:8px;border-radius:50%;background:var(--primary);flex-shrink:0;"></div>Matching your preferences
+          </div>
+          <div class="gen-step" style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);animation:pulse 1.4s ease-in-out 0.4s infinite;">
+            <div style="width:8px;height:8px;border-radius:50%;background:var(--border);flex-shrink:0;"></div>Selecting this week's meals
+          </div>
+          <div class="gen-step" style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);animation:pulse 1.4s ease-in-out 0.8s infinite;">
+            <div style="width:8px;height:8px;border-radius:50%;background:var(--border);flex-shrink:0;"></div>Preparing your cook instructions
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ DAY VIEW ═════════════════════════════════════════════ -->
+    <div class="screen" id="s-day-view">
+      <div class="p20" style="flex:1;display:flex;flex-direction:column;gap:18px;">
+        <div>
+          <p class="t-label" id="day-view-date">Monday, 4 Aug</p>
+          <h1 class="t-sub" style="margin-top:3px;">Good morning, Karan</h1>
+        </div>
+        <div class="week-strip" role="list" aria-label="Week at a glance" id="week-strip">
+          <!-- populated dynamically -->
+        </div>
+        <div class="card" style="padding:4px 14px;" id="day-view-meals">
+          <!-- populated dynamically -->
+        </div>
+        <div class="spacer"></div>
+        <div class="gap-s" style="padding-bottom:4px;" id="day-view-cta">
+          <!-- populated dynamically: either Send to cook or I'll cook this -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ WEEK VIEW ════════════════════════════════════════════ -->
+    <div class="screen" id="s-week-view">
+      <div class="app-bar">
+        <button class="app-bar-back" onclick="go('s-day-view')" aria-label="Back to today">←</button>
+        <div><div class="app-bar-title">This week</div><div class="app-bar-sub">4–10 Aug 2026</div></div>
+      </div>
+      <div class="p20" style="flex:1;display:flex;flex-direction:column;gap:10px;" id="week-view-cards">
+        <!-- populated dynamically -->
+      </div>
+    </div>
+
+    <!-- ══ HANDOFF — CONTACT SELECT (Variant A) ════════════════ -->
+    <div class="screen" id="s-handoff-first">
+      <div class="app-bar">
+        <button class="app-bar-back" onclick="go('s-day-view')" aria-label="Back">←</button>
+        <div><div class="app-bar-title">Send to cook</div><div class="app-bar-sub">First time setup</div></div>
+      </div>
+      <div class="p20" style="flex:1;display:flex;flex-direction:column;gap:20px;">
+        <div style="background:rgba(0,0,238,0.06);border:1px solid rgba(0,0,238,0.15);border-radius:12px;padding:14px 16px;">
+          <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;">Who's your cook on WhatsApp?</div>
+          <div class="t-label" style="font-size:13px;">We'll remember this for every morning.</div>
+        </div>
+        <div>
+          <p class="t-label" style="margin-bottom:2px;font-size:12px;">Contacts</p>
+          <div class="card" style="padding:4px 14px;animation:none;">
+            <div class="contact-row" onclick="selectContact('Savitri')">
+              <div class="contact-avatar">S</div>
+              <div><div class="contact-name">Savitri</div><div class="contact-num">+91 98765 43210</div></div>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="margin-left:auto;flex-shrink:0;"><path d="M6 4l4 4-4 4" stroke="#374151" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="contact-row" onclick="selectContact('Raju')">
+              <div class="contact-avatar" style="background:rgba(167,139,250,0.2);color:#a78bfa;">R</div>
+              <div><div class="contact-name">Raju</div><div class="contact-num">+91 99887 76655</div></div>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="margin-left:auto;flex-shrink:0;"><path d="M6 4l4 4-4 4" stroke="#374151" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="contact-row" onclick="selectContact('Priya')">
+              <div class="contact-avatar" style="background:rgba(52,211,153,0.15);color:var(--green);">P</div>
+              <div><div class="contact-name">Priya</div><div class="contact-num">+91 87654 32109</div></div>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="margin-left:auto;flex-shrink:0;"><path d="M6 4l4 4-4 4" stroke="#374151" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="spacer"></div>
+        <button class="btn-ghost" onclick="openManualNumber()">Enter number manually</button>
+        <p class="t-label" style="text-align:center;font-size:11px;padding-bottom:4px;">Contact saved locally on your device only.</p>
+      </div>
+    </div>
+
+    <!-- ══ HANDOFF — TRANSCRIPT ═════════════════════════════════ -->
+    <div class="screen" id="s-handoff">
+      <div class="app-bar">
+        <button class="app-bar-back" onclick="go('s-day-view')" aria-label="Back to today">←</button>
+        <div><div class="app-bar-title" id="handoff-cook-name">Sending to Savitri</div><div class="app-bar-sub">Cook handoff · Today</div></div>
+      </div>
+      <div class="p20" style="flex:1;display:flex;flex-direction:column;gap:20px;">
+        <div style="display:flex;align-items:center;gap:10px;background:var(--surface-2);border:1px solid var(--border);border-radius:12px;padding:12px 14px;">
+          <div style="width:36px;height:36px;border-radius:50%;background:var(--wa);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px;">🎤</div>
+          <div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">Voice note · Hindi</div><div class="t-label" style="font-size:11px;margin-top:2px;">Generating…</div></div>
+          <div style="display:flex;gap:3px;align-items:center;" aria-hidden="true">
+            <div style="width:3px;height:10px;background:var(--wa);border-radius:2px;animation:wavebar 0.8s ease-in-out infinite alternate;"></div>
+            <div style="width:3px;height:16px;background:var(--wa);border-radius:2px;animation:wavebar 0.8s ease-in-out 0.15s infinite alternate;"></div>
+            <div style="width:3px;height:8px;background:var(--wa);border-radius:2px;animation:wavebar 0.8s ease-in-out 0.3s infinite alternate;"></div>
+            <div style="width:3px;height:14px;background:var(--wa);border-radius:2px;animation:wavebar 0.8s ease-in-out 0.45s infinite alternate;"></div>
+            <div style="width:3px;height:6px;background:var(--wa);border-radius:2px;animation:wavebar 0.8s ease-in-out 0.6s infinite alternate;"></div>
+          </div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <p class="t-label" style="font-size:12px;">Transcript preview</p>
+            <button class="btn-ghost" style="width:auto;padding:0;font-size:11px;color:var(--primary);" onclick="toggleTranscriptEdit()">Edit</button>
+          </div>
+          <div class="transcript-bubble" id="transcript-view"><!-- populated dynamically --></div>
+          <textarea id="transcript-edit" style="display:none;width:100%;min-height:120px;background:#e8f5e9;border:1.5px solid rgba(26,107,60,0.3);border-radius:var(--r) var(--r) 4px var(--r);padding:16px 18px;color:#1a3a1a;font-size:15px;line-height:1.6;font-family:inherit;outline:none;resize:vertical;"></textarea>
+          <div style="margin-top:8px;text-align:right;">
+            <button class="btn-ghost" style="width:auto;padding:0;font-size:11px;" onclick="toast('Contact re-select not shown in this prototype')">Wrong cook? Change contact</button>
+          </div>
+        </div>
+        <div class="spacer"></div>
+        <div class="gap-s" style="padding-bottom:4px;">
+          <button class="btn btn-wa" onclick="go('s-sent')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/></svg>
+            Send via WhatsApp
+          </button>
+          <button class="btn btn-o" onclick="copyTranscript()">Copy text</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ SENT ══════════════════════════════════════════════════ -->
+    <div class="screen" id="s-sent">
+      <div class="p20" style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:24px;">
+        <div style="text-align:center;">
+          <div style="width:72px;height:72px;border-radius:50%;background:var(--green-bg);border:1px solid var(--green-bdr);display:flex;align-items:center;justify-content:center;font-size:30px;margin:0 auto 20px;">✓</div>
+          <h2 class="t-head" style="margin-bottom:8px;">Sent. Done.</h2>
+          <p class="t-body" style="font-size:14px;" id="sent-subtext">Savitri got your voice note. Food is sorted.</p>
+        </div>
+        <div class="card" style="padding:4px 14px;" id="sent-card"><!-- populated dynamically --></div>
+        <div style="background:rgba(0,0,238,0.06);border:1px solid rgba(0,0,238,0.15);border-radius:12px;padding:14px 16px;">
+          <p style="font-size:13px;color:var(--muted);line-height:1.6;" id="sent-next-note">Next suggestion arrives <strong style="color:var(--text);">tomorrow at 7:15am</strong></p>
+        </div>
+        <div class="spacer"></div>
+        <button class="btn btn-p" onclick="go('s-day-view')">Back to today</button>
+      </div>
+    </div>
+
+    <!-- ══ SETTINGS ══════════════════════════════════════════════ -->
+    <div class="screen" id="s-settings">
+      <div class="p20" style="flex:1;display:flex;flex-direction:column;gap:20px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div><h1 class="t-sub">Preferences</h1><p class="t-label" style="margin-top:2px;">Tap any row to edit</p></div>
+          <div style="width:36px;height:36px;border-radius:50%;background:var(--surface-2);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--accent);border:1px solid var(--border);">K</div>
+        </div>
+        <div class="card" style="padding:4px 14px;" id="settings-prefs-card"><!-- populated dynamically --></div>
+        <div class="card" style="padding:4px 14px;" id="settings-cook-card"><!-- populated dynamically --></div>
+        <div class="spacer"></div>
+        <div class="gap-s">
+          <button class="btn-ghost" onclick="go('s-splash');toast('Signed out')">Sign out</button>
+          <p class="t-label" style="text-align:center;font-size:11px;">v0.1.0 · Private Preview</p>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /viewport -->
+
+  <!-- ══ TAB BAR ══════════════════════════════════════════════ -->
+  <div class="tab-bar" id="tab-bar" aria-label="Main navigation" role="tablist">
+    <button class="tab-item" id="tab-today" onclick="go('s-day-view')" role="tab" aria-label="Today">
+      <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+      Today
+    </button>
+    <button class="tab-item" id="tab-week" onclick="go('s-week-view')" role="tab" aria-label="Week">
+      <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Week
+    </button>
+    <button class="tab-item" id="tab-settings" onclick="go('s-settings')" role="tab" aria-label="Profile">
+      <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Profile
+    </button>
+  </div>
+  <div class="home-bar" aria-hidden="true"><div class="home-bar-pill"></div></div>
+</div><!-- /phone -->
+
+<!-- ══ NAV PANEL ════════════════════════════════════════════ -->
+<nav class="nav" aria-label="Prototype navigator">
+  <div class="nav-header">
+    <div class="nav-brand">MealCraft</div>
+    <div class="nav-ver">MVP Prototype · v4.0 · Data-driven</div>
+  </div>
+  <div class="nlabel">First launch</div>
+  <button class="nitem on" id="n-s-splash"    onclick="go('s-splash')"><span class="ndot"></span>Welcome</button>
+  <button class="nitem"    id="n-s-signup"    onclick="go('s-signup')"><span class="ndot"></span>Sign up</button>
+  <button class="nitem"    id="n-s-signin"    onclick="go('s-signin')"><span class="ndot"></span>Sign in</button>
+  <div class="nlabel">Onboarding</div>
+  <button class="nitem"    id="n-s-ob1"       onclick="go('s-ob1')"><span class="ndot"></span>1 · Diet &amp; Allergies</button>
+  <button class="nitem"    id="n-s-ob2"       onclick="go('s-ob2')"><span class="ndot"></span>2 · Cuisines &amp; Dislikes</button>
+  <button class="nitem"    id="n-s-ob3"       onclick="go('s-ob3')"><span class="ndot"></span>3 · Goal &amp; Household</button>
+  <button class="nitem"    id="n-s-ob4"       onclick="go('s-ob4')"><span class="ndot"></span>4 · Cook Schedule</button>
+  <button class="nitem"    id="n-s-ob-confirm" onclick="go('s-ob-confirm')"><span class="ndot"></span>Setup complete</button>
+  <button class="nitem"    id="n-s-generating" onclick="go('s-generating')"><span class="ndot ndot-grey"></span>Generating plan</button>
+  <div class="nlabel">Daily use</div>
+  <button class="nitem"    id="n-s-day-view"  onclick="go('s-day-view')"><span class="ndot"></span>Day View</button>
+  <button class="nitem"    id="n-s-week-view" onclick="go('s-week-view')"><span class="ndot"></span>Week View</button>
+  <div class="nlabel">Cook handoff</div>
+  <button class="nitem"    id="n-s-handoff-first" onclick="go('s-handoff-first')"><span class="ndot"></span>Contact select</button>
+  <button class="nitem"    id="n-s-handoff"   onclick="go('s-handoff')"><span class="ndot"></span>Transcript</button>
+  <button class="nitem"    id="n-s-sent"      onclick="go('s-sent')"><span class="ndot"></span>Sent ✓</button>
+  <div class="nlabel">Settings</div>
+  <button class="nitem"    id="n-s-settings"  onclick="go('s-settings')"><span class="ndot"></span>Preferences</button>
+  <div class="nav-legend">
+    <div style="font-size:10px;font-weight:700;color:var(--text);margin-bottom:6px;">Active profile</div>
+    <div id="nav-profile-badge" style="font-size:11px;color:var(--primary);font-weight:600;padding:6px 8px;background:rgba(0,0,238,0.06);border-radius:8px;border:1px solid rgba(0,0,238,0.15);">No profile matched yet</div>
+  </div>
+</nav>
+
+<script>
+// ── Load meal-data.json ─────────────────────────────────────────
+let DB = null;
+let activeProfile = null;
+
+fetch('meal-data.json')
+  .then(r => r.json())
+  .then(data => { DB = data; })
+  .catch(() => { console.warn('meal-data.json not found — using fallback'); });
+
+// ── App state ───────────────────────────────────────────────────
+let cur = 's-splash';
+let selectedCook = 'Savitri';
+let selectedDayIndex = 0;
+let transcriptEditing = false;
+let swapIdx = { breakfast:0, lunch:0, snack:0, dinner:0 };
+
+// onboarding selections (collected during OB flow)
+let obSelections = {
+  dietaryType: null, spice: null,
+  topCuisine: null, goal: null,
+  household: null, cookSetup: null
+};
+
+const TAB_SCREENS = new Set(['s-day-view','s-week-view','s-settings','s-sent']);
+const TAB_MAP = { 'tab-today':'s-day-view', 'tab-week':'s-week-view', 'tab-settings':'s-settings' };
+
+// ── Navigation ──────────────────────────────────────────────────
+function go(id) {
+  document.getElementById(cur).classList.remove('active');
+  document.getElementById('n-'+cur)?.classList.remove('on');
+  cur = id;
+  const s = document.getElementById(id);
+  s.classList.add('active');
+  document.getElementById('n-'+id)?.classList.add('on');
+  document.getElementById('vp').scrollTo(0,0);
+  closeSheet();
+  const tabBar = document.getElementById('tab-bar');
+  TAB_SCREENS.has(id) ? tabBar.classList.add('visible') : tabBar.classList.remove('visible');
+  Object.entries(TAB_MAP).forEach(([tabId, screenId]) => {
+    document.getElementById(tabId)?.classList.toggle('active', screenId===id);
+  });
+  // Rebuild dynamic screens on navigate
+  if (id==='s-day-view')   renderDayView();
+  if (id==='s-week-view')  renderWeekView();
+  if (id==='s-handoff')    renderTranscript();
+  if (id==='s-sent')       renderSentScreen();
+  if (id==='s-settings')   renderSettings();
+}
+
+// ── Profile matching ────────────────────────────────────────────
+function matchProfile() {
+  if (!DB) return null;
+  const sel = obSelections;
+  let candidates = DB.profiles;
+
+  // Step 1: match dietary type
+  let pool1 = candidates.filter(p => p.matching.dietaryType === sel.dietaryType);
+  if (pool1.length === 0) pool1 = candidates; // fallback: all
+
+  // Step 2: match cook setup
+  const cookVal = sel.cookSetup === 'yes' ? 'cook' : 'nocook';
+  let pool2 = pool1.filter(p => p.matching.cookSetup === cookVal);
+  if (pool2.length === 0) pool2 = pool1; // fallback: diet-matched pool
+
+  // Step 3: match goal
+  let pool3 = pool2.filter(p => p.matching.goal === sel.goal);
+  if (pool3.length === 0) pool3 = pool2; // fallback: cook-matched pool
+
+  // Pick first match (best fit)
+  return pool3[0] || candidates[0];
+}
+
+function applyProfile(profile) {
+  activeProfile = profile;
+  selectedDayIndex = 0;
+  swapIdx = { breakfast:0, lunch:0, snack:0, dinner:0 };
+  // Update nav badge
+  const badge = document.getElementById('nav-profile-badge');
+  if (badge) badge.textContent = profile.id + ' · ' + profile.settings.dietLabel + ' · ' + (profile.cook.hasCook ? 'Cook' : 'No cook') + ' · ' + profile.settings.goal;
+}
+
+// ── Confirm screen population ────────────────────────────────────
+// Label maps for live obSelections values
+const DIET_LABELS    = { vegetarian:'Vegetarian', eggetarian:'Eggetarian', nonveg:'Non-vegetarian' };
+const CUISINE_LABELS = { northIndian:'North Indian', southIndian:'South Indian', continental:'Continental', chinese:'Chinese', mediterranean:'Mediterranean' };
+const GOAL_LABELS    = { weightloss:'Weight loss', musclegain:'Muscle gain', wellness:'General wellness', none:'No specific goal' };
+const COOK_LABELS    = { yes:'Has a cook', no:'Self-cooking' };
+
+function renderConfirmScreen() {
+  const sel = obSelections;
+  const hasCook = sel.cookSetup === 'yes';
+
+  // Cook days chip — read live from the form
+  const cookDaysEl = document.querySelector('#g-cookdays .chip-sel.on');
+  const cookDaysMap = { weekdays:'Weekdays only', all7:'All 7 days' };
+  const cookLabel = hasCook
+    ? (cookDaysEl ? cookDaysMap[cookDaysEl.dataset.val] || cookDaysEl.textContent : 'Has a cook')
+    : 'Self-cooking';
+
+  const card = document.getElementById('confirm-summary-card');
+  card.innerHTML = `
+    <div class="summary-row"><span class="summary-icon">🥗</span><div><div class="summary-label">Diet</div><div class="summary-value">${DIET_LABELS[sel.dietaryType] || sel.dietaryType}</div></div></div>
+    <div class="summary-row"><span class="summary-icon">🍛</span><div><div class="summary-label">Top cuisine</div><div class="summary-value">${CUISINE_LABELS[sel.topCuisine] || sel.topCuisine}</div></div></div>
+    <div class="summary-row"><span class="summary-icon">💪</span><div><div class="summary-label">Goal</div><div class="summary-value">${GOAL_LABELS[sel.goal] || sel.goal}</div></div></div>
+    <div class="summary-row"><span class="summary-icon">👩‍🍳</span><div><div class="summary-label">${hasCook ? 'Cook days' : 'Setup'}</div><div class="summary-value">${cookLabel}</div></div></div>
+  `;
+}
+
+// ── Week strip renderer ──────────────────────────────────────────
+const DAY_ABBR = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+
+function renderWeekStrip() {
+  if (!activeProfile) return;
+  const stripEl = document.getElementById('week-strip');
+  if (!stripEl) return;
+  stripEl.innerHTML = activeProfile.weekPlan.map((day, i) => {
+    const isSelected = i === selectedDayIndex;
+    const hasCook = day.hasCook;
+    const dotStyle = hasCook
+      ? 'background:var(--primary);'
+      : 'background:rgba(75,76,77,0.25);';
+    const dateParts = day.date.split(' '); // e.g. "4 Aug" → ["4","Aug"]
+    return `
+      <div class="week-day${isSelected ? ' today' : ''}" role="listitem"
+           onclick="selectDay(${i})" style="cursor:pointer;"
+           aria-label="${day.day}${hasCook ? ', cook day' : ', no cook'}">
+        <div class="week-day-label">${DAY_ABBR[i]}</div>
+        <div class="week-day-num">${dateParts[0]}</div>
+        <div class="week-day-dot" style="${isSelected ? '' : dotStyle}"></div>
+      </div>`;
+  }).join('');
+}
+
+function selectDay(index) {
+  selectedDayIndex = index;
+  swapIdx = { breakfast:0, lunch:0, snack:0, dinner:0 };
+  renderWeekStrip();
+  renderDayViewContent();
+}
+
+// ── Day View renderer ────────────────────────────────────────────
+function renderDayView() {
+  if (!activeProfile) return;
+  renderWeekStrip();
+  renderDayViewContent();
+}
+
+function renderDayViewContent() {
+  if (!activeProfile) return;
+  const day = activeProfile.weekPlan[selectedDayIndex];
+  const hasCookToday = day.hasCook;
+
+  // Update date label
+  const dateEl = document.getElementById('day-view-date');
+  if (dateEl) dateEl.textContent = day.day + ', ' + day.date;
+
+  const mealsEl = document.getElementById('day-view-meals');
+  mealsEl.innerHTML = day.meals.map(m => buildMealRow(m, hasCookToday)).join('');
+
+  const ctaEl = document.getElementById('day-view-cta');
+  if (hasCookToday) {
+    ctaEl.innerHTML = `
+      <button class="btn btn-wa" onclick="go('s-handoff-first')" aria-label="Send meals to cook via WhatsApp">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/></svg>
+        Send to cook
+      </button>`;
+  } else {
+    ctaEl.innerHTML = `<button class="btn btn-p" onclick="toast('Recipe view — not shown in this prototype')">I'll cook this</button>`;
+  }
+}
+
+function buildMealRow(m, hasCookToday) {
+  // hasCookToday = the selected day's hasCook flag
+  const cookLabel = (hasCookToday && m.cook) ? ' · Cook' : (hasCookToday && !m.cook) ? ' · Self' : '';
+  const swapBtnHtml = (hasCookToday && m.cook)
+    ? `<button class="swap-btn" id="sb-${m.slot}" onclick="openSwap('${m.slot}')" aria-label="Swap ${m.label}">Swap</button>`
+    : (hasCookToday && !m.cook ? `<span style="font-size:11px;color:var(--muted);flex-shrink:0;">Self</span>` : '');
+  const mutedClass = (hasCookToday && !m.cook) ? ' meal-muted' : '';
+  return `
+    <div class="meal-row${mutedClass}" id="mr-${m.slot}">
+      <div style="font-size:22px;width:32px;text-align:center;flex-shrink:0;">${m.emoji}</div>
+      <div class="meal-info">
+        <div class="meal-type">${m.label}${cookLabel}</div>
+        <div class="meal-name" id="mn-${m.slot}">${m.name}</div>
+        <div class="meal-tag" id="mt-${m.slot}">${m.tag}</div>
+      </div>
+      ${swapBtnHtml}
+    </div>`;
+}
+
+// ── Week View renderer ───────────────────────────────────────────
+function renderWeekView() {
+  if (!activeProfile) return;
+  const el = document.getElementById('week-view-cards');
+  el.innerHTML = activeProfile.weekPlan.map((day, i) => {
+    const isSelected = i === selectedDayIndex;
+    const cookMeals = day.meals.filter(m => m.cook);
+    const hasCookDay = day.hasCook;
+    const summaryText = hasCookDay
+      ? cookMeals.map(m => m.label).join(' · ')
+      : 'No cook today';
+    const summaryStyle = hasCookDay
+      ? 'color:var(--muted);font-size:12px;'
+      : 'color:rgba(75,76,77,0.45);font-size:12px;font-style:italic;';
+    const mealsHtml = isSelected ? day.meals.map(m => `
+      <div style="font-size:13px;color:${hasCookDay && m.cook ? 'var(--text)' : 'var(--muted)'};line-height:2;">
+        ${m.emoji} ${m.label}${hasCookDay && m.cook ? ' · <strong style="color:var(--text);">'+m.name+'</strong>' : ' · <span style="color:rgba(75,76,77,0.5);">'+m.name+'</span>'}
+      </div>`).join('') : '';
+    return `
+      <div class="card" style="padding:14px 16px;cursor:pointer;" onclick="jumpToDay(${i})">
+        <div style="display:flex;justify-content:space-between;align-items:center;${isSelected?'margin-bottom:10px;':''}">
+          <span class="t-caps">${day.day}, ${day.date}</span>
+          ${isSelected
+            ? '<span style="font-size:11px;background:rgba(0,0,238,0.10);color:var(--accent);border-radius:10px;padding:2px 8px;font-weight:700;">Selected</span>'
+            : `<span style="${summaryStyle}">${summaryText}</span>`}
+        </div>
+        ${mealsHtml}
+      </div>`;
+  }).join('');
+}
+
+function jumpToDay(index) {
+  selectedDayIndex = index;
+  swapIdx = { breakfast:0, lunch:0, snack:0, dinner:0 };
+  go('s-day-view');
+}
+
+// ── Transcript renderer ──────────────────────────────────────────
+function renderTranscript() {
+  if (!activeProfile) return;
+  const cookName = document.getElementById('handoff-cook-name');
+  if (cookName) cookName.textContent = 'Sending to ' + selectedCook;
+  const view = document.getElementById('transcript-view');
+  const edit = document.getElementById('transcript-edit');
+  const html = buildTranscriptHTML();
+  if (view) view.innerHTML = html;
+  if (edit) edit.value = buildTranscriptPlain();
+  transcriptEditing = false;
+  if (view) view.style.display = 'block';
+  if (edit) edit.style.display = 'none';
+  const editBtn = document.querySelector('[onclick="toggleTranscriptEdit()"]');
+  if (editBtn) editBtn.textContent = 'Edit';
+}
+
+function buildTranscriptHTML() {
+  if (!activeProfile || !activeProfile.hindiTranscript) return '<em>No transcript available for this profile.</em>';
+  const day = activeProfile.weekPlan[selectedDayIndex];
+  const cookMeals = day.meals.filter(m => m.cook);
+  const lines = activeProfile.hindiTranscript.lines;
+  return cookMeals.map(m => {
+    const tpl = lines[m.slot] || 'Aaj {slot} mein {dish} banao.';
+    return tpl.replace('{dish}', `<strong>${m.name.toLowerCase()}</strong>`);
+  }).join('<br/>');
+}
+
+function buildTranscriptPlain() {
+  if (!activeProfile || !activeProfile.hindiTranscript) return '';
+  const day = activeProfile.weekPlan[selectedDayIndex];
+  const cookMeals = day.meals.filter(m => m.cook);
+  const lines = activeProfile.hindiTranscript.lines;
+  return cookMeals.map(m => {
+    const tpl = lines[m.slot] || 'Aaj {slot} mein {dish} banao.';
+    return tpl.replace('{dish}', m.name.toLowerCase()).replace(/<[^>]+>/g,'');
+  }).join('\n');
+}
+
+// ── Sent screen renderer ─────────────────────────────────────────
+function renderSentScreen() {
+  if (!activeProfile) return;
+  const day = activeProfile.weekPlan[selectedDayIndex];
+  const cookMeals = day.meals.filter(m => m.cook);
+  const subtext = document.getElementById('sent-subtext');
+  if (subtext) subtext.textContent = selectedCook + ' got your voice note. Food is sorted.';
+  const noteEl = document.getElementById('sent-next-note');
+  const time = activeProfile.cook.notificationTime || '7:00am';
+  if (noteEl) noteEl.innerHTML = `Next suggestion arrives <strong style="color:var(--text);">tomorrow at ${time}</strong>`;
+  const card = document.getElementById('sent-card');
+  if (card) {
+    card.innerHTML = `<div class="t-label" style="font-size:11px;margin:10px 0 6px;">Sent to ${selectedCook} · Today</div>` +
+      cookMeals.map(m => `
+        <div class="meal-row" style="padding:10px 0;">
+          <div style="font-size:18px;width:28px;text-align:center;flex-shrink:0;">${m.emoji}</div>
+          <div style="flex:1;">
+            <div style="font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:0.5px;">${m.label}</div>
+            <div style="font-size:14px;font-weight:700;color:var(--text);">${m.name}</div>
+          </div>
+          <span style="font-size:11px;font-weight:700;color:var(--green);background:var(--green-bg);border:1px solid var(--green-bdr);border-radius:10px;padding:3px 8px;">Sent ✓</span>
+        </div>`).join('');
+  }
+}
+
+// ── Settings renderer ────────────────────────────────────────────
+function renderSettings() {
+  if (!activeProfile) return;
+  const s = activeProfile.settings;
+  const prefsCard = document.getElementById('settings-prefs-card');
+  prefsCard.innerHTML = [
+    ['🥩','Diet type', s.dietLabel],
+    ['🍛','Top cuisine', s.topCuisine],
+    ['💪','Health goal', s.goal],
+    ['🏠','Household size', s.household],
+    ['🚫','Disliked ingredients', s.dislikes],
+  ].map(([icon,label,val]) => `
+    <div class="setting-row" onclick="toast('Editing not shown in prototype')">
+      <span class="setting-icon">${icon}</span>
+      <div style="flex:1;"><div class="setting-label">${label}</div><div class="setting-value">${val}</div></div>
+      <span class="setting-chevron">›</span>
+    </div>`).join('');
+  const cookCard = document.getElementById('settings-cook-card');
+  cookCard.innerHTML = [
+    ['👩‍🍳','Cook schedule', s.cookSchedule],
+    ['📲',"Cook's WhatsApp", activeProfile.cook.hasCook ? 'Savitri · +91 98765 43210' : '—'],
+    ['🔔','Notification time', s.notificationTime],
+  ].map(([icon,label,val]) => `
+    <div class="setting-row" onclick="toast('Editing not shown in prototype')">
+      <span class="setting-icon">${icon}</span>
+      <div style="flex:1;"><div class="setting-label">${label}</div><div class="setting-value">${val}</div></div>
+      <span class="setting-chevron">›</span>
+    </div>`).join('');
+}
+
+// ── Swap logic ───────────────────────────────────────────────────
+function openSwap(slot) {
+  if (!activeProfile) return;
+  const opts = activeProfile.swapOptions[slot];
+  const idx = swapIdx[slot];
+  const curName = document.getElementById('mn-'+slot)?.textContent || '';
+  const html = `
+    <div style="margin-bottom:14px;">
+      <div style="font-weight:700;color:var(--text);font-size:16px;margin-bottom:4px;">Swap ${slot}?</div>
+      <div class="t-label" style="font-size:13px;">Alternative for <em>${curName}</em></div>
+    </div>
+    <div class="card" style="margin-bottom:14px;animation:none;">
+      <div style="font-size:16px;font-weight:600;color:var(--text);" id="swap-name">${opts[idx].name}</div>
+      <div class="t-label" style="font-size:12px;margin-top:4px;" id="swap-tag">${opts[idx].tag}</div>
+    </div>
+    <div class="gap-s">
+      <button class="btn btn-p" onclick="confirmSwap('${slot}')">Use this</button>
+      <button class="btn btn-o" onclick="seeAnother('${slot}')">See another</button>
+      <button class="btn-ghost" onclick="closeSheet()">Cancel — keep ${curName}</button>
+    </div>`;
+  openSheet(html);
+}
+
+function seeAnother(slot) {
+  if (!activeProfile) return;
+  const opts = activeProfile.swapOptions[slot];
+  swapIdx[slot]++;
+  if (swapIdx[slot] >= opts.length) {
+    swapIdx[slot] = opts.length - 1;
+    toast("That's all we have for today");
+    return;
+  }
+  const o = opts[swapIdx[slot]];
+  document.getElementById('swap-name').textContent = o.name;
+  document.getElementById('swap-tag').textContent  = o.tag;
+}
+
+function confirmSwap(slot) {
+  if (!activeProfile) return;
+  const o = activeProfile.swapOptions[slot][swapIdx[slot]];
+  // Update day view row
+  const nameEl = document.getElementById('mn-'+slot);
+  const tagEl  = document.getElementById('mt-'+slot);
+  if (nameEl) nameEl.textContent = o.name;
+  if (tagEl)  tagEl.textContent  = o.tag;
+  const btn = document.getElementById('sb-'+slot);
+  if (btn) { btn.textContent = 'Swapped'; btn.classList.add('swapped'); }
+  // Mutate active profile day data so transcript picks it up
+  const meal = activeProfile.weekPlan[selectedDayIndex].meals.find(m => m.slot===slot);
+  if (meal) { meal.name = o.name; meal.tag = o.tag; }
+  closeSheet();
+  toast('Swapped to ' + o.name);
+}
+
+// ── OB flow ──────────────────────────────────────────────────────
+function ob1Next() {
+  const hasDiet = !!document.querySelector('#g-diet .chip-sel.on');
+  if (!hasDiet) {
+    const grp = document.getElementById('g-diet');
+    grp.classList.add('shake');
+    setTimeout(() => grp.classList.remove('shake'), 300);
+    toast('Pick a dietary type to continue');
+    return;
+  }
+  go('s-ob2');
+}
+
+function ob3Next() {
+  const missing = ['g-goal','g-household'].find(id => !document.querySelector('#'+id+' .chip-sel.on'));
+  if (missing) {
+    const grp = document.getElementById(missing);
+    grp.classList.add('shake');
+    setTimeout(() => grp.classList.remove('shake'), 300);
+    toast('Pick one to continue');
+    return;
+  }
+  go('s-ob4');
+}
+
+function ob4Done() {
+  // Collect all onboarding selections
+  const dietEl  = document.querySelector('#g-diet .chip-sel.on');
+  const spiceEl = document.querySelector('#g-spice .chip-sel.on');
+  const goalEl  = document.querySelector('#g-goal .chip-sel.on');
+  const hhEl    = document.querySelector('#g-household .chip-sel.on');
+  const cuisineEl = document.querySelector('#rank-cuisines .rank-item');
+  const cookEl  = document.querySelector('#g-hascook .chip-sel.on');
+
+  obSelections = {
+    dietaryType: dietEl?.dataset.val || 'vegetarian',
+    spice:       spiceEl?.dataset.val || 'medium',
+    topCuisine:  cuisineEl?.dataset.cuisine || 'northIndian',
+    goal:        goalEl?.dataset.val || 'none',
+    household:   hhEl?.dataset.val || '1',
+    cookSetup:   cookEl?.dataset.val || 'no'
+  };
+
+  // Match profile
+  const matched = matchProfile();
+  if (matched) {
+    // Check veg-lock: non-veg selected but profile is veg-locked
+    if (obSelections.dietaryType === 'nonveg' && matched.vegLockTriggered) {
+      openSheet(`
+        <div style="margin-bottom:14px;">
+          <div style="font-size:18px;margin-bottom:10px;">🔒</div>
+          <div style="font-weight:700;color:var(--text);font-size:16px;margin-bottom:8px;">Looks like you're eating vegetarian for now</div>
+          <div class="t-body" style="font-size:14px;">We'll suggest accordingly. You can update this in your preferences anytime.</div>
+        </div>
+        <button class="btn btn-p" onclick="closeSheet();finaliseProfile()">Got it</button>
+      `);
+    } else {
+      finaliseProfile();
+    }
+  } else {
+    toast('Could not match a profile — using default');
+    finaliseProfile();
+  }
+}
+
+function finaliseProfile() {
+  closeSheet();
+  const matched = matchProfile();
+  applyProfile(matched || DB?.profiles[0]);
+  renderConfirmScreen();
+  go('s-ob-confirm');
+}
+
+// ── Generating screen ────────────────────────────────────────────
+function startGenerating() {
+  go('s-generating');
+  // Simulate 2.2s generation, then go straight to Day View
+  setTimeout(() => go('s-day-view'), 2200);
+}
+
+// ── Auth ─────────────────────────────────────────────────────────
+function doSignUp() {
+  const email = document.getElementById('signup-email').value.trim();
+  const pass  = document.getElementById('signup-password').value;
+  const errEl = document.getElementById('signup-error');
+  if (email==='karan@example.com' && pass==='abcd1234') {
+    errEl.style.display = 'none';
+    go('s-ob1');
+  } else {
+    errEl.style.display = 'block';
+    document.getElementById('signup-password').value = '';
+    shake('signup-email');
+  }
+}
+
+function openSignIn() {
+  ['signin-email','signin-password'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  document.getElementById('signin-error').style.display='none';
+  go('s-signin');
+}
+
+function doSignIn() {
+  const email = document.getElementById('signin-email').value.trim();
+  const pass  = document.getElementById('signin-password').value;
+  const errEl = document.getElementById('signin-error');
+  if (email==='karan@example.com' && pass==='abcd1234') {
+    errEl.style.display='none';
+    // Returning user — use default profile P01 if no selection
+    if (!activeProfile && DB) applyProfile(DB.profiles[0]);
+    go('s-day-view');
+  } else {
+    errEl.style.display='block';
+    document.getElementById('signin-password').value='';
+    shake('signin-email');
+  }
+}
+
+function shake(id) {
+  const el = document.getElementById(id)?.closest('.gap-m');
+  if (!el) return;
+  el.classList.add('shake');
+  setTimeout(() => el.classList.remove('shake'), 300);
+}
+
+// ── Contact selection ────────────────────────────────────────────
+function selectContact(name) {
+  selectedCook = name;
+  go('s-handoff');
+}
+
+function openManualNumber() {
+  openSheet(`
+    <div style="margin-bottom:14px;">
+      <div style="font-weight:700;color:var(--text);font-size:16px;margin-bottom:4px;">Enter cook's number</div>
+      <div class="t-label" style="font-size:13px;">We'll save this for every morning.</div>
+    </div>
+    <div class="gap-s">
+      <input type="tel" placeholder="+91 98765 43210" id="manual-num"
+        style="width:100%;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);padding:13px 14px;color:var(--text);font-family:inherit;font-size:16px;outline:none;"/>
+      <button class="btn btn-p" onclick="confirmManualNumber()">Save &amp; continue</button>
+      <button class="btn-ghost" onclick="closeSheet()">Cancel</button>
+    </div>`);
+}
+
+function confirmManualNumber() {
+  const num = document.getElementById('manual-num')?.value || '+91 00000 00000';
+  if (!num.trim()) { toast('Enter a number first'); return; }
+  selectContact('Cook ('+num.trim()+')');
+}
+
+// ── Chip pickers ─────────────────────────────────────────────────
+function pickChip(el, groupId, mode) {
+  const grp = document.getElementById(groupId);
+  if (mode==='single') {
+    grp.querySelectorAll('.chip-sel').forEach(c => c.classList.remove('on'));
+    el.classList.add('on');
+  } else {
+    if (el.dataset.val==='none') {
+      grp.querySelectorAll('.chip-sel').forEach(c => c.classList.remove('on'));
+      el.classList.add('on');
+    } else {
+      grp.querySelector('[data-val="none"]')?.classList.remove('on');
+      el.classList.toggle('on');
+    }
+  }
+}
+
+function toggleCookMeal(el) {
+  el.classList.toggle('on');
+}
+
+function showCookFields(show) {
+  document.getElementById('cook-fields').style.display = show ? 'flex' : 'none';
+}
+
+// ── Transcript edit toggle ───────────────────────────────────────
+function toggleTranscriptEdit() {
+  transcriptEditing = !transcriptEditing;
+  const view = document.getElementById('transcript-view');
+  const edit = document.getElementById('transcript-edit');
+  const btn  = event.target;
+  if (transcriptEditing) {
+    edit.value = view.innerText;
+    view.style.display = 'none';
+    edit.style.display = 'block';
+    edit.focus();
+    btn.textContent = 'Done';
+  } else {
+    view.innerText = edit.value;
+    edit.style.display = 'none';
+    view.style.display = 'block';
+    btn.textContent = 'Edit';
+  }
+}
+
+function copyTranscript() {
+  const edit = document.getElementById('transcript-edit');
+  const txt = (transcriptEditing && edit) ? edit.value : buildTranscriptPlain();
+  navigator.clipboard?.writeText(txt);
+  toast('Transcript copied — paste into any chat');
+}
+
+// ── Sheet helpers ────────────────────────────────────────────────
+function openSheet(html) {
+  document.getElementById('sheet-content').innerHTML = html;
+  document.getElementById('backdrop').classList.add('open');
+  document.getElementById('sheet').classList.add('open');
+}
+function closeSheet() {
+  document.getElementById('backdrop').classList.remove('open');
+  document.getElementById('sheet').classList.remove('open');
+}
+
+// ── Toast ────────────────────────────────────────────────────────
+let _tt;
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(_tt);
+  _tt = setTimeout(() => t.classList.remove('show'), 2400);
+}
+
+// ── Drag-to-rank ─────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  const list = document.getElementById('rank-cuisines');
+  if (!list) return;
+  let dragged = null;
+  list.addEventListener('dragstart', e => { dragged = e.target.closest('.rank-item'); if(dragged) dragged.style.opacity='0.5'; });
+  list.addEventListener('dragend', () => {
+    if (dragged) dragged.style.opacity='';
+    list.querySelectorAll('.rank-item').forEach((it,i) => { it.querySelector('.rank-num').textContent = i+1; it.classList.remove('drag-over'); });
+    dragged = null;
+  });
+  list.addEventListener('dragover', e => {
+    e.preventDefault();
+    const target = e.target.closest('.rank-item');
+    if (target && target!==dragged) {
+      list.querySelectorAll('.rank-item').forEach(i => i.classList.remove('drag-over'));
+      target.classList.add('drag-over');
+      const after = e.clientY - target.getBoundingClientRect().top > target.getBoundingClientRect().height/2;
+      after ? target.after(dragged) : list.insertBefore(dragged, target);
+    }
+  });
+
+  // Pre-load default profile P01 for sign-in shortcut
+  const checkDB = setInterval(() => {
+    if (DB) {
+      applyProfile(DB.profiles[0]);
+      clearInterval(checkDB);
+    }
+  }, 100);
+});
+</script>
+</body>
+</html>

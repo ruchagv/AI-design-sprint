@@ -1,0 +1,964 @@
+{
+  "matchingPriority": ["dietaryType", "cookSetup", "goal"],
+  "profiles": [
+    {
+      "id": "P01",
+      "meta": { "name": "Karan", "city": "Bengaluru" },
+      "matching": {
+        "dietaryType": "vegetarian",
+        "cookSetup": "cook",
+        "goal": "none",
+        "topCuisine": "northIndian",
+        "household": "1",
+        "spice": "medium"
+      },
+      "settings": {
+        "dietLabel": "Vegetarian",
+        "topCuisine": "North Indian",
+        "goal": "No specific goal",
+        "household": "Just me",
+        "cookSchedule": "Weekdays · Breakfast & Lunch",
+        "dislikes": "None",
+        "notificationTime": "7:15am daily"
+      },
+      "cook": {
+        "hasCook": true,
+        "days": "Weekdays only (Mon–Fri)",
+        "arrivalTime": "Before 8am",
+        "meals": ["breakfast", "lunch"],
+        "notificationTime": "7:15am"
+      },
+      "confirmationSummary": {
+        "dietIcon": "🥗",
+        "dietLabel": "Vegetarian",
+        "cuisineIcon": "🍛",
+        "cuisineLabel": "North Indian",
+        "goalIcon": "🎯",
+        "goalLabel": "No specific goal",
+        "cookIcon": "👩‍🍳",
+        "cookLabel": "Weekdays · Breakfast & Lunch",
+        "notificationNote": "Every morning at 7:15am, you'll get your meal plan."
+      },
+      "weekPlan": [
+        {
+          "day": "Monday", "date": "4 Aug", "hasCook": true,
+          "meals": [
+            { "slot": "breakfast", "label": "Breakfast", "emoji": "🌅", "name": "Poha", "tag": "North Indian · Light", "cook": true },
+            { "slot": "lunch",     "label": "Lunch",     "emoji": "☀️", "name": "Dal Chawal", "tag": "North Indian · Comfort", "cook": true },
+            { "slot": "snack",     "label": "Evening snack", "emoji": "🫘", "name": "Roasted chana", "tag": "Quick snack", "cook": false },
+            { "slot": "dinner",    "label": "Dinner",    "emoji": "🌙", "name": "Paneer butter masala + roti", "tag": "North Indian · Rich", "cook": false }
+          ]
+        },
+        {
+          "day": "Tuesday", "date": "5 Aug", "hasCook": true,
+          "meals": [
+            { "slot": "breakfast", "label": "Breakfast", "emoji": "🌅", "name": "Upma", "tag": "South Indian · Light", "cook": true },
+            { "slot": "lunch",     "label": "Lunch",     "emoji": "☀️", "name": "Rajma Chawal", "tag": "North Indian · High protein", "cook": true },
+            { "slot": "snack",     "label": "Evening snack", "emoji": "🫘", "name": "Mixed nuts", "tag": "No cook · Light", "cook": false },
+            { "slot": "dinner",    "label": "Dinner",    "emoji": "🌙", "name": "Palak paneer + rice", "tag": "North Indian · Healthy", "cook": false }
+          ]
+        },
+        {
+          "day": "Wednesday", "date": "6 Aug", "hasCook": true,
+          "meals": [
+            { "slot": "breakfast", "label": "Breakfast", "emoji": "🌅", "name": "Idli Sambar", "tag": "South Indian · Light", "cook": true },
+            { "slot": "lunch",     "label": "Lunch",     "emoji": "☀️", "name": "Chole Chawal", "tag": "North Indian · High protein", "cook": true },
+            { "slot": "snack",     "label": "Evening snack", "emoji": "🫘", "name": "Fruit bowl", "tag": "Light · Seasonal", "cook": false },
+            { "slot": "dinner",    "label": "Dinner",    "emoji": "🌙", "name": "Veg fried rice", "tag": "Chinese · Light", "cook": false }
+          ]
+        },
+        {
+          "day": "Thursday", "date": "7 Aug", "hasCook": true,
+          "meals": [
+            { "slot": "breakfast", "label": "Breakfast", "emoji": "🌅", "name": "Methi Paratha + curd", "tag": "North Indian · Filling", "cook": true },
+            { "slot": "lunch",     "label": "Lunch",     "emoji": "☀️", "name": "Kadhi Chawal", "tag": "North Indian · Comfort", "cook": true },
+            { "slot": "snack",     "label": "Evening snack", "emoji": "🫘", "name": "Roasted makhana", "tag": "Light · No cook", "cook": false },
+            { "slot": "dinner",    "label": "Dinner",    "emoji": "🌙", "name": "Paneer tikka + naan", "tag": "North Indian · Medium spice", "cook": false }
+          ]
+        },
+        {
+          "day": "Friday", "date": "8 Aug", "hasCook": true,
+          "meals": [
+            { "slot": "breakfast", "label": "Breakfast", "emoji": "🌅", "name": "Vegetable Dosa", "tag": "South Indian · Crispy", "cook": true },
+            { "slot": "lunch",     "label": "Lunch",     "emoji": "☀️", "name": "Matar Paneer + roti", "tag": "North Indian · Filling", "cook": true },
+            { "slot": "snack",     "label": "Evening snack", "emoji": "🫘", "name": "Sprout chaat", "tag": "High protein · Light", "cook": false },
+            { "slot": "dinner",    "label": "Dinner",    "emoji": "🌙", "name": "Veg Manchurian + noodles", "tag": "Chinese · Medium spice", "cook": false }
+          ]
+        },
+        {
+          "day": "Saturday", "date": "9 Aug", "hasCook": false,
+          "meals": [
+            { "slot": "breakfast", "label": "Breakfast", "emoji": "🌅", "name": "Banana + peanut butter toast", "tag": "Quick · No cook", "cook": false },
+            { "slot": "lunch",     "label": "Lunch",     "emoji": "☀️", "name": "Masala dosa", "tag": "South Indian · Crispy", "cook": false },
+            { "slot": "snack",     "label": "Evening snack", "emoji": "🫘", "name": "Mixed fruit", "tag": "Light · Seasonal", "cook": false },
+            { "slot": "dinner",    "label": "Dinner",    "emoji": "🌙", "name": "Paneer pizza", "tag": "Continental · Indulgent", "cook": false }
+          ]
+        },
+        {
+          "day": "Sunday", "date": "10 Aug", "hasCook": false,
+          "meals": [
+            { "slot": "breakfast", "label": "Breakfast", "emoji": "🌅", "name": "Aloo paratha + curd", "tag": "North Indian · Filling", "cook": false },
+            { "slot": "lunch",     "label": "Lunch",     "emoji": "☀️", "name": "Veg biryani", "tag": "North Indian · Festive", "cook": false },
+            { "slot": "snack",     "label": "Evening snack", "emoji": "🫘", "name": "Roasted chana", "tag": "Quick snack", "cook": false },
+            { "slot": "dinner",    "label": "Dinner",    "emoji": "🌙", "name": "Dal makhani + naan", "tag": "North Indian · Rich", "cook": false }
+          ]
+        }
+      ],
+      "swapOptions": {
+        "breakfast": [
+          { "name": "Poha", "tag": "North Indian · Light" },
+          { "name": "Upma", "tag": "South Indian · Light" },
+          { "name": "Methi Paratha", "tag": "North Indian · Filling" }
+        ],
+        "lunch": [
+          { "name": "Dal Chawal", "tag": "North Indian · Comfort" },
+          { "name": "Rajma Chawal", "tag": "North Indian · High protein" },
+          { "name": "Chole Chawal", "tag": "North Indian · High protein" }
+        ],
+        "snack": [
+          { "name": "Roasted chana", "tag": "Quick snack" },
+          { "name": "Mixed nuts", "tag": "High protein · No cook" },
+          { "name": "Fruit bowl", "tag": "Light · Seasonal" }
+        ],
+        "dinner": [
+          { "name": "Paneer butter masala + roti", "tag": "North Indian · Rich" },
+          { "name": "Veg fried rice", "tag": "Chinese · Light" },
+          { "name": "Palak paneer + rice", "tag": "North Indian · Healthy" }
+        ]
+      },
+      "hindiTranscript": {
+        "template": "cook-meals",
+        "lines": {
+          "breakfast": "Aaj breakfast mein {dish} banao.",
+          "lunch": "Lunch mein {dish} banao.",
+          "snack": "Shaam ka snack: {dish}.",
+          "dinner": "Dinner mein {dish} banao."
+        }
+      },
+      "notification": {
+        "title": "Today's meals are ready 🍽",
+        "bodyTemplate": "Breakfast: {breakfast} · Lunch: {lunch}"
+      }
+    },
+    {
+      "id": "P02",
+      "meta": { "name": "Karan", "city": "Mumbai" },
+      "matching": {
+        "dietaryType": "nonveg",
+        "cookSetup": "cook",
+        "goal": "musclegain",
+        "topCuisine": "northIndian",
+        "household": "1",
+        "spice": "spicy"
+      },
+      "settings": {
+        "dietLabel": "Non-vegetarian",
+        "topCuisine": "North Indian",
+        "goal": "Muscle gain",
+        "household": "Just me",
+        "cookSchedule": "All 7 days · Breakfast, Lunch & Dinner",
+        "dislikes": "None",
+        "notificationTime": "7:15am daily"
+      },
+      "cook": {
+        "hasCook": true,
+        "days": "All 7 days",
+        "arrivalTime": "Before 8am",
+        "meals": ["breakfast", "lunch", "dinner"],
+        "notificationTime": "7:15am"
+      },
+      "confirmationSummary": {
+        "dietIcon": "🥩",
+        "dietLabel": "Non-vegetarian",
+        "cuisineIcon": "🍛",
+        "cuisineLabel": "North Indian",
+        "goalIcon": "💪",
+        "goalLabel": "Muscle gain",
+        "cookIcon": "👩‍🍳",
+        "cookLabel": "All 7 days · Breakfast, Lunch & Dinner",
+        "notificationNote": "Every morning at 7:15am, you'll get your meal plan."
+      },
+      "weekPlan": [
+        {
+          "day": "Monday", "date": "4 Aug", "hasCook": true,
+          "meals": [
+            { "slot": "breakfast", "label": "Breakfast", "emoji": "🌅", "name": "Egg bhurji + toast", "tag": "High protein · Quick", "cook": true },
+            { "slot": "lunch",     "label": "Lunch",     "emoji": "☀️", "name": "Chicken curry + rice", "tag": "High protein · Spicy", "cook": true },
+            { "slot": "snack",     "label": "Evening snack", "emoji": "🫘", "name": "Boiled eggs", "tag": "High protein · No cook", "cook": false },
+            { "slot": "dinner",    "label": "Dinner",    "emoji": "🌙", "name": "Grilled chicken + roti", "tag": "High protein · Spicy", "cook": true }
+          ]
+        },
+        {
+          "day": "Tuesday", "date": "5 Aug", "hasCook": true,
+          "meals": [
+            { "slot": "breakfast", "label": "Breakfast", "emoji": "🌅", "name": "Omelette + paratha", "tag": "High protein · Filling", "cook": true },
+            { "slot": "lunch",     "label": "Lunch",     "emoji": "☀️", "name": "Chicken biryani", "tag": "North Indian · Spicy", "cook": true },
+            { "slot": "snack",     "label": "Evening snack", "emoji": "🫘", "name": "Mixed nuts", "tag": "High protein · No cook", "cook": false },
+            { "slot": "dinner",    "label": "Dinner",    "emoji": "🌙", "name": "Chicken keema + roti", "tag": "High protein · Spicy", "cook": true }
+          ]
+        },
+        {
+          "day": "Wednesday", "date": "6 Aug", "hasCook": true,
+          "meals": [
+            { "slot": "breakfast", "label": "Breakfast", "emoji": "🌅", "name": "Boiled egg + poha", "tag": "High protein · Light", "cook": true },
+            { "slot": "lunch",     "label": "Lunch",     "emoji": "☀️", "name": "Dal + chicken tikka", "tag": "High protein · North Indian", "cook": true },
+            { "slot": "snack",     "label": "Evening snack", "emoji": "🫘", "name": "Protein bar", "tag": "Quick · High protein", "cook": false },
+            { "slot": "dinner",    "label": "Dinner",    "emoji": "🌙", "name": "Butter chicken + naan", "tag": "North Indian · Rich", "cook": true }
+          ]
+        },
+        {
+          "day": "Thursday", "date": "7 Aug", "hasCook": true,
+          "meals": [
+            { "slot": "breakfast", "label": "Breakfast", "emoji": "🌅", "name": "Chicken sandwich", "tag": "High protein · Continental", "cook": true },
+            { "slot": "lunch",     "label": "Lunch",     "emoji": "☀️", "name": "Rajma Chawal", "tag": "North Indian · High protein", "cook": true },
+            { "slot": "snack",     "label": "Evening snack", "emoji": "🫘", "name": "Boiled eggs", "tag": "High protein · No cook", "cook": false },
+            { "slot": "dinner",    "label": "Dinner",    "emoji": "🌙", "name": "Chicken stir fry + rice", "tag": "Chinese · Spicy", "cook": true }
+          ]
+        },
+        {
+          "day": "Friday", "date": "8 Aug", "hasCook": true,
+          "meals": [
+            { "slot": "breakfast", "label": "Breakfast", "emoji": "🌅", "name": "Egg paratha", "tag": "North Indian · Filling", "cook": true },
+            { "slot": "lunch",     "label": "Lunch",     "emoji": "☀️", "name": "Chole Chawal", "tag": "North Indian · High protein", "cook": true },
+            { "slot": "snack",     "label": "Evening snack", "emoji": "🫘", "name": "Roasted chana", "tag": "Quick snack", "cook": false },
+            { "slot": "dinner",    "label": "Dinner",    "emoji": "🌙", "name": "Chicken rogan josh + rice", "tag": "North Indian · Spicy", "cook": true }
+          ]
+        },
+        {
+          "day": "Saturday", "date": "9 Aug", "hasCook": true,
+          "meals": [
+            { "slot": "breakfast", "label": "Breakfast", "emoji": "🌅", "name": "Masala omelette", "tag": "High protein · Spicy", "cook": true },
+            { "slot": "lunch",     "label": "Lunch",     "emoji": "☀️", "name": "Chicken fried rice", "tag": "Chinese · Spicy", "cook": true },
+            { "slot": "snack",     "label": "Evening snack", "emoji": "🫘", "name": "Mixed nuts", "tag": "High protein · No cook", "cook": false },
+            { "slot": "dinner",    "label": "Dinner",    "emoji": "🌙", "name": "Chicken seekh kebab + salad", "tag": "High protein · Spicy", "cook": true }
+          ]
+        },
+        {
+          "day": "Sunday", "date": "10 Aug", "hasCook": true,
+          "meals": [
+            { "slot": "breakfast", "label": "Breakfast", "emoji": "🌅", "name": "Egg dosa", "tag": "South Indian · High protein", "cook": true },
+            { "slot": "lunch",     "label": "Lunch",     "emoji": "☀️", "name": "Chicken pulao", "tag": "North Indian · Festive", "cook": true },
+            { "slot": "snack",     "label": "Evening snack", "emoji": "🫘", "name": "Boiled eggs", "tag": "High protein · No cook", "cook": false },
+            { "slot": "dinner",    "label": "Dinner",    "emoji": "🌙", "name": "Chicken saag + roti", "tag": "North Indian · Spicy", "cook": true }
+          ]
+        }
+      ],
+      "swapOptions": {
+        "breakfast": [
+          { "name": "Egg bhurji + toast", "tag": "High protein · Quick" },
+          { "name": "Omelette + paratha", "tag": "High protein · Filling" },
+          { "name": "Boiled egg + poha", "tag": "High protein · Light" }
+        ],
+        "lunch": [
+          { "name": "Chicken curry + rice", "tag": "High protein · Spicy" },
+          { "name": "Chicken biryani", "tag": "North Indian · Spicy" },
+          { "name": "Dal + chicken tikka", "tag": "High protein · North Indian" }
+        ],
+        "snack": [
+          { "name": "Boiled eggs", "tag": "High protein · No cook" },
+          { "name": "Mixed nuts", "tag": "High protein · No cook" },
+          { "name": "Roasted chana", "tag": "Quick snack" }
+        ],
+        "dinner": [
+          { "name": "Grilled chicken + roti", "tag": "High protein · Spicy" },
+          { "name": "Butter chicken + naan", "tag": "North Indian · Rich" },
+          { "name": "Chicken stir fry + rice", "tag": "Chinese · Spicy" }
+        ]
+      },
+      "hindiTranscript": {
+        "template": "cook-meals",
+        "lines": {
+          "breakfast": "Aaj breakfast mein {dish} banao.",
+          "lunch": "Lunch mein {dish} banao.",
+          "snack": "Shaam ka snack: {dish}.",
+          "dinner": "Dinner mein {dish} banao."
+        }
+      },
+      "notification": {
+        "title": "Today's meals are ready 🍽",
+        "bodyTemplate": "Breakfast: {breakfast} · Lunch: {lunch}"
+      }
+    },
+    {
+      "id": "P03",
+      "meta": { "name": "Karan", "city": "Chennai" },
+      "matching": {
+        "dietaryType": "eggetarian",
+        "cookSetup": "cook",
+        "goal": "weightloss",
+        "topCuisine": "southIndian",
+        "household": "2",
+        "spice": "mild"
+      },
+      "settings": {
+        "dietLabel": "Eggetarian",
+        "topCuisine": "South Indian",
+        "goal": "Weight loss",
+        "household": "2 people",
+        "cookSchedule": "Weekdays · Breakfast & Lunch",
+        "dislikes": "None",
+        "notificationTime": "7:30am daily"
+      },
+      "cook": {
+        "hasCook": true,
+        "days": "Weekdays only (Mon–Fri)",
+        "arrivalTime": "8–9am",
+        "meals": ["breakfast", "lunch"],
+        "notificationTime": "7:30am"
+      },
+      "confirmationSummary": {
+        "dietIcon": "🥚",
+        "dietLabel": "Eggetarian",
+        "cuisineIcon": "🍚",
+        "cuisineLabel": "South Indian",
+        "goalIcon": "⚖️",
+        "goalLabel": "Weight loss",
+        "cookIcon": "👩‍🍳",
+        "cookLabel": "Weekdays · Breakfast & Lunch",
+        "notificationNote": "Every morning at 7:30am, you'll get your meal plan."
+      },
+      "weekPlan": [
+        {
+          "day": "Monday", "date": "4 Aug", "hasCook": true,
+          "meals": [
+            { "slot": "breakfast", "label": "Breakfast", "emoji": "🌅", "name": "Idli Sambar", "tag": "South Indian · Light", "cook": true },
+            { "slot": "lunch",     "label": "Lunch",     "emoji": "☀️", "name": "Rasam rice + papad", "tag": "South Indian · Low cal", "cook": true },
+            { "slot": "snack",     "label": "Evening snack", "emoji": "🫘", "name": "Boiled egg + cucumber", "tag": "High protein · Light", "cook": false },
+            { "slot": "dinner",    "label": "Dinner",    "emoji": "🌙", "name": "Vegetable oats soup", "tag": "Light · Weight loss", "cook": false }
+          ]
+        },
+        {
+          "day": "Tuesday", "date": "5 Aug", "hasCook": true,
+          "meals": [
+            { "slot": "breakfast", "label": "Breakfast", "emoji": "🌅", "name": "Vegetable Upma", "tag": "South Indian · Light", "cook": true },
+            { "slot": "lunch",     "label": "Lunch",     "emoji": "☀️", "name": "Sambar rice + stir-fry greens", "tag": "South Indian · High fibre", "cook": true },
+            { "slot": "snack",     "label": "Evening snack", "emoji": "🫘", "name": "Mixed fruit bowl", "tag": "Light · Seasonal", "cook": false },
+            { "slot": "dinner",    "label": "Dinner",    "emoji": "🌙", "name": "Egg white scramble + toast", "tag": "High protein · Low cal", "cook": false }
+          ]
+        },
+        {
+          "day": "Wednesday", "date": "6 Aug", "hasCook": true,
+          "meals": [
+            { "slot": "breakfast", "label": "Breakfast", "emoji": "🌅", "name": "Ragi dosa + coconut chutney", "tag": "South Indian · High fibre", "cook": true },
+            { "slot": "lunch",     "label": "Lunch",     "emoji": "☀️", "name": "Curd rice + pickle", "tag": "South Indian · Light", "cook": true },
+            { "slot": "snack",     "label": "Evening snack", "emoji": "🫘", "name": "Roasted makhana", "tag": "Light · No cook", "cook": false },
+            { "slot": "dinner",    "label": "Dinner",    "emoji": "🌙", "name": "Grilled paneer salad", "tag": "Continental · Light", "cook": false }
+          ]
+        },
+        {
+          "day": "Thursday", "date": "7 Aug", "hasCook": true,
+          "meals": [
+            { "slot": "breakfast", "label": "Breakfast", "emoji": "🌅", "name": "Oats porridge + banana", "tag": "Light · Weight loss", "cook": true },
+            { "slot": "lunch",     "label": "Lunch",     "emoji": "☀️", "name": "Dal + steamed rice", "tag": "South Indian · Balanced", "cook": true },
+            { "slot": "snack",     "label": "Evening snack", "emoji": "🫘", "name": "Boiled egg", "tag": "High protein · No cook", "cook": false },
+            { "slot": "dinner",    "label": "Dinner",    "emoji": "🌙", "name": "Tomato soup + multigrain toast", "tag": "Light · Weight loss", "cook": false }
+          ]
+        },
+        {
+          "day": "Friday", "date": "8 Aug", "hasCook": true,
+          "meals": [
+            { "slot": "breakfast", "label": "Breakfast", "emoji": "🌅", "name": "Poha with peas", "tag": "North Indian · Light", "cook": true },
+            { "slot": "lunch",     "label": "Lunch",     "emoji": "☀️", "name": "Vegetable khichdi", "tag": "Light · Weight loss", "cook": true },
+            { "slot": "snack",     "label": "Evening snack", "emoji": "🫘", "name": "Sprout chaat", "tag": "High protein · Light", "cook": false },
+            { "slot": "dinner",    "label": "Dinner",    "emoji": "🌙", "name": "Egg curry + 1 roti", "tag": "High protein · Mild", "cook": false }
+          ]
+        },
+        {
+          "day": "Saturday", "date": "9 Aug", "hasCook": false,
+          "meals": [
+            { "slot": "breakfast", "label": "Breakfast", "emoji": "🌅", "name": "Greek yoghurt + granola", "tag": "Continental · Light", "cook": false },
+            { "slot": "lunch",     "label": "Lunch",     "emoji": "☀️", "name": "Masala dosa", "tag": "South Indian · Light", "cook": false },
+            { "slot": "snack",     "label": "Evening snack", "emoji": "🫘", "name": "Mixed nuts", "tag": "High protein · No cook", "cook": false },
+            { "slot": "dinner",    "label": "Dinner",    "emoji": "🌙", "name": "Veg soup + brown bread", "tag": "Light · Weight loss", "cook": false }
+          ]
+        },
+        {
+          "day": "Sunday", "date": "10 Aug", "hasCook": false,
+          "meals": [
+            { "slot": "breakfast", "label": "Breakfast", "emoji": "🌅", "name": "Vegetable omelette", "tag": "High protein · Light", "cook": false },
+            { "slot": "lunch",     "label": "Lunch",     "emoji": "☀️", "name": "Lemon rice + raita", "tag": "South Indian · Light", "cook": false },
+            { "slot": "snack",     "label": "Evening snack", "emoji": "🫘", "name": "Fruit bowl", "tag": "Light · Seasonal", "cook": false },
+            { "slot": "dinner",    "label": "Dinner",    "emoji": "🌙", "name": "Palak soup + egg toast", "tag": "Light · Weight loss", "cook": false }
+          ]
+        }
+      ],
+      "swapOptions": {
+        "breakfast": [
+          { "name": "Idli Sambar", "tag": "South Indian · Light" },
+          { "name": "Vegetable Upma", "tag": "South Indian · Light" },
+          { "name": "Ragi dosa", "tag": "South Indian · High fibre" }
+        ],
+        "lunch": [
+          { "name": "Rasam rice", "tag": "South Indian · Low cal" },
+          { "name": "Sambar rice", "tag": "South Indian · High fibre" },
+          { "name": "Curd rice", "tag": "South Indian · Light" }
+        ],
+        "snack": [
+          { "name": "Boiled egg + cucumber", "tag": "High protein · Light" },
+          { "name": "Mixed fruit bowl", "tag": "Light · Seasonal" },
+          { "name": "Roasted makhana", "tag": "Light · No cook" }
+        ],
+        "dinner": [
+          { "name": "Vegetable oats soup", "tag": "Light · Weight loss" },
+          { "name": "Egg white scramble + toast", "tag": "High protein · Low cal" },
+          { "name": "Grilled paneer salad", "tag": "Continental · Light" }
+        ]
+      },
+      "hindiTranscript": {
+        "template": "cook-meals",
+        "lines": {
+          "breakfast": "Aaj breakfast mein {dish} banao — dono ke liye.",
+          "lunch": "Lunch mein {dish} banao.",
+          "snack": "Shaam ka snack: {dish}.",
+          "dinner": "Dinner mein {dish} banao."
+        }
+      },
+      "notification": {
+        "title": "Today's meals are ready 🍽",
+        "bodyTemplate": "Breakfast: {breakfast} · Lunch: {lunch}"
+      }
+    },
+    {
+      "id": "P04",
+      "meta": { "name": "Karan", "city": "Delhi" },
+      "matching": {
+        "dietaryType": "vegetarian",
+        "cookSetup": "nocook",
+        "goal": "wellness",
+        "topCuisine": "northIndian",
+        "household": "3",
+        "spice": "medium"
+      },
+      "settings": {
+        "dietLabel": "Vegetarian",
+        "topCuisine": "North Indian",
+        "goal": "General wellness",
+        "household": "3+ people",
+        "cookSchedule": "No cook",
+        "dislikes": "None",
+        "notificationTime": "7:00am daily"
+      },
+      "cook": {
+        "hasCook": false,
+        "days": null,
+        "arrivalTime": null,
+        "meals": [],
+        "notificationTime": "7:00am"
+      },
+      "confirmationSummary": {
+        "dietIcon": "🥗",
+        "dietLabel": "Vegetarian",
+        "cuisineIcon": "🍛",
+        "cuisineLabel": "North Indian",
+        "goalIcon": "🌿",
+        "goalLabel": "General wellness",
+        "cookIcon": "📲",
+        "cookLabel": "No cook · Suggest meals to make or order",
+        "notificationNote": "Every morning at 7:00am, you'll get your meal plan."
+      },
+      "weekPlan": [
+        {
+          "day": "Monday", "date": "4 Aug", "hasCook": false,
+          "meals": [
+            { "slot": "breakfast", "label": "Breakfast", "emoji": "🌅", "name": "Aloo paratha + curd", "tag": "North Indian · Filling", "cook": false },
+            { "slot": "lunch",     "label": "Lunch",     "emoji": "☀️", "name": "Dal makhani + roti", "tag": "North Indian · Balanced", "cook": false },
+            { "slot": "snack",     "label": "Evening snack", "emoji": "🫘", "name": "Roasted chana", "tag": "Quick snack", "cook": false },
+            { "slot": "dinner",    "label": "Dinner",    "emoji": "🌙", "name": "Paneer bhurji + roti", "tag": "North Indian · High protein", "cook": false }
+          ]
+        },
+        {
+          "day": "Tuesday", "date": "5 Aug", "hasCook": false,
+          "meals": [
+            { "slot": "breakfast", "label": "Breakfast", "emoji": "🌅", "name": "Poha", "tag": "North Indian · Light", "cook": false },
+            { "slot": "lunch",     "label": "Lunch",     "emoji": "☀️", "name": "Rajma Chawal", "tag": "North Indian · High protein", "cook": false },
+            { "slot": "snack",     "label": "Evening snack", "emoji": "🫘", "name": "Mixed nuts", "tag": "High protein · No cook", "cook": false },
+            { "slot": "dinner",    "label": "Dinner",    "emoji": "🌙", "name": "Palak paneer + rice", "tag": "North Indian · Healthy", "cook": false }
+          ]
+        },
+        {
+          "day": "Wednesday", "date": "6 Aug", "hasCook": false,
+          "meals": [
+            { "slot": "breakfast", "label": "Breakfast", "emoji": "🌅", "name": "Upma", "tag": "South Indian · Light", "cook": false },
+            { "slot": "lunch",     "label": "Lunch",     "emoji": "☀️", "name": "Vegetable khichdi", "tag": "Light · Balanced", "cook": false },
+            { "slot": "snack",     "label": "Evening snack", "emoji": "🫘", "name": "Fruit bowl", "tag": "Light · Seasonal", "cook": false },
+            { "slot": "dinner",    "label": "Dinner",    "emoji": "🌙", "name": "Chole + bhatura", "tag": "North Indian · Indulgent", "cook": false }
+          ]
+        },
+        {
+          "day": "Thursday", "date": "7 Aug", "hasCook": false,
+          "meals": [
+            { "slot": "breakfast", "label": "Breakfast", "emoji": "🌅", "name": "Methi Paratha + pickle", "tag": "North Indian · Filling", "cook": false },
+            { "slot": "lunch",     "label": "Lunch",     "emoji": "☀️", "name": "Sambar rice", "tag": "South Indian · High fibre", "cook": false },
+            { "slot": "snack",     "label": "Evening snack", "emoji": "🫘", "name": "Roasted makhana", "tag": "Light · No cook", "cook": false },
+            { "slot": "dinner",    "label": "Dinner",    "emoji": "🌙", "name": "Paneer tikka masala + roti", "tag": "North Indian · Rich", "cook": false }
+          ]
+        },
+        {
+          "day": "Friday", "date": "8 Aug", "hasCook": false,
+          "meals": [
+            { "slot": "breakfast", "label": "Breakfast", "emoji": "🌅", "name": "Banana oats smoothie + toast", "tag": "Continental · Light", "cook": false },
+            { "slot": "lunch",     "label": "Lunch",     "emoji": "☀️", "name": "Matar paneer + rice", "tag": "North Indian · Balanced", "cook": false },
+            { "slot": "snack",     "label": "Evening snack", "emoji": "🫘", "name": "Sprout chaat", "tag": "High protein · Light", "cook": false },
+            { "slot": "dinner",    "label": "Dinner",    "emoji": "🌙", "name": "Veg biryani", "tag": "North Indian · Festive", "cook": false }
+          ]
+        },
+        {
+          "day": "Saturday", "date": "9 Aug", "hasCook": false,
+          "meals": [
+            { "slot": "breakfast", "label": "Breakfast", "emoji": "🌅", "name": "Idli Sambar", "tag": "South Indian · Light", "cook": false },
+            { "slot": "lunch",     "label": "Lunch",     "emoji": "☀️", "name": "Dal fry + rice + salad", "tag": "North Indian · Balanced", "cook": false },
+            { "slot": "snack",     "label": "Evening snack", "emoji": "🫘", "name": "Mixed fruit", "tag": "Light · Seasonal", "cook": false },
+            { "slot": "dinner",    "label": "Dinner",    "emoji": "🌙", "name": "Veg pizza", "tag": "Continental · Indulgent", "cook": false }
+          ]
+        },
+        {
+          "day": "Sunday", "date": "10 Aug", "hasCook": false,
+          "meals": [
+            { "slot": "breakfast", "label": "Breakfast", "emoji": "🌅", "name": "Tofu scramble + toast", "tag": "Continental · Light", "cook": false },
+            { "slot": "lunch",     "label": "Lunch",     "emoji": "☀️", "name": "Kadhi Chawal", "tag": "North Indian · Comfort", "cook": false },
+            { "slot": "snack",     "label": "Evening snack", "emoji": "🫘", "name": "Roasted chana", "tag": "Quick snack", "cook": false },
+            { "slot": "dinner",    "label": "Dinner",    "emoji": "🌙", "name": "Paneer butter masala + naan", "tag": "North Indian · Rich", "cook": false }
+          ]
+        }
+      ],
+      "swapOptions": {
+        "breakfast": [
+          { "name": "Aloo paratha + curd", "tag": "North Indian · Filling" },
+          { "name": "Poha", "tag": "North Indian · Light" },
+          { "name": "Methi Paratha + pickle", "tag": "North Indian · Filling" }
+        ],
+        "lunch": [
+          { "name": "Dal makhani + roti", "tag": "North Indian · Balanced" },
+          { "name": "Rajma Chawal", "tag": "North Indian · High protein" },
+          { "name": "Vegetable khichdi", "tag": "Light · Balanced" }
+        ],
+        "snack": [
+          { "name": "Roasted chana", "tag": "Quick snack" },
+          { "name": "Mixed nuts", "tag": "High protein · No cook" },
+          { "name": "Fruit bowl", "tag": "Light · Seasonal" }
+        ],
+        "dinner": [
+          { "name": "Paneer bhurji + roti", "tag": "North Indian · High protein" },
+          { "name": "Palak paneer + rice", "tag": "North Indian · Healthy" },
+          { "name": "Paneer tikka masala + roti", "tag": "North Indian · Rich" }
+        ]
+      },
+      "hindiTranscript": null,
+      "notification": {
+        "title": "Today's meals are ready 🍽",
+        "bodyTemplate": "Breakfast: {breakfast} · Lunch: {lunch}"
+      }
+    },
+    {
+      "id": "P05",
+      "meta": { "name": "Karan", "city": "Hyderabad" },
+      "matching": {
+        "dietaryType": "nonveg",
+        "cookSetup": "nocook",
+        "goal": "none",
+        "topCuisine": "chinese",
+        "household": "1",
+        "spice": "spicy"
+      },
+      "settings": {
+        "dietLabel": "Non-vegetarian",
+        "topCuisine": "Chinese",
+        "goal": "No specific goal",
+        "household": "Just me",
+        "cookSchedule": "No cook",
+        "dislikes": "None",
+        "notificationTime": "7:00am daily"
+      },
+      "cook": {
+        "hasCook": false,
+        "days": null,
+        "arrivalTime": null,
+        "meals": [],
+        "notificationTime": "7:00am"
+      },
+      "confirmationSummary": {
+        "dietIcon": "🥩",
+        "dietLabel": "Non-vegetarian",
+        "cuisineIcon": "🍜",
+        "cuisineLabel": "Chinese",
+        "goalIcon": "🎯",
+        "goalLabel": "No specific goal",
+        "cookIcon": "📲",
+        "cookLabel": "No cook · Suggest meals to make or order",
+        "notificationNote": "Every morning at 7:00am, you'll get your meal plan."
+      },
+      "weekPlan": [
+        {
+          "day": "Monday", "date": "4 Aug", "hasCook": false,
+          "meals": [
+            { "slot": "breakfast", "label": "Breakfast", "emoji": "🌅", "name": "Chicken egg roll", "tag": "Chinese · Quick", "cook": false },
+            { "slot": "lunch",     "label": "Lunch",     "emoji": "☀️", "name": "Chicken fried rice", "tag": "Chinese · Spicy", "cook": false },
+            { "slot": "snack",     "label": "Evening snack", "emoji": "🫘", "name": "Roasted chana", "tag": "Quick snack", "cook": false },
+            { "slot": "dinner",    "label": "Dinner",    "emoji": "🌙", "name": "Chicken Schezwan noodles", "tag": "Chinese · Spicy", "cook": false }
+          ]
+        },
+        {
+          "day": "Tuesday", "date": "5 Aug", "hasCook": false,
+          "meals": [
+            { "slot": "breakfast", "label": "Breakfast", "emoji": "🌅", "name": "Egg bhurji + toast", "tag": "High protein · Quick", "cook": false },
+            { "slot": "lunch",     "label": "Lunch",     "emoji": "☀️", "name": "Chicken Manchurian + rice", "tag": "Chinese · Spicy", "cook": false },
+            { "slot": "snack",     "label": "Evening snack", "emoji": "🫘", "name": "Mixed nuts", "tag": "High protein · No cook", "cook": false },
+            { "slot": "dinner",    "label": "Dinner",    "emoji": "🌙", "name": "Chicken curry + roti", "tag": "North Indian · Spicy", "cook": false }
+          ]
+        },
+        {
+          "day": "Wednesday", "date": "6 Aug", "hasCook": false,
+          "meals": [
+            { "slot": "breakfast", "label": "Breakfast", "emoji": "🌅", "name": "Omelette + toast", "tag": "High protein · Light", "cook": false },
+            { "slot": "lunch",     "label": "Lunch",     "emoji": "☀️", "name": "Chicken stir fry + rice", "tag": "Chinese · Spicy", "cook": false },
+            { "slot": "snack",     "label": "Evening snack", "emoji": "🫘", "name": "Boiled egg", "tag": "High protein · No cook", "cook": false },
+            { "slot": "dinner",    "label": "Dinner",    "emoji": "🌙", "name": "Chicken chilli + fried rice", "tag": "Chinese · Spicy", "cook": false }
+          ]
+        },
+        {
+          "day": "Thursday", "date": "7 Aug", "hasCook": false,
+          "meals": [
+            { "slot": "breakfast", "label": "Breakfast", "emoji": "🌅", "name": "Chicken sandwich", "tag": "Continental · Filling", "cook": false },
+            { "slot": "lunch",     "label": "Lunch",     "emoji": "☀️", "name": "Chicken biryani", "tag": "North Indian · Spicy", "cook": false },
+            { "slot": "snack",     "label": "Evening snack", "emoji": "🫘", "name": "Fruit bowl", "tag": "Light · Seasonal", "cook": false },
+            { "slot": "dinner",    "label": "Dinner",    "emoji": "🌙", "name": "Hot and sour chicken soup + noodles", "tag": "Chinese · Spicy", "cook": false }
+          ]
+        },
+        {
+          "day": "Friday", "date": "8 Aug", "hasCook": false,
+          "meals": [
+            { "slot": "breakfast", "label": "Breakfast", "emoji": "🌅", "name": "Masala omelette", "tag": "High protein · Spicy", "cook": false },
+            { "slot": "lunch",     "label": "Lunch",     "emoji": "☀️", "name": "Chicken momos", "tag": "Chinese · Spicy", "cook": false },
+            { "slot": "snack",     "label": "Evening snack", "emoji": "🫘", "name": "Roasted makhana", "tag": "Light · No cook", "cook": false },
+            { "slot": "dinner",    "label": "Dinner",    "emoji": "🌙", "name": "Chicken butter masala + naan", "tag": "North Indian · Rich", "cook": false }
+          ]
+        },
+        {
+          "day": "Saturday", "date": "9 Aug", "hasCook": false,
+          "meals": [
+            { "slot": "breakfast", "label": "Breakfast", "emoji": "🌅", "name": "Egg paratha", "tag": "North Indian · Filling", "cook": false },
+            { "slot": "lunch",     "label": "Lunch",     "emoji": "☀️", "name": "Kung Pao chicken + rice", "tag": "Chinese · Spicy", "cook": false },
+            { "slot": "snack",     "label": "Evening snack", "emoji": "🫘", "name": "Sprout chaat", "tag": "High protein · Light", "cook": false },
+            { "slot": "dinner",    "label": "Dinner",    "emoji": "🌙", "name": "Chicken ramen", "tag": "Chinese · Spicy", "cook": false }
+          ]
+        },
+        {
+          "day": "Sunday", "date": "10 Aug", "hasCook": false,
+          "meals": [
+            { "slot": "breakfast", "label": "Breakfast", "emoji": "🌅", "name": "Banana + peanut butter toast", "tag": "Quick · No cook", "cook": false },
+            { "slot": "lunch",     "label": "Lunch",     "emoji": "☀️", "name": "Chicken fried rice (quick)", "tag": "Chinese · Quick", "cook": false },
+            { "slot": "snack",     "label": "Evening snack", "emoji": "🫘", "name": "Mixed nuts", "tag": "High protein · No cook", "cook": false },
+            { "slot": "dinner",    "label": "Dinner",    "emoji": "🌙", "name": "Chicken tikka + salad", "tag": "North Indian · Spicy", "cook": false }
+          ]
+        }
+      ],
+      "swapOptions": {
+        "breakfast": [
+          { "name": "Egg bhurji + toast", "tag": "High protein · Quick" },
+          { "name": "Omelette + toast", "tag": "High protein · Light" },
+          { "name": "Chicken sandwich", "tag": "Continental · Filling" }
+        ],
+        "lunch": [
+          { "name": "Chicken fried rice", "tag": "Chinese · Spicy" },
+          { "name": "Chicken Manchurian + rice", "tag": "Chinese · Spicy" },
+          { "name": "Chicken stir fry + rice", "tag": "Chinese · Spicy" }
+        ],
+        "snack": [
+          { "name": "Roasted chana", "tag": "Quick snack" },
+          { "name": "Mixed nuts", "tag": "High protein · No cook" },
+          { "name": "Boiled egg", "tag": "High protein · No cook" }
+        ],
+        "dinner": [
+          { "name": "Chicken Schezwan noodles", "tag": "Chinese · Spicy" },
+          { "name": "Chicken curry + roti", "tag": "North Indian · Spicy" },
+          { "name": "Chicken chilli + fried rice", "tag": "Chinese · Spicy" }
+        ]
+      },
+      "hindiTranscript": null,
+      "notification": {
+        "title": "Today's meals are ready 🍽",
+        "bodyTemplate": "Breakfast: {breakfast} · Lunch: {lunch}"
+      }
+    },
+    {
+      "id": "P06",
+      "meta": { "name": "Karan", "city": "Pune" },
+      "matching": {
+        "dietaryType": "nonveg",
+        "cookSetup": "cook",
+        "goal": "weightloss",
+        "topCuisine": "northIndian",
+        "household": "1",
+        "spice": "mild",
+        "vegLock": true
+      },
+      "settings": {
+        "dietLabel": "Vegetarian (adjusted)",
+        "topCuisine": "North Indian",
+        "goal": "Weight loss",
+        "household": "Just me",
+        "cookSchedule": "Weekdays · Breakfast & Lunch",
+        "dislikes": "Chicken · Mutton · Fish",
+        "notificationTime": "7:30am daily"
+      },
+      "vegLockTriggered": true,
+      "cook": {
+        "hasCook": true,
+        "days": "Weekdays only (Mon–Fri)",
+        "arrivalTime": "8–9am",
+        "meals": ["breakfast", "lunch"],
+        "notificationTime": "7:30am"
+      },
+      "confirmationSummary": {
+        "dietIcon": "🥗",
+        "dietLabel": "Vegetarian (adjusted)",
+        "cuisineIcon": "🍛",
+        "cuisineLabel": "North Indian",
+        "goalIcon": "⚖️",
+        "goalLabel": "Weight loss",
+        "cookIcon": "👩‍🍳",
+        "cookLabel": "Weekdays · Breakfast & Lunch",
+        "notificationNote": "Every morning at 7:30am, you'll get your meal plan."
+      },
+      "weekPlan": [
+        {
+          "day": "Monday", "date": "4 Aug", "hasCook": true,
+          "meals": [
+            { "slot": "breakfast", "label": "Breakfast", "emoji": "🌅", "name": "Poha", "tag": "North Indian · Light", "cook": true },
+            { "slot": "lunch",     "label": "Lunch",     "emoji": "☀️", "name": "Moong dal + 2 rotis", "tag": "North Indian · Low cal", "cook": true },
+            { "slot": "snack",     "label": "Evening snack", "emoji": "🫘", "name": "Cucumber + hummus", "tag": "Continental · Light", "cook": false },
+            { "slot": "dinner",    "label": "Dinner",    "emoji": "🌙", "name": "Grilled paneer salad", "tag": "Continental · Light", "cook": false }
+          ]
+        },
+        {
+          "day": "Tuesday", "date": "5 Aug", "hasCook": true,
+          "meals": [
+            { "slot": "breakfast", "label": "Breakfast", "emoji": "🌅", "name": "Vegetable oats upma", "tag": "Light · Weight loss", "cook": true },
+            { "slot": "lunch",     "label": "Lunch",     "emoji": "☀️", "name": "Dal fry + 2 rotis", "tag": "North Indian · Balanced", "cook": true },
+            { "slot": "snack",     "label": "Evening snack", "emoji": "🫘", "name": "Mixed fruit bowl", "tag": "Light · Seasonal", "cook": false },
+            { "slot": "dinner",    "label": "Dinner",    "emoji": "🌙", "name": "Tomato soup + multigrain toast", "tag": "Light · Low cal", "cook": false }
+          ]
+        },
+        {
+          "day": "Wednesday", "date": "6 Aug", "hasCook": true,
+          "meals": [
+            { "slot": "breakfast", "label": "Breakfast", "emoji": "🌅", "name": "Idli Sambar", "tag": "South Indian · Light", "cook": true },
+            { "slot": "lunch",     "label": "Lunch",     "emoji": "☀️", "name": "Lauki sabzi + 2 rotis", "tag": "North Indian · Low cal", "cook": true },
+            { "slot": "snack",     "label": "Evening snack", "emoji": "🫘", "name": "Roasted makhana", "tag": "Light · No cook", "cook": false },
+            { "slot": "dinner",    "label": "Dinner",    "emoji": "🌙", "name": "Steamed vegetables + paneer", "tag": "Continental · Light", "cook": false }
+          ]
+        },
+        {
+          "day": "Thursday", "date": "7 Aug", "hasCook": true,
+          "meals": [
+            { "slot": "breakfast", "label": "Breakfast", "emoji": "🌅", "name": "Ragi dosa + coconut chutney", "tag": "South Indian · High fibre", "cook": true },
+            { "slot": "lunch",     "label": "Lunch",     "emoji": "☀️", "name": "Curd rice", "tag": "South Indian · Light", "cook": true },
+            { "slot": "snack",     "label": "Evening snack", "emoji": "🫘", "name": "Boiled sprouts", "tag": "High protein · Light", "cook": false },
+            { "slot": "dinner",    "label": "Dinner",    "emoji": "🌙", "name": "Veg soup + 1 roti", "tag": "Light · Weight loss", "cook": false }
+          ]
+        },
+        {
+          "day": "Friday", "date": "8 Aug", "hasCook": true,
+          "meals": [
+            { "slot": "breakfast", "label": "Breakfast", "emoji": "🌅", "name": "Upma", "tag": "South Indian · Light", "cook": true },
+            { "slot": "lunch",     "label": "Lunch",     "emoji": "☀️", "name": "Palak dal + 2 rotis", "tag": "North Indian · High fibre", "cook": true },
+            { "slot": "snack",     "label": "Evening snack", "emoji": "🫘", "name": "Mixed nuts", "tag": "High protein · No cook", "cook": false },
+            { "slot": "dinner",    "label": "Dinner",    "emoji": "🌙", "name": "Vegetable khichdi", "tag": "Light · Weight loss", "cook": false }
+          ]
+        },
+        {
+          "day": "Saturday", "date": "9 Aug", "hasCook": false,
+          "meals": [
+            { "slot": "breakfast", "label": "Breakfast", "emoji": "🌅", "name": "Greek yoghurt + granola", "tag": "Continental · Light", "cook": false },
+            { "slot": "lunch",     "label": "Lunch",     "emoji": "☀️", "name": "Masala dosa", "tag": "South Indian · Light", "cook": false },
+            { "slot": "snack",     "label": "Evening snack", "emoji": "🫘", "name": "Fruit bowl", "tag": "Light · Seasonal", "cook": false },
+            { "slot": "dinner",    "label": "Dinner",    "emoji": "🌙", "name": "Veg clear soup + toast", "tag": "Light · Low cal", "cook": false }
+          ]
+        },
+        {
+          "day": "Sunday", "date": "10 Aug", "hasCook": false,
+          "meals": [
+            { "slot": "breakfast", "label": "Breakfast", "emoji": "🌅", "name": "Banana oats smoothie", "tag": "Light · Weight loss", "cook": false },
+            { "slot": "lunch",     "label": "Lunch",     "emoji": "☀️", "name": "Rajma Chawal (small portion)", "tag": "North Indian · High protein", "cook": false },
+            { "slot": "snack",     "label": "Evening snack", "emoji": "🫘", "name": "Sprout chaat", "tag": "High protein · Light", "cook": false },
+            { "slot": "dinner",    "label": "Dinner",    "emoji": "🌙", "name": "Paneer tikka + salad", "tag": "North Indian · Light", "cook": false }
+          ]
+        }
+      ],
+      "swapOptions": {
+        "breakfast": [
+          { "name": "Poha", "tag": "North Indian · Light" },
+          { "name": "Vegetable oats upma", "tag": "Light · Weight loss" },
+          { "name": "Idli Sambar", "tag": "South Indian · Light" }
+        ],
+        "lunch": [
+          { "name": "Moong dal + roti", "tag": "North Indian · Low cal" },
+          { "name": "Dal fry + roti", "tag": "North Indian · Balanced" },
+          { "name": "Lauki sabzi + roti", "tag": "North Indian · Low cal" }
+        ],
+        "snack": [
+          { "name": "Cucumber + hummus", "tag": "Continental · Light" },
+          { "name": "Mixed fruit bowl", "tag": "Light · Seasonal" },
+          { "name": "Roasted makhana", "tag": "Light · No cook" }
+        ],
+        "dinner": [
+          { "name": "Grilled paneer salad", "tag": "Continental · Light" },
+          { "name": "Tomato soup + multigrain toast", "tag": "Light · Low cal" },
+          { "name": "Steamed vegetables + paneer", "tag": "Continental · Light" }
+        ]
+      },
+      "hindiTranscript": {
+        "template": "cook-meals",
+        "lines": {
+          "breakfast": "Aaj breakfast mein {dish} banao.",
+          "lunch": "Lunch mein {dish} banao — thoda halka rakhna.",
+          "snack": "Shaam ka snack: {dish}.",
+          "dinner": "Dinner mein {dish} banao."
+        }
+      },
+      "notification": {
+        "title": "Today's meals are ready 🍽",
+        "bodyTemplate": "Breakfast: {breakfast} · Lunch: {lunch}"
+      }
+    },
+    {
+      "id": "P07",
+      "meta": { "name": "Karan", "city": "Bengaluru" },
+      "matching": {
+        "dietaryType": "vegetarian",
+        "cookSetup": "cook",
+        "goal": "musclegain",
+        "topCuisine": "southIndian",
+        "household": "2",
+        "spice": "medium"
+      },
+      "settings": {
+        "dietLabel": "Vegetarian",
+        "topCuisine": "South Indian",
+        "goal": "Muscle gain",
+        "household": "2 people",
+        "cookSchedule": "All 7 days · Breakfast, Lunch & Dinner",
+        "dislikes": "None",
+        "notificationTime": "7:30am daily"
+      },
+      "cook": {
+        "hasCook": true,
+        "days": "All 7 days",
+        "arrivalTime": "8–9am",
+        "meals": ["breakfast", "lunch", "dinner"],
+        "notificationTime": "7:30am"
+      },
+      "confirmationSummary": {
+        "dietIcon": "🥗",
+        "dietLabel": "Vegetarian",
+        "cuisineIcon": "🍚",
+        "cuisineLabel": "South Indian",
+        "goalIcon": "💪",
+        "goalLabel": "Muscle gain",
+        "cookIcon": "👩‍🍳",
+        "cookLabel": "All 7 days · Breakfast, Lunch & Dinner",
+        "notificationNote": "Every morning at 7:30am, you'll get your meal plan."
+      },
+      "weekPlan": [
+        {
+          "day": "Monday", "date": "4 Aug", "hasCook": true,
+          "meals": [
+            { "slot": "breakfast", "label": "Breakfast", "emoji": "🌅", "name": "Idli Sambar", "tag": "South Indian · High protein", "cook": true },
+            { "slot": "lunch",     "label": "Lunch",     "emoji": "☀️", "name": "Rajma Chawal", "tag": "North Indian · High protein", "cook": true },
+            { "slot": "snack",     "label": "Evening snack", "emoji": "🫘", "name": "Roasted chana", "tag": "Quick snack", "cook": false },
+            { "slot": "dinner",    "label": "Dinner",    "emoji": "🌙", "name": "Paneer butter masala + 2 rotis", "tag": "North Indian · High protein", "cook": true }
+          ]
+        },
+        {
+          "day": "Tuesday", "date": "5 Aug", "hasCook": true,
+          "meals": [
+            { "slot": "breakfast", "label": "Breakfast", "emoji": "🌅", "name": "Ragi dosa + sambar", "tag": "South Indian · High fibre", "cook": true },
+            { "slot": "lunch",     "label": "Lunch",     "emoji": "☀️", "name": "Chole Chawal", "tag": "North Indian · High protein", "cook": true },
+            { "slot": "snack",     "label": "Evening snack", "emoji": "🫘", "name": "Mixed nuts", "tag": "High protein · No cook", "cook": false },
+            { "slot": "dinner",    "label": "Dinner",    "emoji": "🌙", "name": "Palak paneer + 2 rotis", "tag": "North Indian · High protein", "cook": true }
+          ]
+        },
+        {
+          "day": "Wednesday", "date": "6 Aug", "hasCook": true,
+          "meals": [
+            { "slot": "breakfast", "label": "Breakfast", "emoji": "🌅", "name": "Pesarattu (green moong dosa)", "tag": "South Indian · High protein", "cook": true },
+            { "slot": "lunch",     "label": "Lunch",     "emoji": "☀️", "name": "Dal fry + rice + papad", "tag": "South Indian · High protein", "cook": true },
+            { "slot": "snack",     "label": "Evening snack", "emoji": "🫘", "name": "Sprout chaat", "tag": "High protein · Light", "cook": false },
+            { "slot": "dinner",    "label": "Dinner",    "emoji": "🌙", "name": "Paneer tikka masala + rice", "tag": "North Indian · High protein", "cook": true }
+          ]
+        },
+        {
+          "day": "Thursday", "date": "7 Aug", "hasCook": true,
+          "meals": [
+            { "slot": "breakfast", "label": "Breakfast", "emoji": "🌅", "name": "Upma + boiled peanuts", "tag": "South Indian · High protein", "cook": true },
+            { "slot": "lunch",     "label": "Lunch",     "emoji": "☀️", "name": "Matar paneer + 2 rotis", "tag": "North Indian · High protein", "cook": true },
+            { "slot": "snack",     "label": "Evening snack", "emoji": "🫘", "name": "Boiled sprouts", "tag": "High protein · Light", "cook": false },
+            { "slot": "dinner",    "label": "Dinner",    "emoji": "🌙", "name": "Dal makhani + 2 rotis", "tag": "North Indian · High protein", "cook": true }
+          ]
+        },
+        {
+          "day": "Friday", "date": "8 Aug", "hasCook": true,
+          "meals": [
+            { "slot": "breakfast", "label": "Breakfast", "emoji": "🌅", "name": "Set dosa + coconut chutney", "tag": "South Indian · Light", "cook": true },
+            { "slot": "lunch",     "label": "Lunch",     "emoji": "☀️", "name": "Soya chunk curry + rice", "tag": "High protein · South Indian", "cook": true },
+            { "slot": "snack",     "label": "Evening snack", "emoji": "🫘", "name": "Fruit bowl", "tag": "Light · Seasonal", "cook": false },
+            { "slot": "dinner",    "label": "Dinner",    "emoji": "🌙", "name": "Kadhi + 2 rotis", "tag": "North Indian · Balanced", "cook": true }
+          ]
+        },
+        {
+          "day": "Saturday", "date": "9 Aug", "hasCook": true,
+          "meals": [
+            { "slot": "breakfast", "label": "Breakfast", "emoji": "🌅", "name": "Idiyappam + vegetable kurma", "tag": "South Indian · Light", "cook": true },
+            { "slot": "lunch",     "label": "Lunch",     "emoji": "☀️", "name": "Bisi bele bath", "tag": "South Indian · Balanced", "cook": true },
+            { "slot": "snack",     "label": "Evening snack", "emoji": "🫘", "name": "Roasted makhana", "tag": "Light · No cook", "cook": false },
+            { "slot": "dinner",    "label": "Dinner",    "emoji": "🌙", "name": "Paneer bhurji + 2 rotis", "tag": "North Indian · High protein", "cook": true }
+          ]
+        },
+        {
+          "day": "Sunday", "date": "10 Aug", "hasCook": true,
+          "meals": [
+            { "slot": "breakfast", "label": "Breakfast", "emoji": "🌅", "name": "Medu vada + sambar", "tag": "South Indian · High protein", "cook": true },
+            { "slot": "lunch",     "label": "Lunch",     "emoji": "☀️", "name": "Vegetable biryani + raita", "tag": "South Indian · Festive", "cook": true },
+            { "slot": "snack",     "label": "Evening snack", "emoji": "🫘", "name": "Mixed nuts", "tag": "High protein · No cook", "cook": false },
+            { "slot": "dinner",    "label": "Dinner",    "emoji": "🌙", "name": "Pindi chole + 2 rotis", "tag": "North Indian · High protein", "cook": true }
+          ]
+        }
+      ],
+      "swapOptions": {
+        "breakfast": [
+          { "name": "Idli Sambar", "tag": "South Indian · High protein" },
+          { "name": "Pesarattu", "tag": "South Indian · High protein" },
+          { "name": "Upma + peanuts", "tag": "South Indian · High protein" }
+        ],
+        "lunch": [
+          { "name": "Rajma Chawal", "tag": "North Indian · High protein" },
+          { "name": "Chole Chawal", "tag": "North Indian · High protein" },
+          { "name": "Dal fry + rice", "tag": "South Indian · High protein" }
+        ],
+        "snack": [
+          { "name": "Roasted chana", "tag": "Quick snack" },
+          { "name": "Mixed nuts", "tag": "High protein · No cook" },
+          { "name": "Sprout chaat", "tag": "High protein · Light" }
+        ],
+        "dinner": [
+          { "name": "Paneer butter masala + roti", "tag": "North Indian · High protein" },
+          { "name": "Palak paneer + roti", "tag": "North Indian · High protein" },
+          { "name": "Dal makhani + roti", "tag": "North Indian · High protein" }
+        ]
+      },
+      "hindiTranscript": {
+        "template": "cook-meals",
+        "lines": {
+          "breakfast": "Aaj breakfast mein {dish} banao — dono ke liye.",
+          "lunch": "Lunch mein {dish} banao.",
+          "snack": "Shaam ka snack: {dish}.",
+          "dinner": "Dinner mein {dish} banao."
+        }
+      },
+      "notification": {
+        "title": "Today's meals are ready 🍽",
+        "bodyTemplate": "Breakfast: {breakfast} · Lunch: {lunch}"
+      }
+    }
+  ]
+}
