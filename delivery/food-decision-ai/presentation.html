@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MealCraft — Team Presentation</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', 'Helvetica Neue', Arial, sans-serif;
+    background: #111;
+    color: #fff;
+    height: 100vh;
+    overflow: hidden;
+    user-select: none;
+  }
+
+  /* ── Slide engine ── */
+  .deck { width: 100vw; height: 100vh; position: relative; }
+  .slide {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    padding: 60px 80px;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
+  .slide.active { opacity: 1; pointer-events: all; }
+
+  /* ── Backgrounds ── */
+  .bg-dark    { background: #111; }
+  .bg-warm    { background: #f0ede8; color: #1f2328; }
+  .bg-blue    { background: #0000ee; }
+  .bg-deep    { background: #080818; }
+  .bg-green   { background: #064e3b; }
+  .bg-problem { background: #1a0a0a; }
+  .bg-split   { background: linear-gradient(135deg, #111 55%, #0000ee 55%); }
+
+  /* ── Navigation ── */
+  .nav-bar {
+    position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
+    display: flex; align-items: center; gap: 16px;
+    background: rgba(255,255,255,0.08); backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.12); border-radius: 50px;
+    padding: 10px 20px; z-index: 100;
+  }
+  .nav-btn {
+    background: none; border: none; color: rgba(255,255,255,0.6);
+    font-size: 18px; cursor: pointer; padding: 4px 8px;
+    border-radius: 8px; transition: color 0.2s, background 0.2s;
+    font-family: inherit;
+  }
+  .nav-btn:hover { color: #fff; background: rgba(255,255,255,0.1); }
+  .nav-counter {
+    font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.5);
+    letter-spacing: 1px; min-width: 48px; text-align: center;
+  }
+  .nav-dots { display: flex; gap: 6px; align-items: center; }
+  .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: rgba(255,255,255,0.25); cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .dot.active { background: #fff; transform: scale(1.4); }
+
+  /* ── Progress bar ── */
+  .progress {
+    position: fixed; top: 0; left: 0; height: 3px;
+    background: #0000ee; transition: width 0.4s ease; z-index: 100;
+  }
+
+  /* ── Section label ── */
+  .section-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    opacity: 0.5; margin-bottom: 16px; text-align: center;
+  }
+
+  /* ── Slide 1 — Title ── */
+  .title-emoji { font-size: 72px; line-height: 1; margin-bottom: 24px; }
+  .title-name {
+    font-size: 72px; font-weight: 800; letter-spacing: -3px; line-height: 1;
+    margin-bottom: 16px;
+  }
+  .title-tag {
+    font-size: 20px; color: rgba(255,255,255,0.5); font-weight: 400; margin-bottom: 48px;
+  }
+  .presenter-row { display: flex; gap: 24px; align-items: center; }
+  .presenter-chip {
+    display: flex; align-items: center; gap: 10px;
+    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 50px; padding: 8px 16px; font-size: 14px;
+  }
+  .presenter-avatar {
+    width: 28px; height: 28px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 800;
+  }
+  .av-j { background: rgba(0,0,238,0.4); }
+  .av-r { background: rgba(52,211,153,0.3); color: #6ee7b7; }
+
+  /* ── Slide 2 — Persona ── */
+  .persona-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    width: 100%; max-width: 800px;
+  }
+  .persona-card {
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px; padding: 20px 22px;
+  }
+  .persona-card .label { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; opacity: 0.4; margin-bottom: 6px; }
+  .persona-card .value { font-size: 16px; font-weight: 600; line-height: 1.5; }
+  .quote-block {
+    background: rgba(255,60,60,0.1); border: 1px solid rgba(255,60,60,0.25);
+    border-radius: 16px; padding: 22px 26px; max-width: 700px; text-align: center;
+    margin-top: 8px;
+  }
+  .quote-text { font-size: 22px; font-weight: 700; font-style: italic; line-height: 1.4; }
+  .quote-attr { font-size: 13px; opacity: 0.5; margin-top: 8px; }
+
+  /* ── Slide 3 — Problem ── */
+  .problem-statement {
+    font-size: 28px; font-weight: 700; line-height: 1.5; max-width: 760px;
+    text-align: center; margin-bottom: 32px;
+  }
+  .problem-statement em { color: #ff6b6b; font-style: normal; }
+  .vs-row { display: flex; gap: 16px; max-width: 760px; width: 100%; }
+  .vs-card {
+    flex: 1; border-radius: 14px; padding: 18px 20px;
+  }
+  .vs-card .vs-label { font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; opacity: 0.6; }
+  .vs-card ul { list-style: none; }
+  .vs-card ul li { font-size: 14px; padding: 4px 0; opacity: 0.85; }
+  .vs-bad { background: rgba(255,60,60,0.1); border: 1px solid rgba(255,60,60,0.2); }
+  .vs-good { background: rgba(0,0,238,0.12); border: 1px solid rgba(0,0,238,0.3); }
+  .vs-bad ul li::before { content: "✗ "; color: #ff6b6b; }
+  .vs-good ul li::before { content: "✓ "; color: #60a5fa; }
+
+  /* ── Slide 4 — How it works ── */
+  .steps-row { display: flex; gap: 0; max-width: 840px; width: 100%; align-items: flex-start; }
+  .step {
+    flex: 1; text-align: center; padding: 0 20px; position: relative;
+  }
+  .step:not(:last-child)::after {
+    content: "→"; position: absolute; right: -10px; top: 36px;
+    font-size: 20px; color: rgba(255,255,255,0.25);
+  }
+  .step-icon {
+    width: 72px; height: 72px; border-radius: 20px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 30px; margin: 0 auto 16px;
+    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12);
+  }
+  .step-num { font-size: 11px; font-weight: 700; color: #60a5fa; letter-spacing: 1px; margin-bottom: 8px; }
+  .step-title { font-size: 17px; font-weight: 700; margin-bottom: 6px; }
+  .step-body { font-size: 13px; opacity: 0.55; line-height: 1.6; }
+
+  /* ── Slide 5 — Differentiators ── */
+  .diff-list { display: flex; flex-direction: column; gap: 16px; max-width: 720px; width: 100%; }
+  .diff-item {
+    display: flex; align-items: flex-start; gap: 20px;
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px; padding: 20px 24px;
+  }
+  .diff-icon {
+    width: 48px; height: 48px; border-radius: 14px;
+    background: rgba(0,0,238,0.2); border: 1px solid rgba(0,0,238,0.4);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; flex-shrink: 0;
+  }
+  .diff-title { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
+  .diff-body { font-size: 14px; opacity: 0.6; line-height: 1.55; }
+
+  /* ── Slide 6 — Demo ── */
+  .demo-flow { display: flex; flex-direction: column; gap: 10px; max-width: 740px; width: 100%; }
+  .demo-row {
+    display: flex; align-items: center; gap: 16px;
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px; padding: 14px 18px;
+  }
+  .demo-step-num {
+    width: 28px; height: 28px; border-radius: 50%; background: #0000ee;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 800; flex-shrink: 0;
+  }
+  .demo-screen { font-size: 15px; font-weight: 700; flex: 1; }
+  .demo-note { font-size: 13px; opacity: 0.5; flex: 2; }
+  .speaker { font-size: 11px; font-weight: 700; border-radius: 20px; padding: 2px 8px; flex-shrink: 0; }
+  .sp-j { background: rgba(0,0,238,0.25); color: #93c5fd; }
+  .sp-r { background: rgba(52,211,153,0.2); color: #6ee7b7; }
+
+  /* ── Slide 7 — Decisions ── */
+  .decisions-list { display: flex; flex-direction: column; gap: 12px; max-width: 760px; width: 100%; }
+  .decision-item {
+    display: flex; align-items: flex-start; gap: 16px;
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px; padding: 16px 20px;
+  }
+  .decision-num {
+    width: 26px; height: 26px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 800; flex-shrink: 0; color: rgba(255,255,255,0.5);
+  }
+  .decision-q { font-size: 15px; font-weight: 700; margin-bottom: 3px; }
+  .decision-hint { font-size: 13px; opacity: 0.5; line-height: 1.5; }
+
+  /* ── Slide 8 — Next steps ── */
+  .asks-list { display: flex; flex-direction: column; gap: 12px; max-width: 700px; width: 100%; }
+  .ask-item {
+    display: flex; align-items: flex-start; gap: 14px;
+    border-radius: 12px; padding: 14px 18px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.04);
+  }
+  .ask-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+  .ask-title { font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+  .ask-sub { font-size: 13px; opacity: 0.5; }
+
+  /* ── Slide 9 — End ── */
+  .end-title { font-size: 64px; font-weight: 800; letter-spacing: -2px; margin-bottom: 16px; }
+  .end-tag { font-size: 18px; opacity: 0.45; margin-bottom: 48px; }
+  .end-link {
+    font-size: 13px; opacity: 0.3; font-family: monospace;
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px; padding: 8px 14px;
+  }
+
+  /* ── Headings ── */
+  h2.slide-heading {
+    font-size: 40px; font-weight: 800; letter-spacing: -1.5px;
+    text-align: center; margin-bottom: 8px; line-height: 1.1;
+  }
+  .slide-subheading {
+    font-size: 16px; opacity: 0.45; text-align: center; margin-bottom: 36px;
+  }
+
+  /* keyboard hint */
+  .key-hint {
+    position: fixed; top: 20px; right: 24px;
+    font-size: 11px; color: rgba(255,255,255,0.2);
+    letter-spacing: 0.5px;
+  }
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+<div class="key-hint">← → to navigate</div>
+
+<div class="deck" id="deck">
+
+  <!-- ══ SLIDE 1 — Title ══ -->
+  <div class="slide bg-dark active" id="slide-1">
+    <div class="title-emoji">🍽</div>
+    <div class="title-name">MealCraft</div>
+    <div class="title-tag">We plan your meals. You just eat.</div>
+    <div class="presenter-row">
+      <div class="presenter-chip">
+        <div class="presenter-avatar av-j">JS</div>
+        Jyotish Sonowal
+      </div>
+      <div class="presenter-chip">
+        <div class="presenter-avatar av-r">RV</div>
+        Rucha Vakhariya
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SLIDE 2 — Persona ══ -->
+  <div class="slide bg-problem" id="slide-2">
+    <div class="section-label">The User</div>
+    <h2 class="slide-heading">Meet Karan</h2>
+    <div class="slide-subheading">28 · Bengaluru · Cook arrives at 8am</div>
+    <div class="persona-grid">
+      <div class="persona-card">
+        <div class="label">Every morning</div>
+        <div class="value">Barely awake, has to answer:<br/><em style="color:#ff8888;">"What should I tell her to make?"</em></div>
+      </div>
+      <div class="persona-card">
+        <div class="label">What he does instead</div>
+        <div class="value">Repeats yesterday's meal or says "make whatever's there"</div>
+      </div>
+      <div class="persona-card">
+        <div class="label">By evening</div>
+        <div class="value">20 minutes on Swiggy, orders something he'll regret</div>
+      </div>
+      <div class="persona-card">
+        <div class="label">Has tried</div>
+        <div class="value">HealthifyMe — quit after 3 weeks. <em style="color:#ff8888;">"Logging felt like homework."</em></div>
+      </div>
+    </div>
+    <div class="quote-block" style="margin-top: 20px;">
+      <div class="quote-text">"Make whatever's there."</div>
+      <div class="quote-attr">— Karan, every weekday morning</div>
+    </div>
+  </div>
+
+  <!-- ══ SLIDE 3 — Real Problem ══ -->
+  <div class="slide bg-problem" id="slide-3">
+    <div class="section-label">The Problem</div>
+    <div class="problem-statement">
+      Karan knows what he wants to eat.<br/>
+      He has no system that <em>converts what he knows<br/>into an answer waiting for him.</em>
+    </div>
+    <div class="vs-row">
+      <div class="vs-card vs-bad">
+        <div class="vs-label">Existing apps fail because</div>
+        <ul>
+          <li>They ask him to log every meal</li>
+          <li>They require daily decisions</li>
+          <li>They treat him as a patient, not a professional</li>
+        </ul>
+      </div>
+      <div class="vs-card vs-good">
+        <div class="vs-label">Our design principle</div>
+        <ul>
+          <li>Decision made before he wakes up</li>
+          <li>Zero daily input after onboarding</li>
+          <li>Cook handoff costs him nothing</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SLIDE 4 — How it works ══ -->
+  <div class="slide bg-dark" id="slide-4">
+    <div class="section-label">The Solution</div>
+    <h2 class="slide-heading">How MealCraft Works</h2>
+    <div class="slide-subheading">Three steps. One time setup. Every morning, automatic.</div>
+    <div class="steps-row">
+      <div class="step">
+        <div class="step-icon">⚙️</div>
+        <div class="step-num">ONCE</div>
+        <div class="step-title">Set preferences</div>
+        <div class="step-body">Diet, cuisine, health goal, cook schedule. 5 minutes. Never again.</div>
+      </div>
+      <div class="step">
+        <div class="step-icon">🌙</div>
+        <div class="step-num">EVERY NIGHT</div>
+        <div class="step-title">Silent planning</div>
+        <div class="step-body">MealCraft plans next day's meals while Karan sleeps.</div>
+      </div>
+      <div class="step">
+        <div class="step-icon">📲</div>
+        <div class="step-num">7:15AM</div>
+        <div class="step-title">Tap. Send. Done.</div>
+        <div class="step-body">Hindi voice note ready. One tap sends it to the cook on WhatsApp.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SLIDE 5 — Differentiators ══ -->
+  <div class="slide bg-blue" id="slide-5">
+    <div class="section-label" style="color:rgba(255,255,255,0.6);">Why It's Different</div>
+    <h2 class="slide-heading">Three things no other app does</h2>
+    <div class="slide-subheading" style="color:rgba(255,255,255,0.5);">Together</div>
+    <div class="diff-list">
+      <div class="diff-item">
+        <div class="diff-icon">🚫</div>
+        <div>
+          <div class="diff-title">No logging. Ever.</div>
+          <div class="diff-body">Not even on Day 1. The product works passively from the moment setup is done.</div>
+        </div>
+      </div>
+      <div class="diff-item">
+        <div class="diff-icon">🧠</div>
+        <div>
+          <div class="diff-title">No daily decisions.</div>
+          <div class="diff-body">The meal is planned before you wake up. You react — you don't decide.</div>
+        </div>
+      </div>
+      <div class="diff-item">
+        <div class="diff-icon">📲</div>
+        <div>
+          <div class="diff-title">Cook-first output.</div>
+          <div class="diff-body">Not a meal plan PDF. A Hindi voice note, ready to send to your cook on WhatsApp in one tap.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SLIDE 6 — Demo ══ -->
+  <div class="slide bg-deep" id="slide-6">
+    <div class="section-label">Live Demo</div>
+    <h2 class="slide-heading" style="margin-bottom:24px;">Prototype Walkthrough</h2>
+    <div class="demo-flow">
+      <div class="demo-row">
+        <div class="demo-step-num">1</div>
+        <div class="demo-screen">Splash + Value Prop</div>
+        <div class="demo-note">No login wall — value before sign-up</div>
+        <span class="speaker sp-r">Rucha</span>
+      </div>
+      <div class="demo-row">
+        <div class="demo-step-num">2</div>
+        <div class="demo-screen">Onboarding · 4 screens</div>
+        <div class="demo-note">Cook schedule screen is the emotional peak</div>
+        <span class="speaker sp-j">Jyotish</span>
+      </div>
+      <div class="demo-row">
+        <div class="demo-step-num">3</div>
+        <div class="demo-screen">Confirmation + Holding</div>
+        <div class="demo-note">E1 ends here — no week view yet</div>
+        <span class="speaker sp-r">Rucha</span>
+      </div>
+      <div class="demo-row">
+        <div class="demo-step-num">4</div>
+        <div class="demo-screen">Push Notification · 7:14am</div>
+        <div class="demo-note">Dish names in the notification itself</div>
+        <span class="speaker sp-j">Jyotish</span>
+      </div>
+      <div class="demo-row">
+        <div class="demo-step-num">5</div>
+        <div class="demo-screen">Day View</div>
+        <div class="demo-note">4 meals with photos · one CTA: Send to cook</div>
+        <span class="speaker sp-r">Rucha</span>
+      </div>
+      <div class="demo-row">
+        <div class="demo-step-num">6</div>
+        <div class="demo-screen">Cook Handoff + Sent</div>
+        <div class="demo-note">Hindi transcript → WhatsApp → Sent. Done.</div>
+        <span class="speaker sp-j">Jyotish</span>
+      </div>
+      <div class="demo-row">
+        <div class="demo-step-num">7</div>
+        <div class="demo-screen">Week View + Settings</div>
+        <div class="demo-note">Secondary surfaces — always accessible</div>
+        <span class="speaker sp-r">Rucha</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SLIDE 7 — Decisions ══ -->
+  <div class="slide bg-dark" id="slide-7">
+    <div class="section-label">For Discussion</div>
+    <h2 class="slide-heading">5 Decisions to Align On</h2>
+    <div class="slide-subheading">These need the team's input today</div>
+    <div class="decisions-list">
+      <div class="decision-item">
+        <div class="decision-num">1</div>
+        <div>
+          <div class="decision-q">Hindi voice note vs text message for V1?</div>
+          <div class="decision-hint">TTS quality unproven in Private Preview — ship text-only first, or commit to voice?</div>
+        </div>
+      </div>
+      <div class="decision-item">
+        <div class="decision-num">2</div>
+        <div>
+          <div class="decision-q">No evening engagement — right call?</div>
+          <div class="decision-hint">No end-of-day prompts or ratings, even though it limits feedback signals.</div>
+        </div>
+      </div>
+      <div class="decision-item">
+        <div class="decision-num">3</div>
+        <div>
+          <div class="decision-q">Android share sheet — acceptable for V1?</div>
+          <div class="decision-hint">No WhatsApp Business API. Karan manually completes the send in WhatsApp.</div>
+        </div>
+      </div>
+      <div class="decision-item">
+        <div class="decision-num">4</div>
+        <div>
+          <div class="decision-q">One-time onboarding — what if meal quality degrades?</div>
+          <div class="decision-hint">Preferences editable in Settings but never re-prompted by the system.</div>
+        </div>
+      </div>
+      <div class="decision-item">
+        <div class="decision-num">5</div>
+        <div>
+          <div class="decision-q">Week View as secondary surface — or default for power users?</div>
+          <div class="decision-hint">Day View is always home. Is there a case to surface Week View earlier?</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SLIDE 8 — Next Steps ══ -->
+  <div class="slide bg-green" id="slide-8">
+    <div class="section-label" style="color:rgba(255,255,255,0.5);">What We Need</div>
+    <h2 class="slide-heading">Asks from the team</h2>
+    <div class="slide-subheading" style="color:rgba(255,255,255,0.4);">Before we hand to engineering</div>
+    <div class="asks-list">
+      <div class="ask-item">
+        <div class="ask-icon">✅</div>
+        <div>
+          <div class="ask-title">Sign off on the 7 flows</div>
+          <div class="ask-sub">Do these cover the full MVP core loop — E1, E2, E3?</div>
+        </div>
+        <span class="speaker sp-j" style="margin-left:auto; margin-top:2px;">Jyotish</span>
+      </div>
+      <div class="ask-item">
+        <div class="ask-icon">🔧</div>
+        <div>
+          <div class="ask-title">Engineering scoping</div>
+          <div class="ask-sub">Which flows need spikes? TTS + Hindi voice, WhatsApp share, push scheduling.</div>
+        </div>
+      </div>
+      <div class="ask-item">
+        <div class="ask-icon">🖼</div>
+        <div>
+          <div class="ask-title">Prototype fidelity feedback</div>
+          <div class="ask-sub">Are there missing screens before we hand off to engineering?</div>
+        </div>
+        <span class="speaker sp-r" style="margin-left:auto; margin-top:2px;">Rucha</span>
+      </div>
+      <div class="ask-item">
+        <div class="ask-icon">🏷</div>
+        <div>
+          <div class="ask-title">Green light on MealCraft</div>
+          <div class="ask-sub">Working name for the sprint and internal prototype — does it land?</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SLIDE 9 — End ══ -->
+  <div class="slide bg-dark" id="slide-9">
+    <div class="title-emoji" style="font-size:56px; margin-bottom:16px;">🍽</div>
+    <div class="end-title">MealCraft</div>
+    <div class="end-tag">We plan your meals. You just eat.</div>
+    <div style="display:flex; gap:20px; margin-bottom:40px; flex-wrap: wrap; justify-content: center;">
+      <div class="presenter-chip">
+        <div class="presenter-avatar av-j">JS</div>
+        Jyotish Sonowal
+      </div>
+      <div class="presenter-chip">
+        <div class="presenter-avatar av-r">RV</div>
+        Rucha Vakhariya
+      </div>
+    </div>
+    <div class="end-link">github.com/ruchagv/AI-design-sprint → delivery/food-decision-ai/prototype-v2.html</div>
+  </div>
+
+</div><!-- /deck -->
+
+<!-- Nav bar -->
+<div class="nav-bar">
+  <button class="nav-btn" id="btn-prev">←</button>
+  <div class="nav-dots" id="nav-dots"></div>
+  <span class="nav-counter" id="nav-counter">1 / 9</span>
+  <button class="nav-btn" id="btn-next">→</button>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  let current = 0;
+
+  const dotsEl = document.getElementById('nav-dots');
+  const counterEl = document.getElementById('nav-counter');
+  const progressEl = document.getElementById('progress');
+
+  // Build dots
+  slides.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.addEventListener('click', () => goTo(i));
+    dotsEl.appendChild(d);
+  });
+
+  function goTo(n) {
+    slides[current].classList.remove('active');
+    dotsEl.children[current].classList.remove('active');
+    current = Math.max(0, Math.min(total - 1, n));
+    slides[current].classList.add('active');
+    dotsEl.children[current].classList.add('active');
+    counterEl.textContent = (current + 1) + ' / ' + total;
+    progressEl.style.width = ((current + 1) / total * 100) + '%';
+  }
+
+  document.getElementById('btn-prev').addEventListener('click', () => goTo(current - 1));
+  document.getElementById('btn-next').addEventListener('click', () => goTo(current + 1));
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') goTo(current + 1);
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')                     goTo(current - 1);
+  });
+
+  // Init progress
+  progressEl.style.width = (1 / total * 100) + '%';
+</script>
+
+</body>
+</html>
